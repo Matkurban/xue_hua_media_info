@@ -44,7 +44,7 @@ Add to `pubspec.yaml`:
 
 ```yaml
 dependencies:
-  xue_hua_media_info: ^0.3.0
+  xue_hua_media_info: ^1.0.0
 ```
 
 Supported platforms: **Android, iOS, macOS, Linux, Windows** (FFI plugin).
