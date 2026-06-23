@@ -10,7 +10,7 @@ import 'types.dart';
 MediaMetadataParser createMediaMetadataParser() =>
     RustLib.instance.api.crateApiParserCreateMediaMetadataParser();
 
-ImageExifDto parseImageExifFromFile({
+ImageExif parseImageExifFromFile({
   required MediaMetadataParser parser,
   required String path,
 }) => RustLib.instance.api.crateApiParserParseImageExifFromFile(
@@ -18,7 +18,7 @@ ImageExifDto parseImageExifFromFile({
   path: path,
 );
 
-ImageExifDto parseImageExifFromBytes({
+ImageExif parseImageExifFromBytes({
   required MediaMetadataParser parser,
   required List<int> data,
 }) => RustLib.instance.api.crateApiParserParseImageExifFromBytes(
@@ -26,7 +26,7 @@ ImageExifDto parseImageExifFromBytes({
   data: data,
 );
 
-VideoTrackDto parseVideoMetadataFromFile({
+VideoTrack parseVideoMetadataFromFile({
   required MediaMetadataParser parser,
   required String path,
 }) => RustLib.instance.api.crateApiParserParseVideoMetadataFromFile(
@@ -34,7 +34,7 @@ VideoTrackDto parseVideoMetadataFromFile({
   path: path,
 );
 
-VideoTrackDto parseVideoMetadataFromBytes({
+VideoTrack parseVideoMetadataFromBytes({
   required MediaMetadataParser parser,
   required List<int> data,
 }) => RustLib.instance.api.crateApiParserParseVideoMetadataFromBytes(
@@ -42,7 +42,7 @@ VideoTrackDto parseVideoMetadataFromBytes({
   data: data,
 );
 
-FullImageMetadataDto parseFullImageMetadataFromFile({
+FullImageMetadata parseFullImageMetadataFromFile({
   required MediaMetadataParser parser,
   required String path,
 }) => RustLib.instance.api.crateApiParserParseFullImageMetadataFromFile(
@@ -50,7 +50,7 @@ FullImageMetadataDto parseFullImageMetadataFromFile({
   path: path,
 );
 
-FullImageMetadataDto parseFullImageMetadataFromBytes({
+FullImageMetadata parseFullImageMetadataFromBytes({
   required MediaMetadataParser parser,
   required List<int> data,
 }) => RustLib.instance.api.crateApiParserParseFullImageMetadataFromBytes(
@@ -58,7 +58,7 @@ FullImageMetadataDto parseFullImageMetadataFromBytes({
   data: data,
 );
 
-VideoTrackDto parseEmbeddedVideoFromFile({
+VideoTrack parseEmbeddedVideoFromFile({
   required MediaMetadataParser parser,
   required String path,
 }) => RustLib.instance.api.crateApiParserParseEmbeddedVideoFromFile(
@@ -66,7 +66,7 @@ VideoTrackDto parseEmbeddedVideoFromFile({
   path: path,
 );
 
-VideoTrackDto parseEmbeddedVideoFromBytes({
+VideoTrack parseEmbeddedVideoFromBytes({
   required MediaMetadataParser parser,
   required List<int> data,
 }) => RustLib.instance.api.crateApiParserParseEmbeddedVideoFromBytes(

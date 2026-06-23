@@ -10,13 +10,13 @@ part 'types.freezed.dart';
 
 // These function are ignored because they are on traits that is not defined in current crate (put an empty `#[frb]` on it to unignore): `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`
 
-enum AltitudeRefDto { unknown, aboveSeaLevel, belowSeaLevel }
+enum AltitudeRef { unknown, aboveSeaLevel, belowSeaLevel }
 
-class FullImageMetadataDto {
-  final ImageExifDto? exif;
-  final List<PngTextMetadataDto> pngTextChunks;
+class FullImageMetadata {
+  final ImageExif? exif;
+  final List<PngTextMetadata> pngTextChunks;
 
-  const FullImageMetadataDto({this.exif, required this.pngTextChunks});
+  const FullImageMetadata({this.exif, required this.pngTextChunks});
 
   @override
   int get hashCode => exif.hashCode ^ pngTextChunks.hashCode;
@@ -24,22 +24,22 @@ class FullImageMetadataDto {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is FullImageMetadataDto &&
+      other is FullImageMetadata &&
           runtimeType == other.runtimeType &&
           exif == other.exif &&
           pngTextChunks == other.pngTextChunks;
 }
 
-class GpsLocationDto {
+class GpsLocation {
   final double? latitude;
   final double? longitude;
   final double? altitudeMeters;
-  final LatitudeRefDto latitudeRef;
-  final LongitudeRefDto longitudeRef;
-  final AltitudeRefDto altitudeRef;
+  final LatitudeRef latitudeRef;
+  final LongitudeRef longitudeRef;
+  final AltitudeRef altitudeRef;
   final String iso6709;
 
-  const GpsLocationDto({
+  const GpsLocation({
     this.latitude,
     this.longitude,
     this.altitudeMeters,
@@ -62,7 +62,7 @@ class GpsLocationDto {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is GpsLocationDto &&
+      other is GpsLocation &&
           runtimeType == other.runtimeType &&
           latitude == other.latitude &&
           longitude == other.longitude &&
@@ -73,13 +73,13 @@ class GpsLocationDto {
           iso6709 == other.iso6709;
 }
 
-class ImageExifDto {
-  final List<MetadataEntryDto> entries;
-  final GpsLocationDto? gps;
+class ImageExif {
+  final List<MetadataEntry> entries;
+  final GpsLocation? gps;
   final bool hasEmbeddedVideo;
-  final List<ParseErrorDto> parseErrors;
+  final List<ParseError> parseErrors;
 
-  const ImageExifDto({
+  const ImageExif({
     required this.entries,
     this.gps,
     required this.hasEmbeddedVideo,
@@ -96,7 +96,7 @@ class ImageExifDto {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is ImageExifDto &&
+      other is ImageExif &&
           runtimeType == other.runtimeType &&
           entries == other.entries &&
           gps == other.gps &&
@@ -104,9 +104,9 @@ class ImageExifDto {
           parseErrors == other.parseErrors;
 }
 
-enum LatitudeRefDto { north, south }
+enum LatitudeRef { north, south }
 
-enum LongitudeRefDto { east, west }
+enum LongitudeRef { east, west }
 
 class MediaInfoError implements FrbException {
   final MediaInfoErrorCode code;
@@ -136,27 +136,27 @@ enum MediaInfoErrorCode {
   other,
 }
 
-enum MediaKindDto { image, videoOrAudio }
+enum MediaKind { image, videoOrAudio }
 
 @freezed
-sealed class MediaMetadataDto with _$MediaMetadataDto {
-  const MediaMetadataDto._();
+sealed class MediaMetadata with _$MediaMetadata {
+  const MediaMetadata._();
 
-  const factory MediaMetadataDto.imageExif(ImageExifDto field0) =
-      MediaMetadataDto_ImageExif;
-  const factory MediaMetadataDto.videoTrack(VideoTrackDto field0) =
-      MediaMetadataDto_VideoTrack;
+  const factory MediaMetadata.imageExif(ImageExif field0) =
+      MediaMetadata_ImageExif;
+  const factory MediaMetadata.videoTrack(VideoTrack field0) =
+      MediaMetadata_VideoTrack;
 }
 
-class MetadataEntryDto {
+class MetadataEntry {
   final String tagName;
   final int tagCode;
   final int ifdIndex;
   final MetadataValueKind valueKind;
   final String displayValue;
-  final MetadataValueDto? rawValue;
+  final MetadataValue? rawValue;
 
-  const MetadataEntryDto({
+  const MetadataEntry({
     required this.tagName,
     required this.tagCode,
     required this.ifdIndex,
@@ -177,7 +177,7 @@ class MetadataEntryDto {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is MetadataEntryDto &&
+      other is MetadataEntry &&
           runtimeType == other.runtimeType &&
           tagName == other.tagName &&
           tagCode == other.tagCode &&
@@ -188,32 +188,30 @@ class MetadataEntryDto {
 }
 
 @freezed
-sealed class MetadataValueDto with _$MetadataValueDto {
-  const MetadataValueDto._();
+sealed class MetadataValue with _$MetadataValue {
+  const MetadataValue._();
 
-  const factory MetadataValueDto.text(String field0) = MetadataValueDto_Text;
-  const factory MetadataValueDto.integer(PlatformInt64 field0) =
-      MetadataValueDto_Integer;
-  const factory MetadataValueDto.float(double field0) = MetadataValueDto_Float;
-  const factory MetadataValueDto.rational(RationalDto field0) =
-      MetadataValueDto_Rational;
-  const factory MetadataValueDto.signedRational(RationalDto field0) =
-      MetadataValueDto_SignedRational;
-  const factory MetadataValueDto.dateTime(String field0) =
-      MetadataValueDto_DateTime;
-  const factory MetadataValueDto.naiveDateTime(String field0) =
-      MetadataValueDto_NaiveDateTime;
-  const factory MetadataValueDto.bytes(String field0) = MetadataValueDto_Bytes;
-  const factory MetadataValueDto.rationalArray(List<RationalDto> field0) =
-      MetadataValueDto_RationalArray;
-  const factory MetadataValueDto.signedRationalArray(List<RationalDto> field0) =
-      MetadataValueDto_SignedRationalArray;
-  const factory MetadataValueDto.u8Array(Uint8List field0) =
-      MetadataValueDto_U8Array;
-  const factory MetadataValueDto.u16Array(Int32List field0) =
-      MetadataValueDto_U16Array;
-  const factory MetadataValueDto.u32Array(Int64List field0) =
-      MetadataValueDto_U32Array;
+  const factory MetadataValue.text(String field0) = MetadataValue_Text;
+  const factory MetadataValue.integer(PlatformInt64 field0) =
+      MetadataValue_Integer;
+  const factory MetadataValue.float(double field0) = MetadataValue_Float;
+  const factory MetadataValue.rational(Rational field0) =
+      MetadataValue_Rational;
+  const factory MetadataValue.signedRational(Rational field0) =
+      MetadataValue_SignedRational;
+  const factory MetadataValue.dateTime(String field0) = MetadataValue_DateTime;
+  const factory MetadataValue.naiveDateTime(String field0) =
+      MetadataValue_NaiveDateTime;
+  const factory MetadataValue.bytes(String field0) = MetadataValue_Bytes;
+  const factory MetadataValue.rationalArray(List<Rational> field0) =
+      MetadataValue_RationalArray;
+  const factory MetadataValue.signedRationalArray(List<Rational> field0) =
+      MetadataValue_SignedRationalArray;
+  const factory MetadataValue.u8Array(Uint8List field0) = MetadataValue_U8Array;
+  const factory MetadataValue.u16Array(Int32List field0) =
+      MetadataValue_U16Array;
+  const factory MetadataValue.u32Array(Int64List field0) =
+      MetadataValue_U32Array;
 }
 
 enum MetadataValueKind {
@@ -232,13 +230,13 @@ enum MetadataValueKind {
   u32Array,
 }
 
-class ParseErrorDto {
+class ParseError {
   final int ifdIndex;
   final String tagName;
   final int tagCode;
   final String message;
 
-  const ParseErrorDto({
+  const ParseError({
     required this.ifdIndex,
     required this.tagName,
     required this.tagCode,
@@ -255,7 +253,7 @@ class ParseErrorDto {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is ParseErrorDto &&
+      other is ParseError &&
           runtimeType == other.runtimeType &&
           ifdIndex == other.ifdIndex &&
           tagName == other.tagName &&
@@ -263,11 +261,11 @@ class ParseErrorDto {
           message == other.message;
 }
 
-class PngTextMetadataDto {
+class PngTextMetadata {
   final String key;
   final String value;
 
-  const PngTextMetadataDto({required this.key, required this.value});
+  const PngTextMetadata({required this.key, required this.value});
 
   @override
   int get hashCode => key.hashCode ^ value.hashCode;
@@ -275,17 +273,17 @@ class PngTextMetadataDto {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is PngTextMetadataDto &&
+      other is PngTextMetadata &&
           runtimeType == other.runtimeType &&
           key == other.key &&
           value == other.value;
 }
 
-class RationalDto {
+class Rational {
   final PlatformInt64 numerator;
   final PlatformInt64 denominator;
 
-  const RationalDto({required this.numerator, required this.denominator});
+  const Rational({required this.numerator, required this.denominator});
 
   @override
   int get hashCode => numerator.hashCode ^ denominator.hashCode;
@@ -293,18 +291,18 @@ class RationalDto {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is RationalDto &&
+      other is Rational &&
           runtimeType == other.runtimeType &&
           numerator == other.numerator &&
           denominator == other.denominator;
 }
 
-class VideoTrackDto {
-  final List<MetadataEntryDto> entries;
-  final GpsLocationDto? gps;
-  final List<ParseErrorDto> parseErrors;
+class VideoTrack {
+  final List<MetadataEntry> entries;
+  final GpsLocation? gps;
+  final List<ParseError> parseErrors;
 
-  const VideoTrackDto({
+  const VideoTrack({
     required this.entries,
     this.gps,
     required this.parseErrors,
@@ -316,7 +314,7 @@ class VideoTrackDto {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is VideoTrackDto &&
+      other is VideoTrack &&
           runtimeType == other.runtimeType &&
           entries == other.entries &&
           gps == other.gps &&

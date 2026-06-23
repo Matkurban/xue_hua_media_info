@@ -39,7 +39,7 @@ flutter_rust_bridge::frb_generated_boilerplate!(
     default_rust_auto_opaque = RustAutoOpaqueMoi,
 );
 pub(crate) const FLUTTER_RUST_BRIDGE_CODEGEN_VERSION: &str = "2.12.0";
-pub(crate) const FLUTTER_RUST_BRIDGE_CODEGEN_CONTENT_HASH: i32 = 1713241567;
+pub(crate) const FLUTTER_RUST_BRIDGE_CODEGEN_CONTENT_HASH: i32 = -1683034491;
 
 // Section: executor
 
@@ -107,6 +107,44 @@ fn wire__crate__api__reader__detect_media_kind_from_bytes_impl(
         },
     )
 }
+fn wire__crate__api__reader_async__detect_media_kind_from_bytes_async_impl(
+    port_: flutter_rust_bridge::for_generated::MessagePort,
+    ptr_: flutter_rust_bridge::for_generated::PlatformGeneralizedUint8ListPtr,
+    rust_vec_len_: i32,
+    data_len_: i32,
+) {
+    FLUTTER_RUST_BRIDGE_HANDLER.wrap_async::<flutter_rust_bridge::for_generated::SseCodec, _, _, _>(
+        flutter_rust_bridge::for_generated::TaskInfo {
+            debug_name: "detect_media_kind_from_bytes_async",
+            port: Some(port_),
+            mode: flutter_rust_bridge::for_generated::FfiCallMode::Normal,
+        },
+        move || {
+            let message = unsafe {
+                flutter_rust_bridge::for_generated::Dart2RustMessageSse::from_wire(
+                    ptr_,
+                    rust_vec_len_,
+                    data_len_,
+                )
+            };
+            let mut deserializer =
+                flutter_rust_bridge::for_generated::SseDeserializer::new(message);
+            let api_data = <Vec<u8>>::sse_decode(&mut deserializer);
+            deserializer.end();
+            move |context| async move {
+                transform_result_sse::<_, crate::api::types::MediaInfoError>(
+                    (move || async move {
+                        let output_ok =
+                            crate::api::reader_async::detect_media_kind_from_bytes_async(api_data)
+                                .await?;
+                        Ok(output_ok)
+                    })()
+                    .await,
+                )
+            }
+        },
+    )
+}
 fn wire__crate__api__reader__detect_media_kind_from_file_impl(
     ptr_: flutter_rust_bridge::for_generated::PlatformGeneralizedUint8ListPtr,
     rust_vec_len_: i32,
@@ -134,6 +172,44 @@ fn wire__crate__api__reader__detect_media_kind_from_file_impl(
                 let output_ok = crate::api::reader::detect_media_kind_from_file(api_path)?;
                 Ok(output_ok)
             })())
+        },
+    )
+}
+fn wire__crate__api__reader_async__detect_media_kind_from_file_async_impl(
+    port_: flutter_rust_bridge::for_generated::MessagePort,
+    ptr_: flutter_rust_bridge::for_generated::PlatformGeneralizedUint8ListPtr,
+    rust_vec_len_: i32,
+    data_len_: i32,
+) {
+    FLUTTER_RUST_BRIDGE_HANDLER.wrap_async::<flutter_rust_bridge::for_generated::SseCodec, _, _, _>(
+        flutter_rust_bridge::for_generated::TaskInfo {
+            debug_name: "detect_media_kind_from_file_async",
+            port: Some(port_),
+            mode: flutter_rust_bridge::for_generated::FfiCallMode::Normal,
+        },
+        move || {
+            let message = unsafe {
+                flutter_rust_bridge::for_generated::Dart2RustMessageSse::from_wire(
+                    ptr_,
+                    rust_vec_len_,
+                    data_len_,
+                )
+            };
+            let mut deserializer =
+                flutter_rust_bridge::for_generated::SseDeserializer::new(message);
+            let api_path = <String>::sse_decode(&mut deserializer);
+            deserializer.end();
+            move |context| async move {
+                transform_result_sse::<_, crate::api::types::MediaInfoError>(
+                    (move || async move {
+                        let output_ok =
+                            crate::api::reader_async::detect_media_kind_from_file_async(api_path)
+                                .await?;
+                        Ok(output_ok)
+                    })()
+                    .await,
+                )
+            }
         },
     )
 }
@@ -223,6 +299,69 @@ fn wire__crate__api__parser__parse_embedded_video_from_bytes_impl(
         },
     )
 }
+fn wire__crate__api__parser_async__parse_embedded_video_from_bytes_async_impl(
+    port_: flutter_rust_bridge::for_generated::MessagePort,
+    ptr_: flutter_rust_bridge::for_generated::PlatformGeneralizedUint8ListPtr,
+    rust_vec_len_: i32,
+    data_len_: i32,
+) {
+    FLUTTER_RUST_BRIDGE_HANDLER.wrap_async::<flutter_rust_bridge::for_generated::SseCodec, _, _, _>(
+        flutter_rust_bridge::for_generated::TaskInfo {
+            debug_name: "parse_embedded_video_from_bytes_async",
+            port: Some(port_),
+            mode: flutter_rust_bridge::for_generated::FfiCallMode::Normal,
+        },
+        move || {
+            let message = unsafe {
+                flutter_rust_bridge::for_generated::Dart2RustMessageSse::from_wire(
+                    ptr_,
+                    rust_vec_len_,
+                    data_len_,
+                )
+            };
+            let mut deserializer =
+                flutter_rust_bridge::for_generated::SseDeserializer::new(message);
+            let api_parser = <RustOpaqueMoi<
+                flutter_rust_bridge::for_generated::RustAutoOpaqueInner<MediaMetadataParser>,
+            >>::sse_decode(&mut deserializer);
+            let api_data = <Vec<u8>>::sse_decode(&mut deserializer);
+            deserializer.end();
+            move |context| async move {
+                transform_result_sse::<_, crate::api::types::MediaInfoError>(
+                    (move || async move {
+                        let mut api_parser_guard = None;
+                        let decode_indices_ =
+                            flutter_rust_bridge::for_generated::lockable_compute_decode_order(
+                                vec![flutter_rust_bridge::for_generated::LockableOrderInfo::new(
+                                    &api_parser,
+                                    0,
+                                    true,
+                                )],
+                            );
+                        for i in decode_indices_ {
+                            match i {
+                                0 => {
+                                    api_parser_guard =
+                                        Some(api_parser.lockable_decode_async_ref_mut().await)
+                                }
+                                _ => unreachable!(),
+                            }
+                        }
+                        let mut api_parser_guard = api_parser_guard.unwrap();
+                        let output_ok =
+                            crate::api::parser_async::parse_embedded_video_from_bytes_async(
+                                &mut *api_parser_guard,
+                                api_data,
+                            )
+                            .await?;
+                        Ok(output_ok)
+                    })()
+                    .await,
+                )
+            }
+        },
+    )
+}
 fn wire__crate__api__parser__parse_embedded_video_from_file_impl(
     ptr_: flutter_rust_bridge::for_generated::PlatformGeneralizedUint8ListPtr,
     rust_vec_len_: i32,
@@ -272,6 +411,69 @@ fn wire__crate__api__parser__parse_embedded_video_from_file_impl(
                 )?;
                 Ok(output_ok)
             })())
+        },
+    )
+}
+fn wire__crate__api__parser_async__parse_embedded_video_from_file_async_impl(
+    port_: flutter_rust_bridge::for_generated::MessagePort,
+    ptr_: flutter_rust_bridge::for_generated::PlatformGeneralizedUint8ListPtr,
+    rust_vec_len_: i32,
+    data_len_: i32,
+) {
+    FLUTTER_RUST_BRIDGE_HANDLER.wrap_async::<flutter_rust_bridge::for_generated::SseCodec, _, _, _>(
+        flutter_rust_bridge::for_generated::TaskInfo {
+            debug_name: "parse_embedded_video_from_file_async",
+            port: Some(port_),
+            mode: flutter_rust_bridge::for_generated::FfiCallMode::Normal,
+        },
+        move || {
+            let message = unsafe {
+                flutter_rust_bridge::for_generated::Dart2RustMessageSse::from_wire(
+                    ptr_,
+                    rust_vec_len_,
+                    data_len_,
+                )
+            };
+            let mut deserializer =
+                flutter_rust_bridge::for_generated::SseDeserializer::new(message);
+            let api_parser = <RustOpaqueMoi<
+                flutter_rust_bridge::for_generated::RustAutoOpaqueInner<MediaMetadataParser>,
+            >>::sse_decode(&mut deserializer);
+            let api_path = <String>::sse_decode(&mut deserializer);
+            deserializer.end();
+            move |context| async move {
+                transform_result_sse::<_, crate::api::types::MediaInfoError>(
+                    (move || async move {
+                        let mut api_parser_guard = None;
+                        let decode_indices_ =
+                            flutter_rust_bridge::for_generated::lockable_compute_decode_order(
+                                vec![flutter_rust_bridge::for_generated::LockableOrderInfo::new(
+                                    &api_parser,
+                                    0,
+                                    true,
+                                )],
+                            );
+                        for i in decode_indices_ {
+                            match i {
+                                0 => {
+                                    api_parser_guard =
+                                        Some(api_parser.lockable_decode_async_ref_mut().await)
+                                }
+                                _ => unreachable!(),
+                            }
+                        }
+                        let mut api_parser_guard = api_parser_guard.unwrap();
+                        let output_ok =
+                            crate::api::parser_async::parse_embedded_video_from_file_async(
+                                &mut *api_parser_guard,
+                                api_path,
+                            )
+                            .await?;
+                        Ok(output_ok)
+                    })()
+                    .await,
+                )
+            }
         },
     )
 }
@@ -327,6 +529,69 @@ fn wire__crate__api__parser__parse_full_image_metadata_from_bytes_impl(
         },
     )
 }
+fn wire__crate__api__parser_async__parse_full_image_metadata_from_bytes_async_impl(
+    port_: flutter_rust_bridge::for_generated::MessagePort,
+    ptr_: flutter_rust_bridge::for_generated::PlatformGeneralizedUint8ListPtr,
+    rust_vec_len_: i32,
+    data_len_: i32,
+) {
+    FLUTTER_RUST_BRIDGE_HANDLER.wrap_async::<flutter_rust_bridge::for_generated::SseCodec, _, _, _>(
+        flutter_rust_bridge::for_generated::TaskInfo {
+            debug_name: "parse_full_image_metadata_from_bytes_async",
+            port: Some(port_),
+            mode: flutter_rust_bridge::for_generated::FfiCallMode::Normal,
+        },
+        move || {
+            let message = unsafe {
+                flutter_rust_bridge::for_generated::Dart2RustMessageSse::from_wire(
+                    ptr_,
+                    rust_vec_len_,
+                    data_len_,
+                )
+            };
+            let mut deserializer =
+                flutter_rust_bridge::for_generated::SseDeserializer::new(message);
+            let api_parser = <RustOpaqueMoi<
+                flutter_rust_bridge::for_generated::RustAutoOpaqueInner<MediaMetadataParser>,
+            >>::sse_decode(&mut deserializer);
+            let api_data = <Vec<u8>>::sse_decode(&mut deserializer);
+            deserializer.end();
+            move |context| async move {
+                transform_result_sse::<_, crate::api::types::MediaInfoError>(
+                    (move || async move {
+                        let mut api_parser_guard = None;
+                        let decode_indices_ =
+                            flutter_rust_bridge::for_generated::lockable_compute_decode_order(
+                                vec![flutter_rust_bridge::for_generated::LockableOrderInfo::new(
+                                    &api_parser,
+                                    0,
+                                    true,
+                                )],
+                            );
+                        for i in decode_indices_ {
+                            match i {
+                                0 => {
+                                    api_parser_guard =
+                                        Some(api_parser.lockable_decode_async_ref_mut().await)
+                                }
+                                _ => unreachable!(),
+                            }
+                        }
+                        let mut api_parser_guard = api_parser_guard.unwrap();
+                        let output_ok =
+                            crate::api::parser_async::parse_full_image_metadata_from_bytes_async(
+                                &mut *api_parser_guard,
+                                api_data,
+                            )
+                            .await?;
+                        Ok(output_ok)
+                    })()
+                    .await,
+                )
+            }
+        },
+    )
+}
 fn wire__crate__api__parser__parse_full_image_metadata_from_file_impl(
     ptr_: flutter_rust_bridge::for_generated::PlatformGeneralizedUint8ListPtr,
     rust_vec_len_: i32,
@@ -376,6 +641,69 @@ fn wire__crate__api__parser__parse_full_image_metadata_from_file_impl(
                 )?;
                 Ok(output_ok)
             })())
+        },
+    )
+}
+fn wire__crate__api__parser_async__parse_full_image_metadata_from_file_async_impl(
+    port_: flutter_rust_bridge::for_generated::MessagePort,
+    ptr_: flutter_rust_bridge::for_generated::PlatformGeneralizedUint8ListPtr,
+    rust_vec_len_: i32,
+    data_len_: i32,
+) {
+    FLUTTER_RUST_BRIDGE_HANDLER.wrap_async::<flutter_rust_bridge::for_generated::SseCodec, _, _, _>(
+        flutter_rust_bridge::for_generated::TaskInfo {
+            debug_name: "parse_full_image_metadata_from_file_async",
+            port: Some(port_),
+            mode: flutter_rust_bridge::for_generated::FfiCallMode::Normal,
+        },
+        move || {
+            let message = unsafe {
+                flutter_rust_bridge::for_generated::Dart2RustMessageSse::from_wire(
+                    ptr_,
+                    rust_vec_len_,
+                    data_len_,
+                )
+            };
+            let mut deserializer =
+                flutter_rust_bridge::for_generated::SseDeserializer::new(message);
+            let api_parser = <RustOpaqueMoi<
+                flutter_rust_bridge::for_generated::RustAutoOpaqueInner<MediaMetadataParser>,
+            >>::sse_decode(&mut deserializer);
+            let api_path = <String>::sse_decode(&mut deserializer);
+            deserializer.end();
+            move |context| async move {
+                transform_result_sse::<_, crate::api::types::MediaInfoError>(
+                    (move || async move {
+                        let mut api_parser_guard = None;
+                        let decode_indices_ =
+                            flutter_rust_bridge::for_generated::lockable_compute_decode_order(
+                                vec![flutter_rust_bridge::for_generated::LockableOrderInfo::new(
+                                    &api_parser,
+                                    0,
+                                    true,
+                                )],
+                            );
+                        for i in decode_indices_ {
+                            match i {
+                                0 => {
+                                    api_parser_guard =
+                                        Some(api_parser.lockable_decode_async_ref_mut().await)
+                                }
+                                _ => unreachable!(),
+                            }
+                        }
+                        let mut api_parser_guard = api_parser_guard.unwrap();
+                        let output_ok =
+                            crate::api::parser_async::parse_full_image_metadata_from_file_async(
+                                &mut *api_parser_guard,
+                                api_path,
+                            )
+                            .await?;
+                        Ok(output_ok)
+                    })()
+                    .await,
+                )
+            }
         },
     )
 }
@@ -431,6 +759,69 @@ fn wire__crate__api__parser__parse_image_exif_from_bytes_impl(
         },
     )
 }
+fn wire__crate__api__parser_async__parse_image_exif_from_bytes_async_impl(
+    port_: flutter_rust_bridge::for_generated::MessagePort,
+    ptr_: flutter_rust_bridge::for_generated::PlatformGeneralizedUint8ListPtr,
+    rust_vec_len_: i32,
+    data_len_: i32,
+) {
+    FLUTTER_RUST_BRIDGE_HANDLER.wrap_async::<flutter_rust_bridge::for_generated::SseCodec, _, _, _>(
+        flutter_rust_bridge::for_generated::TaskInfo {
+            debug_name: "parse_image_exif_from_bytes_async",
+            port: Some(port_),
+            mode: flutter_rust_bridge::for_generated::FfiCallMode::Normal,
+        },
+        move || {
+            let message = unsafe {
+                flutter_rust_bridge::for_generated::Dart2RustMessageSse::from_wire(
+                    ptr_,
+                    rust_vec_len_,
+                    data_len_,
+                )
+            };
+            let mut deserializer =
+                flutter_rust_bridge::for_generated::SseDeserializer::new(message);
+            let api_parser = <RustOpaqueMoi<
+                flutter_rust_bridge::for_generated::RustAutoOpaqueInner<MediaMetadataParser>,
+            >>::sse_decode(&mut deserializer);
+            let api_data = <Vec<u8>>::sse_decode(&mut deserializer);
+            deserializer.end();
+            move |context| async move {
+                transform_result_sse::<_, crate::api::types::MediaInfoError>(
+                    (move || async move {
+                        let mut api_parser_guard = None;
+                        let decode_indices_ =
+                            flutter_rust_bridge::for_generated::lockable_compute_decode_order(
+                                vec![flutter_rust_bridge::for_generated::LockableOrderInfo::new(
+                                    &api_parser,
+                                    0,
+                                    true,
+                                )],
+                            );
+                        for i in decode_indices_ {
+                            match i {
+                                0 => {
+                                    api_parser_guard =
+                                        Some(api_parser.lockable_decode_async_ref_mut().await)
+                                }
+                                _ => unreachable!(),
+                            }
+                        }
+                        let mut api_parser_guard = api_parser_guard.unwrap();
+                        let output_ok =
+                            crate::api::parser_async::parse_image_exif_from_bytes_async(
+                                &mut *api_parser_guard,
+                                api_data,
+                            )
+                            .await?;
+                        Ok(output_ok)
+                    })()
+                    .await,
+                )
+            }
+        },
+    )
+}
 fn wire__crate__api__parser__parse_image_exif_from_file_impl(
     ptr_: flutter_rust_bridge::for_generated::PlatformGeneralizedUint8ListPtr,
     rust_vec_len_: i32,
@@ -480,6 +871,68 @@ fn wire__crate__api__parser__parse_image_exif_from_file_impl(
                 )?;
                 Ok(output_ok)
             })())
+        },
+    )
+}
+fn wire__crate__api__parser_async__parse_image_exif_from_file_async_impl(
+    port_: flutter_rust_bridge::for_generated::MessagePort,
+    ptr_: flutter_rust_bridge::for_generated::PlatformGeneralizedUint8ListPtr,
+    rust_vec_len_: i32,
+    data_len_: i32,
+) {
+    FLUTTER_RUST_BRIDGE_HANDLER.wrap_async::<flutter_rust_bridge::for_generated::SseCodec, _, _, _>(
+        flutter_rust_bridge::for_generated::TaskInfo {
+            debug_name: "parse_image_exif_from_file_async",
+            port: Some(port_),
+            mode: flutter_rust_bridge::for_generated::FfiCallMode::Normal,
+        },
+        move || {
+            let message = unsafe {
+                flutter_rust_bridge::for_generated::Dart2RustMessageSse::from_wire(
+                    ptr_,
+                    rust_vec_len_,
+                    data_len_,
+                )
+            };
+            let mut deserializer =
+                flutter_rust_bridge::for_generated::SseDeserializer::new(message);
+            let api_parser = <RustOpaqueMoi<
+                flutter_rust_bridge::for_generated::RustAutoOpaqueInner<MediaMetadataParser>,
+            >>::sse_decode(&mut deserializer);
+            let api_path = <String>::sse_decode(&mut deserializer);
+            deserializer.end();
+            move |context| async move {
+                transform_result_sse::<_, crate::api::types::MediaInfoError>(
+                    (move || async move {
+                        let mut api_parser_guard = None;
+                        let decode_indices_ =
+                            flutter_rust_bridge::for_generated::lockable_compute_decode_order(
+                                vec![flutter_rust_bridge::for_generated::LockableOrderInfo::new(
+                                    &api_parser,
+                                    0,
+                                    true,
+                                )],
+                            );
+                        for i in decode_indices_ {
+                            match i {
+                                0 => {
+                                    api_parser_guard =
+                                        Some(api_parser.lockable_decode_async_ref_mut().await)
+                                }
+                                _ => unreachable!(),
+                            }
+                        }
+                        let mut api_parser_guard = api_parser_guard.unwrap();
+                        let output_ok = crate::api::parser_async::parse_image_exif_from_file_async(
+                            &mut *api_parser_guard,
+                            api_path,
+                        )
+                        .await?;
+                        Ok(output_ok)
+                    })()
+                    .await,
+                )
+            }
         },
     )
 }
@@ -535,6 +988,69 @@ fn wire__crate__api__parser__parse_video_metadata_from_bytes_impl(
         },
     )
 }
+fn wire__crate__api__parser_async__parse_video_metadata_from_bytes_async_impl(
+    port_: flutter_rust_bridge::for_generated::MessagePort,
+    ptr_: flutter_rust_bridge::for_generated::PlatformGeneralizedUint8ListPtr,
+    rust_vec_len_: i32,
+    data_len_: i32,
+) {
+    FLUTTER_RUST_BRIDGE_HANDLER.wrap_async::<flutter_rust_bridge::for_generated::SseCodec, _, _, _>(
+        flutter_rust_bridge::for_generated::TaskInfo {
+            debug_name: "parse_video_metadata_from_bytes_async",
+            port: Some(port_),
+            mode: flutter_rust_bridge::for_generated::FfiCallMode::Normal,
+        },
+        move || {
+            let message = unsafe {
+                flutter_rust_bridge::for_generated::Dart2RustMessageSse::from_wire(
+                    ptr_,
+                    rust_vec_len_,
+                    data_len_,
+                )
+            };
+            let mut deserializer =
+                flutter_rust_bridge::for_generated::SseDeserializer::new(message);
+            let api_parser = <RustOpaqueMoi<
+                flutter_rust_bridge::for_generated::RustAutoOpaqueInner<MediaMetadataParser>,
+            >>::sse_decode(&mut deserializer);
+            let api_data = <Vec<u8>>::sse_decode(&mut deserializer);
+            deserializer.end();
+            move |context| async move {
+                transform_result_sse::<_, crate::api::types::MediaInfoError>(
+                    (move || async move {
+                        let mut api_parser_guard = None;
+                        let decode_indices_ =
+                            flutter_rust_bridge::for_generated::lockable_compute_decode_order(
+                                vec![flutter_rust_bridge::for_generated::LockableOrderInfo::new(
+                                    &api_parser,
+                                    0,
+                                    true,
+                                )],
+                            );
+                        for i in decode_indices_ {
+                            match i {
+                                0 => {
+                                    api_parser_guard =
+                                        Some(api_parser.lockable_decode_async_ref_mut().await)
+                                }
+                                _ => unreachable!(),
+                            }
+                        }
+                        let mut api_parser_guard = api_parser_guard.unwrap();
+                        let output_ok =
+                            crate::api::parser_async::parse_video_metadata_from_bytes_async(
+                                &mut *api_parser_guard,
+                                api_data,
+                            )
+                            .await?;
+                        Ok(output_ok)
+                    })()
+                    .await,
+                )
+            }
+        },
+    )
+}
 fn wire__crate__api__parser__parse_video_metadata_from_file_impl(
     ptr_: flutter_rust_bridge::for_generated::PlatformGeneralizedUint8ListPtr,
     rust_vec_len_: i32,
@@ -587,6 +1103,69 @@ fn wire__crate__api__parser__parse_video_metadata_from_file_impl(
         },
     )
 }
+fn wire__crate__api__parser_async__parse_video_metadata_from_file_async_impl(
+    port_: flutter_rust_bridge::for_generated::MessagePort,
+    ptr_: flutter_rust_bridge::for_generated::PlatformGeneralizedUint8ListPtr,
+    rust_vec_len_: i32,
+    data_len_: i32,
+) {
+    FLUTTER_RUST_BRIDGE_HANDLER.wrap_async::<flutter_rust_bridge::for_generated::SseCodec, _, _, _>(
+        flutter_rust_bridge::for_generated::TaskInfo {
+            debug_name: "parse_video_metadata_from_file_async",
+            port: Some(port_),
+            mode: flutter_rust_bridge::for_generated::FfiCallMode::Normal,
+        },
+        move || {
+            let message = unsafe {
+                flutter_rust_bridge::for_generated::Dart2RustMessageSse::from_wire(
+                    ptr_,
+                    rust_vec_len_,
+                    data_len_,
+                )
+            };
+            let mut deserializer =
+                flutter_rust_bridge::for_generated::SseDeserializer::new(message);
+            let api_parser = <RustOpaqueMoi<
+                flutter_rust_bridge::for_generated::RustAutoOpaqueInner<MediaMetadataParser>,
+            >>::sse_decode(&mut deserializer);
+            let api_path = <String>::sse_decode(&mut deserializer);
+            deserializer.end();
+            move |context| async move {
+                transform_result_sse::<_, crate::api::types::MediaInfoError>(
+                    (move || async move {
+                        let mut api_parser_guard = None;
+                        let decode_indices_ =
+                            flutter_rust_bridge::for_generated::lockable_compute_decode_order(
+                                vec![flutter_rust_bridge::for_generated::LockableOrderInfo::new(
+                                    &api_parser,
+                                    0,
+                                    true,
+                                )],
+                            );
+                        for i in decode_indices_ {
+                            match i {
+                                0 => {
+                                    api_parser_guard =
+                                        Some(api_parser.lockable_decode_async_ref_mut().await)
+                                }
+                                _ => unreachable!(),
+                            }
+                        }
+                        let mut api_parser_guard = api_parser_guard.unwrap();
+                        let output_ok =
+                            crate::api::parser_async::parse_video_metadata_from_file_async(
+                                &mut *api_parser_guard,
+                                api_path,
+                            )
+                            .await?;
+                        Ok(output_ok)
+                    })()
+                    .await,
+                )
+            }
+        },
+    )
+}
 fn wire__crate__api__reader__read_embedded_video_from_bytes_impl(
     ptr_: flutter_rust_bridge::for_generated::PlatformGeneralizedUint8ListPtr,
     rust_vec_len_: i32,
@@ -614,6 +1193,46 @@ fn wire__crate__api__reader__read_embedded_video_from_bytes_impl(
                 let output_ok = crate::api::reader::read_embedded_video_from_bytes(api_data)?;
                 Ok(output_ok)
             })())
+        },
+    )
+}
+fn wire__crate__api__reader_async__read_embedded_video_from_bytes_async_impl(
+    port_: flutter_rust_bridge::for_generated::MessagePort,
+    ptr_: flutter_rust_bridge::for_generated::PlatformGeneralizedUint8ListPtr,
+    rust_vec_len_: i32,
+    data_len_: i32,
+) {
+    FLUTTER_RUST_BRIDGE_HANDLER.wrap_async::<flutter_rust_bridge::for_generated::SseCodec, _, _, _>(
+        flutter_rust_bridge::for_generated::TaskInfo {
+            debug_name: "read_embedded_video_from_bytes_async",
+            port: Some(port_),
+            mode: flutter_rust_bridge::for_generated::FfiCallMode::Normal,
+        },
+        move || {
+            let message = unsafe {
+                flutter_rust_bridge::for_generated::Dart2RustMessageSse::from_wire(
+                    ptr_,
+                    rust_vec_len_,
+                    data_len_,
+                )
+            };
+            let mut deserializer =
+                flutter_rust_bridge::for_generated::SseDeserializer::new(message);
+            let api_data = <Vec<u8>>::sse_decode(&mut deserializer);
+            deserializer.end();
+            move |context| async move {
+                transform_result_sse::<_, crate::api::types::MediaInfoError>(
+                    (move || async move {
+                        let output_ok =
+                            crate::api::reader_async::read_embedded_video_from_bytes_async(
+                                api_data,
+                            )
+                            .await?;
+                        Ok(output_ok)
+                    })()
+                    .await,
+                )
+            }
         },
     )
 }
@@ -647,6 +1266,44 @@ fn wire__crate__api__reader__read_embedded_video_from_file_impl(
         },
     )
 }
+fn wire__crate__api__reader_async__read_embedded_video_from_file_async_impl(
+    port_: flutter_rust_bridge::for_generated::MessagePort,
+    ptr_: flutter_rust_bridge::for_generated::PlatformGeneralizedUint8ListPtr,
+    rust_vec_len_: i32,
+    data_len_: i32,
+) {
+    FLUTTER_RUST_BRIDGE_HANDLER.wrap_async::<flutter_rust_bridge::for_generated::SseCodec, _, _, _>(
+        flutter_rust_bridge::for_generated::TaskInfo {
+            debug_name: "read_embedded_video_from_file_async",
+            port: Some(port_),
+            mode: flutter_rust_bridge::for_generated::FfiCallMode::Normal,
+        },
+        move || {
+            let message = unsafe {
+                flutter_rust_bridge::for_generated::Dart2RustMessageSse::from_wire(
+                    ptr_,
+                    rust_vec_len_,
+                    data_len_,
+                )
+            };
+            let mut deserializer =
+                flutter_rust_bridge::for_generated::SseDeserializer::new(message);
+            let api_path = <String>::sse_decode(&mut deserializer);
+            deserializer.end();
+            move |context| async move {
+                transform_result_sse::<_, crate::api::types::MediaInfoError>(
+                    (move || async move {
+                        let output_ok =
+                            crate::api::reader_async::read_embedded_video_from_file_async(api_path)
+                                .await?;
+                        Ok(output_ok)
+                    })()
+                    .await,
+                )
+            }
+        },
+    )
+}
 fn wire__crate__api__reader__read_full_image_metadata_from_bytes_impl(
     ptr_: flutter_rust_bridge::for_generated::PlatformGeneralizedUint8ListPtr,
     rust_vec_len_: i32,
@@ -674,6 +1331,46 @@ fn wire__crate__api__reader__read_full_image_metadata_from_bytes_impl(
                 let output_ok = crate::api::reader::read_full_image_metadata_from_bytes(api_data)?;
                 Ok(output_ok)
             })())
+        },
+    )
+}
+fn wire__crate__api__reader_async__read_full_image_metadata_from_bytes_async_impl(
+    port_: flutter_rust_bridge::for_generated::MessagePort,
+    ptr_: flutter_rust_bridge::for_generated::PlatformGeneralizedUint8ListPtr,
+    rust_vec_len_: i32,
+    data_len_: i32,
+) {
+    FLUTTER_RUST_BRIDGE_HANDLER.wrap_async::<flutter_rust_bridge::for_generated::SseCodec, _, _, _>(
+        flutter_rust_bridge::for_generated::TaskInfo {
+            debug_name: "read_full_image_metadata_from_bytes_async",
+            port: Some(port_),
+            mode: flutter_rust_bridge::for_generated::FfiCallMode::Normal,
+        },
+        move || {
+            let message = unsafe {
+                flutter_rust_bridge::for_generated::Dart2RustMessageSse::from_wire(
+                    ptr_,
+                    rust_vec_len_,
+                    data_len_,
+                )
+            };
+            let mut deserializer =
+                flutter_rust_bridge::for_generated::SseDeserializer::new(message);
+            let api_data = <Vec<u8>>::sse_decode(&mut deserializer);
+            deserializer.end();
+            move |context| async move {
+                transform_result_sse::<_, crate::api::types::MediaInfoError>(
+                    (move || async move {
+                        let output_ok =
+                            crate::api::reader_async::read_full_image_metadata_from_bytes_async(
+                                api_data,
+                            )
+                            .await?;
+                        Ok(output_ok)
+                    })()
+                    .await,
+                )
+            }
         },
     )
 }
@@ -707,6 +1404,46 @@ fn wire__crate__api__reader__read_full_image_metadata_from_file_impl(
         },
     )
 }
+fn wire__crate__api__reader_async__read_full_image_metadata_from_file_async_impl(
+    port_: flutter_rust_bridge::for_generated::MessagePort,
+    ptr_: flutter_rust_bridge::for_generated::PlatformGeneralizedUint8ListPtr,
+    rust_vec_len_: i32,
+    data_len_: i32,
+) {
+    FLUTTER_RUST_BRIDGE_HANDLER.wrap_async::<flutter_rust_bridge::for_generated::SseCodec, _, _, _>(
+        flutter_rust_bridge::for_generated::TaskInfo {
+            debug_name: "read_full_image_metadata_from_file_async",
+            port: Some(port_),
+            mode: flutter_rust_bridge::for_generated::FfiCallMode::Normal,
+        },
+        move || {
+            let message = unsafe {
+                flutter_rust_bridge::for_generated::Dart2RustMessageSse::from_wire(
+                    ptr_,
+                    rust_vec_len_,
+                    data_len_,
+                )
+            };
+            let mut deserializer =
+                flutter_rust_bridge::for_generated::SseDeserializer::new(message);
+            let api_path = <String>::sse_decode(&mut deserializer);
+            deserializer.end();
+            move |context| async move {
+                transform_result_sse::<_, crate::api::types::MediaInfoError>(
+                    (move || async move {
+                        let output_ok =
+                            crate::api::reader_async::read_full_image_metadata_from_file_async(
+                                api_path,
+                            )
+                            .await?;
+                        Ok(output_ok)
+                    })()
+                    .await,
+                )
+            }
+        },
+    )
+}
 fn wire__crate__api__reader__read_image_exif_from_bytes_impl(
     ptr_: flutter_rust_bridge::for_generated::PlatformGeneralizedUint8ListPtr,
     rust_vec_len_: i32,
@@ -734,6 +1471,44 @@ fn wire__crate__api__reader__read_image_exif_from_bytes_impl(
                 let output_ok = crate::api::reader::read_image_exif_from_bytes(api_data)?;
                 Ok(output_ok)
             })())
+        },
+    )
+}
+fn wire__crate__api__reader_async__read_image_exif_from_bytes_async_impl(
+    port_: flutter_rust_bridge::for_generated::MessagePort,
+    ptr_: flutter_rust_bridge::for_generated::PlatformGeneralizedUint8ListPtr,
+    rust_vec_len_: i32,
+    data_len_: i32,
+) {
+    FLUTTER_RUST_BRIDGE_HANDLER.wrap_async::<flutter_rust_bridge::for_generated::SseCodec, _, _, _>(
+        flutter_rust_bridge::for_generated::TaskInfo {
+            debug_name: "read_image_exif_from_bytes_async",
+            port: Some(port_),
+            mode: flutter_rust_bridge::for_generated::FfiCallMode::Normal,
+        },
+        move || {
+            let message = unsafe {
+                flutter_rust_bridge::for_generated::Dart2RustMessageSse::from_wire(
+                    ptr_,
+                    rust_vec_len_,
+                    data_len_,
+                )
+            };
+            let mut deserializer =
+                flutter_rust_bridge::for_generated::SseDeserializer::new(message);
+            let api_data = <Vec<u8>>::sse_decode(&mut deserializer);
+            deserializer.end();
+            move |context| async move {
+                transform_result_sse::<_, crate::api::types::MediaInfoError>(
+                    (move || async move {
+                        let output_ok =
+                            crate::api::reader_async::read_image_exif_from_bytes_async(api_data)
+                                .await?;
+                        Ok(output_ok)
+                    })()
+                    .await,
+                )
+            }
         },
     )
 }
@@ -767,6 +1542,44 @@ fn wire__crate__api__reader__read_image_exif_from_file_impl(
         },
     )
 }
+fn wire__crate__api__reader_async__read_image_exif_from_file_async_impl(
+    port_: flutter_rust_bridge::for_generated::MessagePort,
+    ptr_: flutter_rust_bridge::for_generated::PlatformGeneralizedUint8ListPtr,
+    rust_vec_len_: i32,
+    data_len_: i32,
+) {
+    FLUTTER_RUST_BRIDGE_HANDLER.wrap_async::<flutter_rust_bridge::for_generated::SseCodec, _, _, _>(
+        flutter_rust_bridge::for_generated::TaskInfo {
+            debug_name: "read_image_exif_from_file_async",
+            port: Some(port_),
+            mode: flutter_rust_bridge::for_generated::FfiCallMode::Normal,
+        },
+        move || {
+            let message = unsafe {
+                flutter_rust_bridge::for_generated::Dart2RustMessageSse::from_wire(
+                    ptr_,
+                    rust_vec_len_,
+                    data_len_,
+                )
+            };
+            let mut deserializer =
+                flutter_rust_bridge::for_generated::SseDeserializer::new(message);
+            let api_path = <String>::sse_decode(&mut deserializer);
+            deserializer.end();
+            move |context| async move {
+                transform_result_sse::<_, crate::api::types::MediaInfoError>(
+                    (move || async move {
+                        let output_ok =
+                            crate::api::reader_async::read_image_exif_from_file_async(api_path)
+                                .await?;
+                        Ok(output_ok)
+                    })()
+                    .await,
+                )
+            }
+        },
+    )
+}
 fn wire__crate__api__reader__read_image_exif_lazy_from_bytes_impl(
     ptr_: flutter_rust_bridge::for_generated::PlatformGeneralizedUint8ListPtr,
     rust_vec_len_: i32,
@@ -794,6 +1607,46 @@ fn wire__crate__api__reader__read_image_exif_lazy_from_bytes_impl(
                 let output_ok = crate::api::reader::read_image_exif_lazy_from_bytes(api_data)?;
                 Ok(output_ok)
             })())
+        },
+    )
+}
+fn wire__crate__api__reader_async__read_image_exif_lazy_from_bytes_async_impl(
+    port_: flutter_rust_bridge::for_generated::MessagePort,
+    ptr_: flutter_rust_bridge::for_generated::PlatformGeneralizedUint8ListPtr,
+    rust_vec_len_: i32,
+    data_len_: i32,
+) {
+    FLUTTER_RUST_BRIDGE_HANDLER.wrap_async::<flutter_rust_bridge::for_generated::SseCodec, _, _, _>(
+        flutter_rust_bridge::for_generated::TaskInfo {
+            debug_name: "read_image_exif_lazy_from_bytes_async",
+            port: Some(port_),
+            mode: flutter_rust_bridge::for_generated::FfiCallMode::Normal,
+        },
+        move || {
+            let message = unsafe {
+                flutter_rust_bridge::for_generated::Dart2RustMessageSse::from_wire(
+                    ptr_,
+                    rust_vec_len_,
+                    data_len_,
+                )
+            };
+            let mut deserializer =
+                flutter_rust_bridge::for_generated::SseDeserializer::new(message);
+            let api_data = <Vec<u8>>::sse_decode(&mut deserializer);
+            deserializer.end();
+            move |context| async move {
+                transform_result_sse::<_, crate::api::types::MediaInfoError>(
+                    (move || async move {
+                        let output_ok =
+                            crate::api::reader_async::read_image_exif_lazy_from_bytes_async(
+                                api_data,
+                            )
+                            .await?;
+                        Ok(output_ok)
+                    })()
+                    .await,
+                )
+            }
         },
     )
 }
@@ -827,6 +1680,46 @@ fn wire__crate__api__reader__read_image_exif_lazy_from_file_impl(
         },
     )
 }
+fn wire__crate__api__reader_async__read_image_exif_lazy_from_file_async_impl(
+    port_: flutter_rust_bridge::for_generated::MessagePort,
+    ptr_: flutter_rust_bridge::for_generated::PlatformGeneralizedUint8ListPtr,
+    rust_vec_len_: i32,
+    data_len_: i32,
+) {
+    FLUTTER_RUST_BRIDGE_HANDLER.wrap_async::<flutter_rust_bridge::for_generated::SseCodec, _, _, _>(
+        flutter_rust_bridge::for_generated::TaskInfo {
+            debug_name: "read_image_exif_lazy_from_file_async",
+            port: Some(port_),
+            mode: flutter_rust_bridge::for_generated::FfiCallMode::Normal,
+        },
+        move || {
+            let message = unsafe {
+                flutter_rust_bridge::for_generated::Dart2RustMessageSse::from_wire(
+                    ptr_,
+                    rust_vec_len_,
+                    data_len_,
+                )
+            };
+            let mut deserializer =
+                flutter_rust_bridge::for_generated::SseDeserializer::new(message);
+            let api_path = <String>::sse_decode(&mut deserializer);
+            deserializer.end();
+            move |context| async move {
+                transform_result_sse::<_, crate::api::types::MediaInfoError>(
+                    (move || async move {
+                        let output_ok =
+                            crate::api::reader_async::read_image_exif_lazy_from_file_async(
+                                api_path,
+                            )
+                            .await?;
+                        Ok(output_ok)
+                    })()
+                    .await,
+                )
+            }
+        },
+    )
+}
 fn wire__crate__api__reader__read_media_metadata_from_bytes_impl(
     ptr_: flutter_rust_bridge::for_generated::PlatformGeneralizedUint8ListPtr,
     rust_vec_len_: i32,
@@ -854,6 +1747,46 @@ fn wire__crate__api__reader__read_media_metadata_from_bytes_impl(
                 let output_ok = crate::api::reader::read_media_metadata_from_bytes(api_data)?;
                 Ok(output_ok)
             })())
+        },
+    )
+}
+fn wire__crate__api__reader_async__read_media_metadata_from_bytes_async_impl(
+    port_: flutter_rust_bridge::for_generated::MessagePort,
+    ptr_: flutter_rust_bridge::for_generated::PlatformGeneralizedUint8ListPtr,
+    rust_vec_len_: i32,
+    data_len_: i32,
+) {
+    FLUTTER_RUST_BRIDGE_HANDLER.wrap_async::<flutter_rust_bridge::for_generated::SseCodec, _, _, _>(
+        flutter_rust_bridge::for_generated::TaskInfo {
+            debug_name: "read_media_metadata_from_bytes_async",
+            port: Some(port_),
+            mode: flutter_rust_bridge::for_generated::FfiCallMode::Normal,
+        },
+        move || {
+            let message = unsafe {
+                flutter_rust_bridge::for_generated::Dart2RustMessageSse::from_wire(
+                    ptr_,
+                    rust_vec_len_,
+                    data_len_,
+                )
+            };
+            let mut deserializer =
+                flutter_rust_bridge::for_generated::SseDeserializer::new(message);
+            let api_data = <Vec<u8>>::sse_decode(&mut deserializer);
+            deserializer.end();
+            move |context| async move {
+                transform_result_sse::<_, crate::api::types::MediaInfoError>(
+                    (move || async move {
+                        let output_ok =
+                            crate::api::reader_async::read_media_metadata_from_bytes_async(
+                                api_data,
+                            )
+                            .await?;
+                        Ok(output_ok)
+                    })()
+                    .await,
+                )
+            }
         },
     )
 }
@@ -887,6 +1820,44 @@ fn wire__crate__api__reader__read_media_metadata_from_file_impl(
         },
     )
 }
+fn wire__crate__api__reader_async__read_media_metadata_from_file_async_impl(
+    port_: flutter_rust_bridge::for_generated::MessagePort,
+    ptr_: flutter_rust_bridge::for_generated::PlatformGeneralizedUint8ListPtr,
+    rust_vec_len_: i32,
+    data_len_: i32,
+) {
+    FLUTTER_RUST_BRIDGE_HANDLER.wrap_async::<flutter_rust_bridge::for_generated::SseCodec, _, _, _>(
+        flutter_rust_bridge::for_generated::TaskInfo {
+            debug_name: "read_media_metadata_from_file_async",
+            port: Some(port_),
+            mode: flutter_rust_bridge::for_generated::FfiCallMode::Normal,
+        },
+        move || {
+            let message = unsafe {
+                flutter_rust_bridge::for_generated::Dart2RustMessageSse::from_wire(
+                    ptr_,
+                    rust_vec_len_,
+                    data_len_,
+                )
+            };
+            let mut deserializer =
+                flutter_rust_bridge::for_generated::SseDeserializer::new(message);
+            let api_path = <String>::sse_decode(&mut deserializer);
+            deserializer.end();
+            move |context| async move {
+                transform_result_sse::<_, crate::api::types::MediaInfoError>(
+                    (move || async move {
+                        let output_ok =
+                            crate::api::reader_async::read_media_metadata_from_file_async(api_path)
+                                .await?;
+                        Ok(output_ok)
+                    })()
+                    .await,
+                )
+            }
+        },
+    )
+}
 fn wire__crate__api__reader__read_video_metadata_from_bytes_impl(
     ptr_: flutter_rust_bridge::for_generated::PlatformGeneralizedUint8ListPtr,
     rust_vec_len_: i32,
@@ -917,6 +1888,46 @@ fn wire__crate__api__reader__read_video_metadata_from_bytes_impl(
         },
     )
 }
+fn wire__crate__api__reader_async__read_video_metadata_from_bytes_async_impl(
+    port_: flutter_rust_bridge::for_generated::MessagePort,
+    ptr_: flutter_rust_bridge::for_generated::PlatformGeneralizedUint8ListPtr,
+    rust_vec_len_: i32,
+    data_len_: i32,
+) {
+    FLUTTER_RUST_BRIDGE_HANDLER.wrap_async::<flutter_rust_bridge::for_generated::SseCodec, _, _, _>(
+        flutter_rust_bridge::for_generated::TaskInfo {
+            debug_name: "read_video_metadata_from_bytes_async",
+            port: Some(port_),
+            mode: flutter_rust_bridge::for_generated::FfiCallMode::Normal,
+        },
+        move || {
+            let message = unsafe {
+                flutter_rust_bridge::for_generated::Dart2RustMessageSse::from_wire(
+                    ptr_,
+                    rust_vec_len_,
+                    data_len_,
+                )
+            };
+            let mut deserializer =
+                flutter_rust_bridge::for_generated::SseDeserializer::new(message);
+            let api_data = <Vec<u8>>::sse_decode(&mut deserializer);
+            deserializer.end();
+            move |context| async move {
+                transform_result_sse::<_, crate::api::types::MediaInfoError>(
+                    (move || async move {
+                        let output_ok =
+                            crate::api::reader_async::read_video_metadata_from_bytes_async(
+                                api_data,
+                            )
+                            .await?;
+                        Ok(output_ok)
+                    })()
+                    .await,
+                )
+            }
+        },
+    )
+}
 fn wire__crate__api__reader__read_video_metadata_from_file_impl(
     ptr_: flutter_rust_bridge::for_generated::PlatformGeneralizedUint8ListPtr,
     rust_vec_len_: i32,
@@ -944,6 +1955,44 @@ fn wire__crate__api__reader__read_video_metadata_from_file_impl(
                 let output_ok = crate::api::reader::read_video_metadata_from_file(api_path)?;
                 Ok(output_ok)
             })())
+        },
+    )
+}
+fn wire__crate__api__reader_async__read_video_metadata_from_file_async_impl(
+    port_: flutter_rust_bridge::for_generated::MessagePort,
+    ptr_: flutter_rust_bridge::for_generated::PlatformGeneralizedUint8ListPtr,
+    rust_vec_len_: i32,
+    data_len_: i32,
+) {
+    FLUTTER_RUST_BRIDGE_HANDLER.wrap_async::<flutter_rust_bridge::for_generated::SseCodec, _, _, _>(
+        flutter_rust_bridge::for_generated::TaskInfo {
+            debug_name: "read_video_metadata_from_file_async",
+            port: Some(port_),
+            mode: flutter_rust_bridge::for_generated::FfiCallMode::Normal,
+        },
+        move || {
+            let message = unsafe {
+                flutter_rust_bridge::for_generated::Dart2RustMessageSse::from_wire(
+                    ptr_,
+                    rust_vec_len_,
+                    data_len_,
+                )
+            };
+            let mut deserializer =
+                flutter_rust_bridge::for_generated::SseDeserializer::new(message);
+            let api_path = <String>::sse_decode(&mut deserializer);
+            deserializer.end();
+            move |context| async move {
+                transform_result_sse::<_, crate::api::types::MediaInfoError>(
+                    (move || async move {
+                        let output_ok =
+                            crate::api::reader_async::read_video_metadata_from_file_async(api_path)
+                                .await?;
+                        Ok(output_ok)
+                    })()
+                    .await,
+                )
+            }
         },
     )
 }
@@ -984,15 +2033,15 @@ impl SseDecode for String {
     }
 }
 
-impl SseDecode for crate::api::types::AltitudeRefDto {
+impl SseDecode for crate::api::types::AltitudeRef {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
         let mut inner = <i32>::sse_decode(deserializer);
         return match inner {
-            0 => crate::api::types::AltitudeRefDto::Unknown,
-            1 => crate::api::types::AltitudeRefDto::AboveSeaLevel,
-            2 => crate::api::types::AltitudeRefDto::BelowSeaLevel,
-            _ => unreachable!("Invalid variant for AltitudeRefDto: {}", inner),
+            0 => crate::api::types::AltitudeRef::Unknown,
+            1 => crate::api::types::AltitudeRef::AboveSeaLevel,
+            2 => crate::api::types::AltitudeRef::BelowSeaLevel,
+            _ => unreachable!("Invalid variant for AltitudeRef: {}", inner),
         };
     }
 }
@@ -1011,30 +2060,30 @@ impl SseDecode for f64 {
     }
 }
 
-impl SseDecode for crate::api::types::FullImageMetadataDto {
+impl SseDecode for crate::api::types::FullImageMetadata {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
-        let mut var_exif = <Option<crate::api::types::ImageExifDto>>::sse_decode(deserializer);
+        let mut var_exif = <Option<crate::api::types::ImageExif>>::sse_decode(deserializer);
         let mut var_pngTextChunks =
-            <Vec<crate::api::types::PngTextMetadataDto>>::sse_decode(deserializer);
-        return crate::api::types::FullImageMetadataDto {
+            <Vec<crate::api::types::PngTextMetadata>>::sse_decode(deserializer);
+        return crate::api::types::FullImageMetadata {
             exif: var_exif,
             png_text_chunks: var_pngTextChunks,
         };
     }
 }
 
-impl SseDecode for crate::api::types::GpsLocationDto {
+impl SseDecode for crate::api::types::GpsLocation {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
         let mut var_latitude = <Option<f64>>::sse_decode(deserializer);
         let mut var_longitude = <Option<f64>>::sse_decode(deserializer);
         let mut var_altitudeMeters = <Option<f64>>::sse_decode(deserializer);
-        let mut var_latitudeRef = <crate::api::types::LatitudeRefDto>::sse_decode(deserializer);
-        let mut var_longitudeRef = <crate::api::types::LongitudeRefDto>::sse_decode(deserializer);
-        let mut var_altitudeRef = <crate::api::types::AltitudeRefDto>::sse_decode(deserializer);
+        let mut var_latitudeRef = <crate::api::types::LatitudeRef>::sse_decode(deserializer);
+        let mut var_longitudeRef = <crate::api::types::LongitudeRef>::sse_decode(deserializer);
+        let mut var_altitudeRef = <crate::api::types::AltitudeRef>::sse_decode(deserializer);
         let mut var_iso6709 = <String>::sse_decode(deserializer);
-        return crate::api::types::GpsLocationDto {
+        return crate::api::types::GpsLocation {
             latitude: var_latitude,
             longitude: var_longitude,
             altitude_meters: var_altitudeMeters,
@@ -1060,14 +2109,14 @@ impl SseDecode for i64 {
     }
 }
 
-impl SseDecode for crate::api::types::ImageExifDto {
+impl SseDecode for crate::api::types::ImageExif {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
-        let mut var_entries = <Vec<crate::api::types::MetadataEntryDto>>::sse_decode(deserializer);
-        let mut var_gps = <Option<crate::api::types::GpsLocationDto>>::sse_decode(deserializer);
+        let mut var_entries = <Vec<crate::api::types::MetadataEntry>>::sse_decode(deserializer);
+        let mut var_gps = <Option<crate::api::types::GpsLocation>>::sse_decode(deserializer);
         let mut var_hasEmbeddedVideo = <bool>::sse_decode(deserializer);
-        let mut var_parseErrors = <Vec<crate::api::types::ParseErrorDto>>::sse_decode(deserializer);
-        return crate::api::types::ImageExifDto {
+        let mut var_parseErrors = <Vec<crate::api::types::ParseError>>::sse_decode(deserializer);
+        return crate::api::types::ImageExif {
             entries: var_entries,
             gps: var_gps,
             has_embedded_video: var_hasEmbeddedVideo,
@@ -1076,51 +2125,49 @@ impl SseDecode for crate::api::types::ImageExifDto {
     }
 }
 
-impl SseDecode for crate::api::types::LatitudeRefDto {
+impl SseDecode for crate::api::types::LatitudeRef {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
         let mut inner = <i32>::sse_decode(deserializer);
         return match inner {
-            0 => crate::api::types::LatitudeRefDto::North,
-            1 => crate::api::types::LatitudeRefDto::South,
-            _ => unreachable!("Invalid variant for LatitudeRefDto: {}", inner),
+            0 => crate::api::types::LatitudeRef::North,
+            1 => crate::api::types::LatitudeRef::South,
+            _ => unreachable!("Invalid variant for LatitudeRef: {}", inner),
         };
     }
 }
 
-impl SseDecode for Vec<crate::api::types::MetadataEntryDto> {
+impl SseDecode for Vec<crate::api::types::MetadataEntry> {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
         let mut len_ = <i32>::sse_decode(deserializer);
         let mut ans_ = Vec::with_capacity(len_ as usize);
         for idx_ in 0..len_ {
-            ans_.push(<crate::api::types::MetadataEntryDto>::sse_decode(
-                deserializer,
-            ));
+            ans_.push(<crate::api::types::MetadataEntry>::sse_decode(deserializer));
         }
         return ans_;
     }
 }
 
-impl SseDecode for Vec<crate::api::types::ParseErrorDto> {
+impl SseDecode for Vec<crate::api::types::ParseError> {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
         let mut len_ = <i32>::sse_decode(deserializer);
         let mut ans_ = Vec::with_capacity(len_ as usize);
         for idx_ in 0..len_ {
-            ans_.push(<crate::api::types::ParseErrorDto>::sse_decode(deserializer));
+            ans_.push(<crate::api::types::ParseError>::sse_decode(deserializer));
         }
         return ans_;
     }
 }
 
-impl SseDecode for Vec<crate::api::types::PngTextMetadataDto> {
+impl SseDecode for Vec<crate::api::types::PngTextMetadata> {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
         let mut len_ = <i32>::sse_decode(deserializer);
         let mut ans_ = Vec::with_capacity(len_ as usize);
         for idx_ in 0..len_ {
-            ans_.push(<crate::api::types::PngTextMetadataDto>::sse_decode(
+            ans_.push(<crate::api::types::PngTextMetadata>::sse_decode(
                 deserializer,
             ));
         }
@@ -1164,26 +2211,26 @@ impl SseDecode for Vec<u8> {
     }
 }
 
-impl SseDecode for Vec<crate::api::types::RationalDto> {
+impl SseDecode for Vec<crate::api::types::Rational> {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
         let mut len_ = <i32>::sse_decode(deserializer);
         let mut ans_ = Vec::with_capacity(len_ as usize);
         for idx_ in 0..len_ {
-            ans_.push(<crate::api::types::RationalDto>::sse_decode(deserializer));
+            ans_.push(<crate::api::types::Rational>::sse_decode(deserializer));
         }
         return ans_;
     }
 }
 
-impl SseDecode for crate::api::types::LongitudeRefDto {
+impl SseDecode for crate::api::types::LongitudeRef {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
         let mut inner = <i32>::sse_decode(deserializer);
         return match inner {
-            0 => crate::api::types::LongitudeRefDto::East,
-            1 => crate::api::types::LongitudeRefDto::West,
-            _ => unreachable!("Invalid variant for LongitudeRefDto: {}", inner),
+            0 => crate::api::types::LongitudeRef::East,
+            1 => crate::api::types::LongitudeRef::West,
+            _ => unreachable!("Invalid variant for LongitudeRef: {}", inner),
         };
     }
 }
@@ -1217,30 +2264,30 @@ impl SseDecode for crate::api::types::MediaInfoErrorCode {
     }
 }
 
-impl SseDecode for crate::api::types::MediaKindDto {
+impl SseDecode for crate::api::types::MediaKind {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
         let mut inner = <i32>::sse_decode(deserializer);
         return match inner {
-            0 => crate::api::types::MediaKindDto::Image,
-            1 => crate::api::types::MediaKindDto::VideoOrAudio,
-            _ => unreachable!("Invalid variant for MediaKindDto: {}", inner),
+            0 => crate::api::types::MediaKind::Image,
+            1 => crate::api::types::MediaKind::VideoOrAudio,
+            _ => unreachable!("Invalid variant for MediaKind: {}", inner),
         };
     }
 }
 
-impl SseDecode for crate::api::types::MediaMetadataDto {
+impl SseDecode for crate::api::types::MediaMetadata {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
         let mut tag_ = <i32>::sse_decode(deserializer);
         match tag_ {
             0 => {
-                let mut var_field0 = <crate::api::types::ImageExifDto>::sse_decode(deserializer);
-                return crate::api::types::MediaMetadataDto::ImageExif(var_field0);
+                let mut var_field0 = <crate::api::types::ImageExif>::sse_decode(deserializer);
+                return crate::api::types::MediaMetadata::ImageExif(var_field0);
             }
             1 => {
-                let mut var_field0 = <crate::api::types::VideoTrackDto>::sse_decode(deserializer);
-                return crate::api::types::MediaMetadataDto::VideoTrack(var_field0);
+                let mut var_field0 = <crate::api::types::VideoTrack>::sse_decode(deserializer);
+                return crate::api::types::MediaMetadata::VideoTrack(var_field0);
             }
             _ => {
                 unimplemented!("");
@@ -1249,7 +2296,7 @@ impl SseDecode for crate::api::types::MediaMetadataDto {
     }
 }
 
-impl SseDecode for crate::api::types::MetadataEntryDto {
+impl SseDecode for crate::api::types::MetadataEntry {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
         let mut var_tagName = <String>::sse_decode(deserializer);
@@ -1257,9 +2304,8 @@ impl SseDecode for crate::api::types::MetadataEntryDto {
         let mut var_ifdIndex = <i32>::sse_decode(deserializer);
         let mut var_valueKind = <crate::api::types::MetadataValueKind>::sse_decode(deserializer);
         let mut var_displayValue = <String>::sse_decode(deserializer);
-        let mut var_rawValue =
-            <Option<crate::api::types::MetadataValueDto>>::sse_decode(deserializer);
-        return crate::api::types::MetadataEntryDto {
+        let mut var_rawValue = <Option<crate::api::types::MetadataValue>>::sse_decode(deserializer);
+        return crate::api::types::MetadataEntry {
             tag_name: var_tagName,
             tag_code: var_tagCode,
             ifd_index: var_ifdIndex,
@@ -1270,64 +2316,62 @@ impl SseDecode for crate::api::types::MetadataEntryDto {
     }
 }
 
-impl SseDecode for crate::api::types::MetadataValueDto {
+impl SseDecode for crate::api::types::MetadataValue {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
         let mut tag_ = <i32>::sse_decode(deserializer);
         match tag_ {
             0 => {
                 let mut var_field0 = <String>::sse_decode(deserializer);
-                return crate::api::types::MetadataValueDto::Text(var_field0);
+                return crate::api::types::MetadataValue::Text(var_field0);
             }
             1 => {
                 let mut var_field0 = <i64>::sse_decode(deserializer);
-                return crate::api::types::MetadataValueDto::Integer(var_field0);
+                return crate::api::types::MetadataValue::Integer(var_field0);
             }
             2 => {
                 let mut var_field0 = <f64>::sse_decode(deserializer);
-                return crate::api::types::MetadataValueDto::Float(var_field0);
+                return crate::api::types::MetadataValue::Float(var_field0);
             }
             3 => {
-                let mut var_field0 = <crate::api::types::RationalDto>::sse_decode(deserializer);
-                return crate::api::types::MetadataValueDto::Rational(var_field0);
+                let mut var_field0 = <crate::api::types::Rational>::sse_decode(deserializer);
+                return crate::api::types::MetadataValue::Rational(var_field0);
             }
             4 => {
-                let mut var_field0 = <crate::api::types::RationalDto>::sse_decode(deserializer);
-                return crate::api::types::MetadataValueDto::SignedRational(var_field0);
+                let mut var_field0 = <crate::api::types::Rational>::sse_decode(deserializer);
+                return crate::api::types::MetadataValue::SignedRational(var_field0);
             }
             5 => {
                 let mut var_field0 = <String>::sse_decode(deserializer);
-                return crate::api::types::MetadataValueDto::DateTime(var_field0);
+                return crate::api::types::MetadataValue::DateTime(var_field0);
             }
             6 => {
                 let mut var_field0 = <String>::sse_decode(deserializer);
-                return crate::api::types::MetadataValueDto::NaiveDateTime(var_field0);
+                return crate::api::types::MetadataValue::NaiveDateTime(var_field0);
             }
             7 => {
                 let mut var_field0 = <String>::sse_decode(deserializer);
-                return crate::api::types::MetadataValueDto::Bytes(var_field0);
+                return crate::api::types::MetadataValue::Bytes(var_field0);
             }
             8 => {
-                let mut var_field0 =
-                    <Vec<crate::api::types::RationalDto>>::sse_decode(deserializer);
-                return crate::api::types::MetadataValueDto::RationalArray(var_field0);
+                let mut var_field0 = <Vec<crate::api::types::Rational>>::sse_decode(deserializer);
+                return crate::api::types::MetadataValue::RationalArray(var_field0);
             }
             9 => {
-                let mut var_field0 =
-                    <Vec<crate::api::types::RationalDto>>::sse_decode(deserializer);
-                return crate::api::types::MetadataValueDto::SignedRationalArray(var_field0);
+                let mut var_field0 = <Vec<crate::api::types::Rational>>::sse_decode(deserializer);
+                return crate::api::types::MetadataValue::SignedRationalArray(var_field0);
             }
             10 => {
                 let mut var_field0 = <Vec<u8>>::sse_decode(deserializer);
-                return crate::api::types::MetadataValueDto::U8Array(var_field0);
+                return crate::api::types::MetadataValue::U8Array(var_field0);
             }
             11 => {
                 let mut var_field0 = <Vec<i32>>::sse_decode(deserializer);
-                return crate::api::types::MetadataValueDto::U16Array(var_field0);
+                return crate::api::types::MetadataValue::U16Array(var_field0);
             }
             12 => {
                 let mut var_field0 = <Vec<i64>>::sse_decode(deserializer);
-                return crate::api::types::MetadataValueDto::U32Array(var_field0);
+                return crate::api::types::MetadataValue::U32Array(var_field0);
             }
             _ => {
                 unimplemented!("");
@@ -1370,51 +2414,47 @@ impl SseDecode for Option<f64> {
     }
 }
 
-impl SseDecode for Option<crate::api::types::GpsLocationDto> {
+impl SseDecode for Option<crate::api::types::GpsLocation> {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
         if (<bool>::sse_decode(deserializer)) {
-            return Some(<crate::api::types::GpsLocationDto>::sse_decode(
-                deserializer,
-            ));
+            return Some(<crate::api::types::GpsLocation>::sse_decode(deserializer));
         } else {
             return None;
         }
     }
 }
 
-impl SseDecode for Option<crate::api::types::ImageExifDto> {
+impl SseDecode for Option<crate::api::types::ImageExif> {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
         if (<bool>::sse_decode(deserializer)) {
-            return Some(<crate::api::types::ImageExifDto>::sse_decode(deserializer));
+            return Some(<crate::api::types::ImageExif>::sse_decode(deserializer));
         } else {
             return None;
         }
     }
 }
 
-impl SseDecode for Option<crate::api::types::MetadataValueDto> {
+impl SseDecode for Option<crate::api::types::MetadataValue> {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
         if (<bool>::sse_decode(deserializer)) {
-            return Some(<crate::api::types::MetadataValueDto>::sse_decode(
-                deserializer,
-            ));
+            return Some(<crate::api::types::MetadataValue>::sse_decode(deserializer));
         } else {
             return None;
         }
     }
 }
 
-impl SseDecode for crate::api::types::ParseErrorDto {
+impl SseDecode for crate::api::types::ParseError {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
         let mut var_ifdIndex = <i32>::sse_decode(deserializer);
         let mut var_tagName = <String>::sse_decode(deserializer);
         let mut var_tagCode = <i32>::sse_decode(deserializer);
         let mut var_message = <String>::sse_decode(deserializer);
-        return crate::api::types::ParseErrorDto {
+        return crate::api::types::ParseError {
             ifd_index: var_ifdIndex,
             tag_name: var_tagName,
             tag_code: var_tagCode,
@@ -1423,24 +2463,24 @@ impl SseDecode for crate::api::types::ParseErrorDto {
     }
 }
 
-impl SseDecode for crate::api::types::PngTextMetadataDto {
+impl SseDecode for crate::api::types::PngTextMetadata {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
         let mut var_key = <String>::sse_decode(deserializer);
         let mut var_value = <String>::sse_decode(deserializer);
-        return crate::api::types::PngTextMetadataDto {
+        return crate::api::types::PngTextMetadata {
             key: var_key,
             value: var_value,
         };
     }
 }
 
-impl SseDecode for crate::api::types::RationalDto {
+impl SseDecode for crate::api::types::Rational {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
         let mut var_numerator = <i64>::sse_decode(deserializer);
         let mut var_denominator = <i64>::sse_decode(deserializer);
-        return crate::api::types::RationalDto {
+        return crate::api::types::Rational {
             numerator: var_numerator,
             denominator: var_denominator,
         };
@@ -1466,13 +2506,13 @@ impl SseDecode for usize {
     }
 }
 
-impl SseDecode for crate::api::types::VideoTrackDto {
+impl SseDecode for crate::api::types::VideoTrack {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
-        let mut var_entries = <Vec<crate::api::types::MetadataEntryDto>>::sse_decode(deserializer);
-        let mut var_gps = <Option<crate::api::types::GpsLocationDto>>::sse_decode(deserializer);
-        let mut var_parseErrors = <Vec<crate::api::types::ParseErrorDto>>::sse_decode(deserializer);
-        return crate::api::types::VideoTrackDto {
+        let mut var_entries = <Vec<crate::api::types::MetadataEntry>>::sse_decode(deserializer);
+        let mut var_gps = <Option<crate::api::types::GpsLocation>>::sse_decode(deserializer);
+        let mut var_parseErrors = <Vec<crate::api::types::ParseError>>::sse_decode(deserializer);
+        return crate::api::types::VideoTrack {
             entries: var_entries,
             gps: var_gps,
             parse_errors: var_parseErrors,
@@ -1489,7 +2529,139 @@ fn pde_ffi_dispatcher_primary_impl(
 ) {
     // Codec=Pde (Serialization + dispatch), see doc to use other codecs
     match func_id {
-        4 => wire__crate__api__init_app_impl(port, ptr, rust_vec_len, data_len),
+        3 => wire__crate__api__reader_async__detect_media_kind_from_bytes_async_impl(
+            port,
+            ptr,
+            rust_vec_len,
+            data_len,
+        ),
+        5 => wire__crate__api__reader_async__detect_media_kind_from_file_async_impl(
+            port,
+            ptr,
+            rust_vec_len,
+            data_len,
+        ),
+        6 => wire__crate__api__init_app_impl(port, ptr, rust_vec_len, data_len),
+        8 => wire__crate__api__parser_async__parse_embedded_video_from_bytes_async_impl(
+            port,
+            ptr,
+            rust_vec_len,
+            data_len,
+        ),
+        10 => wire__crate__api__parser_async__parse_embedded_video_from_file_async_impl(
+            port,
+            ptr,
+            rust_vec_len,
+            data_len,
+        ),
+        12 => wire__crate__api__parser_async__parse_full_image_metadata_from_bytes_async_impl(
+            port,
+            ptr,
+            rust_vec_len,
+            data_len,
+        ),
+        14 => wire__crate__api__parser_async__parse_full_image_metadata_from_file_async_impl(
+            port,
+            ptr,
+            rust_vec_len,
+            data_len,
+        ),
+        16 => wire__crate__api__parser_async__parse_image_exif_from_bytes_async_impl(
+            port,
+            ptr,
+            rust_vec_len,
+            data_len,
+        ),
+        18 => wire__crate__api__parser_async__parse_image_exif_from_file_async_impl(
+            port,
+            ptr,
+            rust_vec_len,
+            data_len,
+        ),
+        20 => wire__crate__api__parser_async__parse_video_metadata_from_bytes_async_impl(
+            port,
+            ptr,
+            rust_vec_len,
+            data_len,
+        ),
+        22 => wire__crate__api__parser_async__parse_video_metadata_from_file_async_impl(
+            port,
+            ptr,
+            rust_vec_len,
+            data_len,
+        ),
+        24 => wire__crate__api__reader_async__read_embedded_video_from_bytes_async_impl(
+            port,
+            ptr,
+            rust_vec_len,
+            data_len,
+        ),
+        26 => wire__crate__api__reader_async__read_embedded_video_from_file_async_impl(
+            port,
+            ptr,
+            rust_vec_len,
+            data_len,
+        ),
+        28 => wire__crate__api__reader_async__read_full_image_metadata_from_bytes_async_impl(
+            port,
+            ptr,
+            rust_vec_len,
+            data_len,
+        ),
+        30 => wire__crate__api__reader_async__read_full_image_metadata_from_file_async_impl(
+            port,
+            ptr,
+            rust_vec_len,
+            data_len,
+        ),
+        32 => wire__crate__api__reader_async__read_image_exif_from_bytes_async_impl(
+            port,
+            ptr,
+            rust_vec_len,
+            data_len,
+        ),
+        34 => wire__crate__api__reader_async__read_image_exif_from_file_async_impl(
+            port,
+            ptr,
+            rust_vec_len,
+            data_len,
+        ),
+        36 => wire__crate__api__reader_async__read_image_exif_lazy_from_bytes_async_impl(
+            port,
+            ptr,
+            rust_vec_len,
+            data_len,
+        ),
+        38 => wire__crate__api__reader_async__read_image_exif_lazy_from_file_async_impl(
+            port,
+            ptr,
+            rust_vec_len,
+            data_len,
+        ),
+        40 => wire__crate__api__reader_async__read_media_metadata_from_bytes_async_impl(
+            port,
+            ptr,
+            rust_vec_len,
+            data_len,
+        ),
+        42 => wire__crate__api__reader_async__read_media_metadata_from_file_async_impl(
+            port,
+            ptr,
+            rust_vec_len,
+            data_len,
+        ),
+        44 => wire__crate__api__reader_async__read_video_metadata_from_bytes_async_impl(
+            port,
+            ptr,
+            rust_vec_len,
+            data_len,
+        ),
+        46 => wire__crate__api__reader_async__read_video_metadata_from_file_async_impl(
+            port,
+            ptr,
+            rust_vec_len,
+            data_len,
+        ),
         _ => unreachable!(),
     }
 }
@@ -1508,95 +2680,95 @@ fn pde_ffi_dispatcher_sync_impl(
         2 => {
             wire__crate__api__reader__detect_media_kind_from_bytes_impl(ptr, rust_vec_len, data_len)
         }
-        3 => {
+        4 => {
             wire__crate__api__reader__detect_media_kind_from_file_impl(ptr, rust_vec_len, data_len)
         }
-        5 => wire__crate__api__parser__parse_embedded_video_from_bytes_impl(
+        7 => wire__crate__api__parser__parse_embedded_video_from_bytes_impl(
             ptr,
             rust_vec_len,
             data_len,
         ),
-        6 => wire__crate__api__parser__parse_embedded_video_from_file_impl(
+        9 => wire__crate__api__parser__parse_embedded_video_from_file_impl(
             ptr,
             rust_vec_len,
             data_len,
         ),
-        7 => wire__crate__api__parser__parse_full_image_metadata_from_bytes_impl(
+        11 => wire__crate__api__parser__parse_full_image_metadata_from_bytes_impl(
             ptr,
             rust_vec_len,
             data_len,
         ),
-        8 => wire__crate__api__parser__parse_full_image_metadata_from_file_impl(
+        13 => wire__crate__api__parser__parse_full_image_metadata_from_file_impl(
             ptr,
             rust_vec_len,
             data_len,
         ),
-        9 => {
+        15 => {
             wire__crate__api__parser__parse_image_exif_from_bytes_impl(ptr, rust_vec_len, data_len)
         }
-        10 => {
+        17 => {
             wire__crate__api__parser__parse_image_exif_from_file_impl(ptr, rust_vec_len, data_len)
         }
-        11 => wire__crate__api__parser__parse_video_metadata_from_bytes_impl(
+        19 => wire__crate__api__parser__parse_video_metadata_from_bytes_impl(
             ptr,
             rust_vec_len,
             data_len,
         ),
-        12 => wire__crate__api__parser__parse_video_metadata_from_file_impl(
+        21 => wire__crate__api__parser__parse_video_metadata_from_file_impl(
             ptr,
             rust_vec_len,
             data_len,
         ),
-        13 => wire__crate__api__reader__read_embedded_video_from_bytes_impl(
+        23 => wire__crate__api__reader__read_embedded_video_from_bytes_impl(
             ptr,
             rust_vec_len,
             data_len,
         ),
-        14 => wire__crate__api__reader__read_embedded_video_from_file_impl(
+        25 => wire__crate__api__reader__read_embedded_video_from_file_impl(
             ptr,
             rust_vec_len,
             data_len,
         ),
-        15 => wire__crate__api__reader__read_full_image_metadata_from_bytes_impl(
+        27 => wire__crate__api__reader__read_full_image_metadata_from_bytes_impl(
             ptr,
             rust_vec_len,
             data_len,
         ),
-        16 => wire__crate__api__reader__read_full_image_metadata_from_file_impl(
+        29 => wire__crate__api__reader__read_full_image_metadata_from_file_impl(
             ptr,
             rust_vec_len,
             data_len,
         ),
-        17 => {
+        31 => {
             wire__crate__api__reader__read_image_exif_from_bytes_impl(ptr, rust_vec_len, data_len)
         }
-        18 => wire__crate__api__reader__read_image_exif_from_file_impl(ptr, rust_vec_len, data_len),
-        19 => wire__crate__api__reader__read_image_exif_lazy_from_bytes_impl(
+        33 => wire__crate__api__reader__read_image_exif_from_file_impl(ptr, rust_vec_len, data_len),
+        35 => wire__crate__api__reader__read_image_exif_lazy_from_bytes_impl(
             ptr,
             rust_vec_len,
             data_len,
         ),
-        20 => wire__crate__api__reader__read_image_exif_lazy_from_file_impl(
+        37 => wire__crate__api__reader__read_image_exif_lazy_from_file_impl(
             ptr,
             rust_vec_len,
             data_len,
         ),
-        21 => wire__crate__api__reader__read_media_metadata_from_bytes_impl(
+        39 => wire__crate__api__reader__read_media_metadata_from_bytes_impl(
             ptr,
             rust_vec_len,
             data_len,
         ),
-        22 => wire__crate__api__reader__read_media_metadata_from_file_impl(
+        41 => wire__crate__api__reader__read_media_metadata_from_file_impl(
             ptr,
             rust_vec_len,
             data_len,
         ),
-        23 => wire__crate__api__reader__read_video_metadata_from_bytes_impl(
+        43 => wire__crate__api__reader__read_video_metadata_from_bytes_impl(
             ptr,
             rust_vec_len,
             data_len,
         ),
-        24 => wire__crate__api__reader__read_video_metadata_from_file_impl(
+        45 => wire__crate__api__reader__read_video_metadata_from_file_impl(
             ptr,
             rust_vec_len,
             data_len,
@@ -1626,7 +2798,7 @@ impl flutter_rust_bridge::IntoIntoDart<FrbWrapper<MediaMetadataParser>> for Medi
 }
 
 // Codec=Dco (DartCObject based), see doc to use other codecs
-impl flutter_rust_bridge::IntoDart for crate::api::types::AltitudeRefDto {
+impl flutter_rust_bridge::IntoDart for crate::api::types::AltitudeRef {
     fn into_dart(self) -> flutter_rust_bridge::for_generated::DartAbi {
         match self {
             Self::Unknown => 0.into_dart(),
@@ -1637,18 +2809,18 @@ impl flutter_rust_bridge::IntoDart for crate::api::types::AltitudeRefDto {
     }
 }
 impl flutter_rust_bridge::for_generated::IntoDartExceptPrimitive
-    for crate::api::types::AltitudeRefDto
+    for crate::api::types::AltitudeRef
 {
 }
-impl flutter_rust_bridge::IntoIntoDart<crate::api::types::AltitudeRefDto>
-    for crate::api::types::AltitudeRefDto
+impl flutter_rust_bridge::IntoIntoDart<crate::api::types::AltitudeRef>
+    for crate::api::types::AltitudeRef
 {
-    fn into_into_dart(self) -> crate::api::types::AltitudeRefDto {
+    fn into_into_dart(self) -> crate::api::types::AltitudeRef {
         self
     }
 }
 // Codec=Dco (DartCObject based), see doc to use other codecs
-impl flutter_rust_bridge::IntoDart for crate::api::types::FullImageMetadataDto {
+impl flutter_rust_bridge::IntoDart for crate::api::types::FullImageMetadata {
     fn into_dart(self) -> flutter_rust_bridge::for_generated::DartAbi {
         [
             self.exif.into_into_dart().into_dart(),
@@ -1658,18 +2830,18 @@ impl flutter_rust_bridge::IntoDart for crate::api::types::FullImageMetadataDto {
     }
 }
 impl flutter_rust_bridge::for_generated::IntoDartExceptPrimitive
-    for crate::api::types::FullImageMetadataDto
+    for crate::api::types::FullImageMetadata
 {
 }
-impl flutter_rust_bridge::IntoIntoDart<crate::api::types::FullImageMetadataDto>
-    for crate::api::types::FullImageMetadataDto
+impl flutter_rust_bridge::IntoIntoDart<crate::api::types::FullImageMetadata>
+    for crate::api::types::FullImageMetadata
 {
-    fn into_into_dart(self) -> crate::api::types::FullImageMetadataDto {
+    fn into_into_dart(self) -> crate::api::types::FullImageMetadata {
         self
     }
 }
 // Codec=Dco (DartCObject based), see doc to use other codecs
-impl flutter_rust_bridge::IntoDart for crate::api::types::GpsLocationDto {
+impl flutter_rust_bridge::IntoDart for crate::api::types::GpsLocation {
     fn into_dart(self) -> flutter_rust_bridge::for_generated::DartAbi {
         [
             self.latitude.into_into_dart().into_dart(),
@@ -1684,18 +2856,18 @@ impl flutter_rust_bridge::IntoDart for crate::api::types::GpsLocationDto {
     }
 }
 impl flutter_rust_bridge::for_generated::IntoDartExceptPrimitive
-    for crate::api::types::GpsLocationDto
+    for crate::api::types::GpsLocation
 {
 }
-impl flutter_rust_bridge::IntoIntoDart<crate::api::types::GpsLocationDto>
-    for crate::api::types::GpsLocationDto
+impl flutter_rust_bridge::IntoIntoDart<crate::api::types::GpsLocation>
+    for crate::api::types::GpsLocation
 {
-    fn into_into_dart(self) -> crate::api::types::GpsLocationDto {
+    fn into_into_dart(self) -> crate::api::types::GpsLocation {
         self
     }
 }
 // Codec=Dco (DartCObject based), see doc to use other codecs
-impl flutter_rust_bridge::IntoDart for crate::api::types::ImageExifDto {
+impl flutter_rust_bridge::IntoDart for crate::api::types::ImageExif {
     fn into_dart(self) -> flutter_rust_bridge::for_generated::DartAbi {
         [
             self.entries.into_into_dart().into_dart(),
@@ -1706,19 +2878,16 @@ impl flutter_rust_bridge::IntoDart for crate::api::types::ImageExifDto {
         .into_dart()
     }
 }
-impl flutter_rust_bridge::for_generated::IntoDartExceptPrimitive
-    for crate::api::types::ImageExifDto
+impl flutter_rust_bridge::for_generated::IntoDartExceptPrimitive for crate::api::types::ImageExif {}
+impl flutter_rust_bridge::IntoIntoDart<crate::api::types::ImageExif>
+    for crate::api::types::ImageExif
 {
-}
-impl flutter_rust_bridge::IntoIntoDart<crate::api::types::ImageExifDto>
-    for crate::api::types::ImageExifDto
-{
-    fn into_into_dart(self) -> crate::api::types::ImageExifDto {
+    fn into_into_dart(self) -> crate::api::types::ImageExif {
         self
     }
 }
 // Codec=Dco (DartCObject based), see doc to use other codecs
-impl flutter_rust_bridge::IntoDart for crate::api::types::LatitudeRefDto {
+impl flutter_rust_bridge::IntoDart for crate::api::types::LatitudeRef {
     fn into_dart(self) -> flutter_rust_bridge::for_generated::DartAbi {
         match self {
             Self::North => 0.into_dart(),
@@ -1728,18 +2897,18 @@ impl flutter_rust_bridge::IntoDart for crate::api::types::LatitudeRefDto {
     }
 }
 impl flutter_rust_bridge::for_generated::IntoDartExceptPrimitive
-    for crate::api::types::LatitudeRefDto
+    for crate::api::types::LatitudeRef
 {
 }
-impl flutter_rust_bridge::IntoIntoDart<crate::api::types::LatitudeRefDto>
-    for crate::api::types::LatitudeRefDto
+impl flutter_rust_bridge::IntoIntoDart<crate::api::types::LatitudeRef>
+    for crate::api::types::LatitudeRef
 {
-    fn into_into_dart(self) -> crate::api::types::LatitudeRefDto {
+    fn into_into_dart(self) -> crate::api::types::LatitudeRef {
         self
     }
 }
 // Codec=Dco (DartCObject based), see doc to use other codecs
-impl flutter_rust_bridge::IntoDart for crate::api::types::LongitudeRefDto {
+impl flutter_rust_bridge::IntoDart for crate::api::types::LongitudeRef {
     fn into_dart(self) -> flutter_rust_bridge::for_generated::DartAbi {
         match self {
             Self::East => 0.into_dart(),
@@ -1749,13 +2918,13 @@ impl flutter_rust_bridge::IntoDart for crate::api::types::LongitudeRefDto {
     }
 }
 impl flutter_rust_bridge::for_generated::IntoDartExceptPrimitive
-    for crate::api::types::LongitudeRefDto
+    for crate::api::types::LongitudeRef
 {
 }
-impl flutter_rust_bridge::IntoIntoDart<crate::api::types::LongitudeRefDto>
-    for crate::api::types::LongitudeRefDto
+impl flutter_rust_bridge::IntoIntoDart<crate::api::types::LongitudeRef>
+    for crate::api::types::LongitudeRef
 {
-    fn into_into_dart(self) -> crate::api::types::LongitudeRefDto {
+    fn into_into_dart(self) -> crate::api::types::LongitudeRef {
         self
     }
 }
@@ -1807,7 +2976,7 @@ impl flutter_rust_bridge::IntoIntoDart<crate::api::types::MediaInfoErrorCode>
     }
 }
 // Codec=Dco (DartCObject based), see doc to use other codecs
-impl flutter_rust_bridge::IntoDart for crate::api::types::MediaKindDto {
+impl flutter_rust_bridge::IntoDart for crate::api::types::MediaKind {
     fn into_dart(self) -> flutter_rust_bridge::for_generated::DartAbi {
         match self {
             Self::Image => 0.into_dart(),
@@ -1816,25 +2985,22 @@ impl flutter_rust_bridge::IntoDart for crate::api::types::MediaKindDto {
         }
     }
 }
-impl flutter_rust_bridge::for_generated::IntoDartExceptPrimitive
-    for crate::api::types::MediaKindDto
+impl flutter_rust_bridge::for_generated::IntoDartExceptPrimitive for crate::api::types::MediaKind {}
+impl flutter_rust_bridge::IntoIntoDart<crate::api::types::MediaKind>
+    for crate::api::types::MediaKind
 {
-}
-impl flutter_rust_bridge::IntoIntoDart<crate::api::types::MediaKindDto>
-    for crate::api::types::MediaKindDto
-{
-    fn into_into_dart(self) -> crate::api::types::MediaKindDto {
+    fn into_into_dart(self) -> crate::api::types::MediaKind {
         self
     }
 }
 // Codec=Dco (DartCObject based), see doc to use other codecs
-impl flutter_rust_bridge::IntoDart for crate::api::types::MediaMetadataDto {
+impl flutter_rust_bridge::IntoDart for crate::api::types::MediaMetadata {
     fn into_dart(self) -> flutter_rust_bridge::for_generated::DartAbi {
         match self {
-            crate::api::types::MediaMetadataDto::ImageExif(field0) => {
+            crate::api::types::MediaMetadata::ImageExif(field0) => {
                 [0.into_dart(), field0.into_into_dart().into_dart()].into_dart()
             }
-            crate::api::types::MediaMetadataDto::VideoTrack(field0) => {
+            crate::api::types::MediaMetadata::VideoTrack(field0) => {
                 [1.into_dart(), field0.into_into_dart().into_dart()].into_dart()
             }
             _ => {
@@ -1844,18 +3010,18 @@ impl flutter_rust_bridge::IntoDart for crate::api::types::MediaMetadataDto {
     }
 }
 impl flutter_rust_bridge::for_generated::IntoDartExceptPrimitive
-    for crate::api::types::MediaMetadataDto
+    for crate::api::types::MediaMetadata
 {
 }
-impl flutter_rust_bridge::IntoIntoDart<crate::api::types::MediaMetadataDto>
-    for crate::api::types::MediaMetadataDto
+impl flutter_rust_bridge::IntoIntoDart<crate::api::types::MediaMetadata>
+    for crate::api::types::MediaMetadata
 {
-    fn into_into_dart(self) -> crate::api::types::MediaMetadataDto {
+    fn into_into_dart(self) -> crate::api::types::MediaMetadata {
         self
     }
 }
 // Codec=Dco (DartCObject based), see doc to use other codecs
-impl flutter_rust_bridge::IntoDart for crate::api::types::MetadataEntryDto {
+impl flutter_rust_bridge::IntoDart for crate::api::types::MetadataEntry {
     fn into_dart(self) -> flutter_rust_bridge::for_generated::DartAbi {
         [
             self.tag_name.into_into_dart().into_dart(),
@@ -1869,57 +3035,57 @@ impl flutter_rust_bridge::IntoDart for crate::api::types::MetadataEntryDto {
     }
 }
 impl flutter_rust_bridge::for_generated::IntoDartExceptPrimitive
-    for crate::api::types::MetadataEntryDto
+    for crate::api::types::MetadataEntry
 {
 }
-impl flutter_rust_bridge::IntoIntoDart<crate::api::types::MetadataEntryDto>
-    for crate::api::types::MetadataEntryDto
+impl flutter_rust_bridge::IntoIntoDart<crate::api::types::MetadataEntry>
+    for crate::api::types::MetadataEntry
 {
-    fn into_into_dart(self) -> crate::api::types::MetadataEntryDto {
+    fn into_into_dart(self) -> crate::api::types::MetadataEntry {
         self
     }
 }
 // Codec=Dco (DartCObject based), see doc to use other codecs
-impl flutter_rust_bridge::IntoDart for crate::api::types::MetadataValueDto {
+impl flutter_rust_bridge::IntoDart for crate::api::types::MetadataValue {
     fn into_dart(self) -> flutter_rust_bridge::for_generated::DartAbi {
         match self {
-            crate::api::types::MetadataValueDto::Text(field0) => {
+            crate::api::types::MetadataValue::Text(field0) => {
                 [0.into_dart(), field0.into_into_dart().into_dart()].into_dart()
             }
-            crate::api::types::MetadataValueDto::Integer(field0) => {
+            crate::api::types::MetadataValue::Integer(field0) => {
                 [1.into_dart(), field0.into_into_dart().into_dart()].into_dart()
             }
-            crate::api::types::MetadataValueDto::Float(field0) => {
+            crate::api::types::MetadataValue::Float(field0) => {
                 [2.into_dart(), field0.into_into_dart().into_dart()].into_dart()
             }
-            crate::api::types::MetadataValueDto::Rational(field0) => {
+            crate::api::types::MetadataValue::Rational(field0) => {
                 [3.into_dart(), field0.into_into_dart().into_dart()].into_dart()
             }
-            crate::api::types::MetadataValueDto::SignedRational(field0) => {
+            crate::api::types::MetadataValue::SignedRational(field0) => {
                 [4.into_dart(), field0.into_into_dart().into_dart()].into_dart()
             }
-            crate::api::types::MetadataValueDto::DateTime(field0) => {
+            crate::api::types::MetadataValue::DateTime(field0) => {
                 [5.into_dart(), field0.into_into_dart().into_dart()].into_dart()
             }
-            crate::api::types::MetadataValueDto::NaiveDateTime(field0) => {
+            crate::api::types::MetadataValue::NaiveDateTime(field0) => {
                 [6.into_dart(), field0.into_into_dart().into_dart()].into_dart()
             }
-            crate::api::types::MetadataValueDto::Bytes(field0) => {
+            crate::api::types::MetadataValue::Bytes(field0) => {
                 [7.into_dart(), field0.into_into_dart().into_dart()].into_dart()
             }
-            crate::api::types::MetadataValueDto::RationalArray(field0) => {
+            crate::api::types::MetadataValue::RationalArray(field0) => {
                 [8.into_dart(), field0.into_into_dart().into_dart()].into_dart()
             }
-            crate::api::types::MetadataValueDto::SignedRationalArray(field0) => {
+            crate::api::types::MetadataValue::SignedRationalArray(field0) => {
                 [9.into_dart(), field0.into_into_dart().into_dart()].into_dart()
             }
-            crate::api::types::MetadataValueDto::U8Array(field0) => {
+            crate::api::types::MetadataValue::U8Array(field0) => {
                 [10.into_dart(), field0.into_into_dart().into_dart()].into_dart()
             }
-            crate::api::types::MetadataValueDto::U16Array(field0) => {
+            crate::api::types::MetadataValue::U16Array(field0) => {
                 [11.into_dart(), field0.into_into_dart().into_dart()].into_dart()
             }
-            crate::api::types::MetadataValueDto::U32Array(field0) => {
+            crate::api::types::MetadataValue::U32Array(field0) => {
                 [12.into_dart(), field0.into_into_dart().into_dart()].into_dart()
             }
             _ => {
@@ -1929,13 +3095,13 @@ impl flutter_rust_bridge::IntoDart for crate::api::types::MetadataValueDto {
     }
 }
 impl flutter_rust_bridge::for_generated::IntoDartExceptPrimitive
-    for crate::api::types::MetadataValueDto
+    for crate::api::types::MetadataValue
 {
 }
-impl flutter_rust_bridge::IntoIntoDart<crate::api::types::MetadataValueDto>
-    for crate::api::types::MetadataValueDto
+impl flutter_rust_bridge::IntoIntoDart<crate::api::types::MetadataValue>
+    for crate::api::types::MetadataValue
 {
-    fn into_into_dart(self) -> crate::api::types::MetadataValueDto {
+    fn into_into_dart(self) -> crate::api::types::MetadataValue {
         self
     }
 }
@@ -1972,7 +3138,7 @@ impl flutter_rust_bridge::IntoIntoDart<crate::api::types::MetadataValueKind>
     }
 }
 // Codec=Dco (DartCObject based), see doc to use other codecs
-impl flutter_rust_bridge::IntoDart for crate::api::types::ParseErrorDto {
+impl flutter_rust_bridge::IntoDart for crate::api::types::ParseError {
     fn into_dart(self) -> flutter_rust_bridge::for_generated::DartAbi {
         [
             self.ifd_index.into_into_dart().into_dart(),
@@ -1983,19 +3149,16 @@ impl flutter_rust_bridge::IntoDart for crate::api::types::ParseErrorDto {
         .into_dart()
     }
 }
-impl flutter_rust_bridge::for_generated::IntoDartExceptPrimitive
-    for crate::api::types::ParseErrorDto
+impl flutter_rust_bridge::for_generated::IntoDartExceptPrimitive for crate::api::types::ParseError {}
+impl flutter_rust_bridge::IntoIntoDart<crate::api::types::ParseError>
+    for crate::api::types::ParseError
 {
-}
-impl flutter_rust_bridge::IntoIntoDart<crate::api::types::ParseErrorDto>
-    for crate::api::types::ParseErrorDto
-{
-    fn into_into_dart(self) -> crate::api::types::ParseErrorDto {
+    fn into_into_dart(self) -> crate::api::types::ParseError {
         self
     }
 }
 // Codec=Dco (DartCObject based), see doc to use other codecs
-impl flutter_rust_bridge::IntoDart for crate::api::types::PngTextMetadataDto {
+impl flutter_rust_bridge::IntoDart for crate::api::types::PngTextMetadata {
     fn into_dart(self) -> flutter_rust_bridge::for_generated::DartAbi {
         [
             self.key.into_into_dart().into_dart(),
@@ -2005,18 +3168,18 @@ impl flutter_rust_bridge::IntoDart for crate::api::types::PngTextMetadataDto {
     }
 }
 impl flutter_rust_bridge::for_generated::IntoDartExceptPrimitive
-    for crate::api::types::PngTextMetadataDto
+    for crate::api::types::PngTextMetadata
 {
 }
-impl flutter_rust_bridge::IntoIntoDart<crate::api::types::PngTextMetadataDto>
-    for crate::api::types::PngTextMetadataDto
+impl flutter_rust_bridge::IntoIntoDart<crate::api::types::PngTextMetadata>
+    for crate::api::types::PngTextMetadata
 {
-    fn into_into_dart(self) -> crate::api::types::PngTextMetadataDto {
+    fn into_into_dart(self) -> crate::api::types::PngTextMetadata {
         self
     }
 }
 // Codec=Dco (DartCObject based), see doc to use other codecs
-impl flutter_rust_bridge::IntoDart for crate::api::types::RationalDto {
+impl flutter_rust_bridge::IntoDart for crate::api::types::Rational {
     fn into_dart(self) -> flutter_rust_bridge::for_generated::DartAbi {
         [
             self.numerator.into_into_dart().into_dart(),
@@ -2025,19 +3188,16 @@ impl flutter_rust_bridge::IntoDart for crate::api::types::RationalDto {
         .into_dart()
     }
 }
-impl flutter_rust_bridge::for_generated::IntoDartExceptPrimitive
-    for crate::api::types::RationalDto
+impl flutter_rust_bridge::for_generated::IntoDartExceptPrimitive for crate::api::types::Rational {}
+impl flutter_rust_bridge::IntoIntoDart<crate::api::types::Rational>
+    for crate::api::types::Rational
 {
-}
-impl flutter_rust_bridge::IntoIntoDart<crate::api::types::RationalDto>
-    for crate::api::types::RationalDto
-{
-    fn into_into_dart(self) -> crate::api::types::RationalDto {
+    fn into_into_dart(self) -> crate::api::types::Rational {
         self
     }
 }
 // Codec=Dco (DartCObject based), see doc to use other codecs
-impl flutter_rust_bridge::IntoDart for crate::api::types::VideoTrackDto {
+impl flutter_rust_bridge::IntoDart for crate::api::types::VideoTrack {
     fn into_dart(self) -> flutter_rust_bridge::for_generated::DartAbi {
         [
             self.entries.into_into_dart().into_dart(),
@@ -2047,14 +3207,11 @@ impl flutter_rust_bridge::IntoDart for crate::api::types::VideoTrackDto {
         .into_dart()
     }
 }
-impl flutter_rust_bridge::for_generated::IntoDartExceptPrimitive
-    for crate::api::types::VideoTrackDto
+impl flutter_rust_bridge::for_generated::IntoDartExceptPrimitive for crate::api::types::VideoTrack {}
+impl flutter_rust_bridge::IntoIntoDart<crate::api::types::VideoTrack>
+    for crate::api::types::VideoTrack
 {
-}
-impl flutter_rust_bridge::IntoIntoDart<crate::api::types::VideoTrackDto>
-    for crate::api::types::VideoTrackDto
-{
-    fn into_into_dart(self) -> crate::api::types::VideoTrackDto {
+    fn into_into_dart(self) -> crate::api::types::VideoTrack {
         self
     }
 }
@@ -2084,14 +3241,14 @@ impl SseEncode for String {
     }
 }
 
-impl SseEncode for crate::api::types::AltitudeRefDto {
+impl SseEncode for crate::api::types::AltitudeRef {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
         <i32>::sse_encode(
             match self {
-                crate::api::types::AltitudeRefDto::Unknown => 0,
-                crate::api::types::AltitudeRefDto::AboveSeaLevel => 1,
-                crate::api::types::AltitudeRefDto::BelowSeaLevel => 2,
+                crate::api::types::AltitudeRef::Unknown => 0,
+                crate::api::types::AltitudeRef::AboveSeaLevel => 1,
+                crate::api::types::AltitudeRef::BelowSeaLevel => 2,
                 _ => {
                     unimplemented!("");
                 }
@@ -2115,23 +3272,23 @@ impl SseEncode for f64 {
     }
 }
 
-impl SseEncode for crate::api::types::FullImageMetadataDto {
+impl SseEncode for crate::api::types::FullImageMetadata {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
-        <Option<crate::api::types::ImageExifDto>>::sse_encode(self.exif, serializer);
-        <Vec<crate::api::types::PngTextMetadataDto>>::sse_encode(self.png_text_chunks, serializer);
+        <Option<crate::api::types::ImageExif>>::sse_encode(self.exif, serializer);
+        <Vec<crate::api::types::PngTextMetadata>>::sse_encode(self.png_text_chunks, serializer);
     }
 }
 
-impl SseEncode for crate::api::types::GpsLocationDto {
+impl SseEncode for crate::api::types::GpsLocation {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
         <Option<f64>>::sse_encode(self.latitude, serializer);
         <Option<f64>>::sse_encode(self.longitude, serializer);
         <Option<f64>>::sse_encode(self.altitude_meters, serializer);
-        <crate::api::types::LatitudeRefDto>::sse_encode(self.latitude_ref, serializer);
-        <crate::api::types::LongitudeRefDto>::sse_encode(self.longitude_ref, serializer);
-        <crate::api::types::AltitudeRefDto>::sse_encode(self.altitude_ref, serializer);
+        <crate::api::types::LatitudeRef>::sse_encode(self.latitude_ref, serializer);
+        <crate::api::types::LongitudeRef>::sse_encode(self.longitude_ref, serializer);
+        <crate::api::types::AltitudeRef>::sse_encode(self.altitude_ref, serializer);
         <String>::sse_encode(self.iso6709, serializer);
     }
 }
@@ -2150,23 +3307,23 @@ impl SseEncode for i64 {
     }
 }
 
-impl SseEncode for crate::api::types::ImageExifDto {
+impl SseEncode for crate::api::types::ImageExif {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
-        <Vec<crate::api::types::MetadataEntryDto>>::sse_encode(self.entries, serializer);
-        <Option<crate::api::types::GpsLocationDto>>::sse_encode(self.gps, serializer);
+        <Vec<crate::api::types::MetadataEntry>>::sse_encode(self.entries, serializer);
+        <Option<crate::api::types::GpsLocation>>::sse_encode(self.gps, serializer);
         <bool>::sse_encode(self.has_embedded_video, serializer);
-        <Vec<crate::api::types::ParseErrorDto>>::sse_encode(self.parse_errors, serializer);
+        <Vec<crate::api::types::ParseError>>::sse_encode(self.parse_errors, serializer);
     }
 }
 
-impl SseEncode for crate::api::types::LatitudeRefDto {
+impl SseEncode for crate::api::types::LatitudeRef {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
         <i32>::sse_encode(
             match self {
-                crate::api::types::LatitudeRefDto::North => 0,
-                crate::api::types::LatitudeRefDto::South => 1,
+                crate::api::types::LatitudeRef::North => 0,
+                crate::api::types::LatitudeRef::South => 1,
                 _ => {
                     unimplemented!("");
                 }
@@ -2176,32 +3333,32 @@ impl SseEncode for crate::api::types::LatitudeRefDto {
     }
 }
 
-impl SseEncode for Vec<crate::api::types::MetadataEntryDto> {
+impl SseEncode for Vec<crate::api::types::MetadataEntry> {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
         <i32>::sse_encode(self.len() as _, serializer);
         for item in self {
-            <crate::api::types::MetadataEntryDto>::sse_encode(item, serializer);
+            <crate::api::types::MetadataEntry>::sse_encode(item, serializer);
         }
     }
 }
 
-impl SseEncode for Vec<crate::api::types::ParseErrorDto> {
+impl SseEncode for Vec<crate::api::types::ParseError> {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
         <i32>::sse_encode(self.len() as _, serializer);
         for item in self {
-            <crate::api::types::ParseErrorDto>::sse_encode(item, serializer);
+            <crate::api::types::ParseError>::sse_encode(item, serializer);
         }
     }
 }
 
-impl SseEncode for Vec<crate::api::types::PngTextMetadataDto> {
+impl SseEncode for Vec<crate::api::types::PngTextMetadata> {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
         <i32>::sse_encode(self.len() as _, serializer);
         for item in self {
-            <crate::api::types::PngTextMetadataDto>::sse_encode(item, serializer);
+            <crate::api::types::PngTextMetadata>::sse_encode(item, serializer);
         }
     }
 }
@@ -2236,23 +3393,23 @@ impl SseEncode for Vec<u8> {
     }
 }
 
-impl SseEncode for Vec<crate::api::types::RationalDto> {
+impl SseEncode for Vec<crate::api::types::Rational> {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
         <i32>::sse_encode(self.len() as _, serializer);
         for item in self {
-            <crate::api::types::RationalDto>::sse_encode(item, serializer);
+            <crate::api::types::Rational>::sse_encode(item, serializer);
         }
     }
 }
 
-impl SseEncode for crate::api::types::LongitudeRefDto {
+impl SseEncode for crate::api::types::LongitudeRef {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
         <i32>::sse_encode(
             match self {
-                crate::api::types::LongitudeRefDto::East => 0,
-                crate::api::types::LongitudeRefDto::West => 1,
+                crate::api::types::LongitudeRef::East => 0,
+                crate::api::types::LongitudeRef::West => 1,
                 _ => {
                     unimplemented!("");
                 }
@@ -2291,13 +3448,13 @@ impl SseEncode for crate::api::types::MediaInfoErrorCode {
     }
 }
 
-impl SseEncode for crate::api::types::MediaKindDto {
+impl SseEncode for crate::api::types::MediaKind {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
         <i32>::sse_encode(
             match self {
-                crate::api::types::MediaKindDto::Image => 0,
-                crate::api::types::MediaKindDto::VideoOrAudio => 1,
+                crate::api::types::MediaKind::Image => 0,
+                crate::api::types::MediaKind::VideoOrAudio => 1,
                 _ => {
                     unimplemented!("");
                 }
@@ -2307,17 +3464,17 @@ impl SseEncode for crate::api::types::MediaKindDto {
     }
 }
 
-impl SseEncode for crate::api::types::MediaMetadataDto {
+impl SseEncode for crate::api::types::MediaMetadata {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
         match self {
-            crate::api::types::MediaMetadataDto::ImageExif(field0) => {
+            crate::api::types::MediaMetadata::ImageExif(field0) => {
                 <i32>::sse_encode(0, serializer);
-                <crate::api::types::ImageExifDto>::sse_encode(field0, serializer);
+                <crate::api::types::ImageExif>::sse_encode(field0, serializer);
             }
-            crate::api::types::MediaMetadataDto::VideoTrack(field0) => {
+            crate::api::types::MediaMetadata::VideoTrack(field0) => {
                 <i32>::sse_encode(1, serializer);
-                <crate::api::types::VideoTrackDto>::sse_encode(field0, serializer);
+                <crate::api::types::VideoTrack>::sse_encode(field0, serializer);
             }
             _ => {
                 unimplemented!("");
@@ -2326,7 +3483,7 @@ impl SseEncode for crate::api::types::MediaMetadataDto {
     }
 }
 
-impl SseEncode for crate::api::types::MetadataEntryDto {
+impl SseEncode for crate::api::types::MetadataEntry {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
         <String>::sse_encode(self.tag_name, serializer);
@@ -2334,63 +3491,63 @@ impl SseEncode for crate::api::types::MetadataEntryDto {
         <i32>::sse_encode(self.ifd_index, serializer);
         <crate::api::types::MetadataValueKind>::sse_encode(self.value_kind, serializer);
         <String>::sse_encode(self.display_value, serializer);
-        <Option<crate::api::types::MetadataValueDto>>::sse_encode(self.raw_value, serializer);
+        <Option<crate::api::types::MetadataValue>>::sse_encode(self.raw_value, serializer);
     }
 }
 
-impl SseEncode for crate::api::types::MetadataValueDto {
+impl SseEncode for crate::api::types::MetadataValue {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
         match self {
-            crate::api::types::MetadataValueDto::Text(field0) => {
+            crate::api::types::MetadataValue::Text(field0) => {
                 <i32>::sse_encode(0, serializer);
                 <String>::sse_encode(field0, serializer);
             }
-            crate::api::types::MetadataValueDto::Integer(field0) => {
+            crate::api::types::MetadataValue::Integer(field0) => {
                 <i32>::sse_encode(1, serializer);
                 <i64>::sse_encode(field0, serializer);
             }
-            crate::api::types::MetadataValueDto::Float(field0) => {
+            crate::api::types::MetadataValue::Float(field0) => {
                 <i32>::sse_encode(2, serializer);
                 <f64>::sse_encode(field0, serializer);
             }
-            crate::api::types::MetadataValueDto::Rational(field0) => {
+            crate::api::types::MetadataValue::Rational(field0) => {
                 <i32>::sse_encode(3, serializer);
-                <crate::api::types::RationalDto>::sse_encode(field0, serializer);
+                <crate::api::types::Rational>::sse_encode(field0, serializer);
             }
-            crate::api::types::MetadataValueDto::SignedRational(field0) => {
+            crate::api::types::MetadataValue::SignedRational(field0) => {
                 <i32>::sse_encode(4, serializer);
-                <crate::api::types::RationalDto>::sse_encode(field0, serializer);
+                <crate::api::types::Rational>::sse_encode(field0, serializer);
             }
-            crate::api::types::MetadataValueDto::DateTime(field0) => {
+            crate::api::types::MetadataValue::DateTime(field0) => {
                 <i32>::sse_encode(5, serializer);
                 <String>::sse_encode(field0, serializer);
             }
-            crate::api::types::MetadataValueDto::NaiveDateTime(field0) => {
+            crate::api::types::MetadataValue::NaiveDateTime(field0) => {
                 <i32>::sse_encode(6, serializer);
                 <String>::sse_encode(field0, serializer);
             }
-            crate::api::types::MetadataValueDto::Bytes(field0) => {
+            crate::api::types::MetadataValue::Bytes(field0) => {
                 <i32>::sse_encode(7, serializer);
                 <String>::sse_encode(field0, serializer);
             }
-            crate::api::types::MetadataValueDto::RationalArray(field0) => {
+            crate::api::types::MetadataValue::RationalArray(field0) => {
                 <i32>::sse_encode(8, serializer);
-                <Vec<crate::api::types::RationalDto>>::sse_encode(field0, serializer);
+                <Vec<crate::api::types::Rational>>::sse_encode(field0, serializer);
             }
-            crate::api::types::MetadataValueDto::SignedRationalArray(field0) => {
+            crate::api::types::MetadataValue::SignedRationalArray(field0) => {
                 <i32>::sse_encode(9, serializer);
-                <Vec<crate::api::types::RationalDto>>::sse_encode(field0, serializer);
+                <Vec<crate::api::types::Rational>>::sse_encode(field0, serializer);
             }
-            crate::api::types::MetadataValueDto::U8Array(field0) => {
+            crate::api::types::MetadataValue::U8Array(field0) => {
                 <i32>::sse_encode(10, serializer);
                 <Vec<u8>>::sse_encode(field0, serializer);
             }
-            crate::api::types::MetadataValueDto::U16Array(field0) => {
+            crate::api::types::MetadataValue::U16Array(field0) => {
                 <i32>::sse_encode(11, serializer);
                 <Vec<i32>>::sse_encode(field0, serializer);
             }
-            crate::api::types::MetadataValueDto::U32Array(field0) => {
+            crate::api::types::MetadataValue::U32Array(field0) => {
                 <i32>::sse_encode(12, serializer);
                 <Vec<i64>>::sse_encode(field0, serializer);
             }
@@ -2438,37 +3595,37 @@ impl SseEncode for Option<f64> {
     }
 }
 
-impl SseEncode for Option<crate::api::types::GpsLocationDto> {
+impl SseEncode for Option<crate::api::types::GpsLocation> {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
         <bool>::sse_encode(self.is_some(), serializer);
         if let Some(value) = self {
-            <crate::api::types::GpsLocationDto>::sse_encode(value, serializer);
+            <crate::api::types::GpsLocation>::sse_encode(value, serializer);
         }
     }
 }
 
-impl SseEncode for Option<crate::api::types::ImageExifDto> {
+impl SseEncode for Option<crate::api::types::ImageExif> {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
         <bool>::sse_encode(self.is_some(), serializer);
         if let Some(value) = self {
-            <crate::api::types::ImageExifDto>::sse_encode(value, serializer);
+            <crate::api::types::ImageExif>::sse_encode(value, serializer);
         }
     }
 }
 
-impl SseEncode for Option<crate::api::types::MetadataValueDto> {
+impl SseEncode for Option<crate::api::types::MetadataValue> {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
         <bool>::sse_encode(self.is_some(), serializer);
         if let Some(value) = self {
-            <crate::api::types::MetadataValueDto>::sse_encode(value, serializer);
+            <crate::api::types::MetadataValue>::sse_encode(value, serializer);
         }
     }
 }
 
-impl SseEncode for crate::api::types::ParseErrorDto {
+impl SseEncode for crate::api::types::ParseError {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
         <i32>::sse_encode(self.ifd_index, serializer);
@@ -2478,7 +3635,7 @@ impl SseEncode for crate::api::types::ParseErrorDto {
     }
 }
 
-impl SseEncode for crate::api::types::PngTextMetadataDto {
+impl SseEncode for crate::api::types::PngTextMetadata {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
         <String>::sse_encode(self.key, serializer);
@@ -2486,7 +3643,7 @@ impl SseEncode for crate::api::types::PngTextMetadataDto {
     }
 }
 
-impl SseEncode for crate::api::types::RationalDto {
+impl SseEncode for crate::api::types::Rational {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
         <i64>::sse_encode(self.numerator, serializer);
@@ -2516,12 +3673,12 @@ impl SseEncode for usize {
     }
 }
 
-impl SseEncode for crate::api::types::VideoTrackDto {
+impl SseEncode for crate::api::types::VideoTrack {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
-        <Vec<crate::api::types::MetadataEntryDto>>::sse_encode(self.entries, serializer);
-        <Option<crate::api::types::GpsLocationDto>>::sse_encode(self.gps, serializer);
-        <Vec<crate::api::types::ParseErrorDto>>::sse_encode(self.parse_errors, serializer);
+        <Vec<crate::api::types::MetadataEntry>>::sse_encode(self.entries, serializer);
+        <Option<crate::api::types::GpsLocation>>::sse_encode(self.gps, serializer);
+        <Vec<crate::api::types::ParseError>>::sse_encode(self.parse_errors, serializer);
     }
 }
 

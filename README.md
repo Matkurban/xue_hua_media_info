@@ -15,55 +15,99 @@ Flutter FFI plugin for reading image and video metadata, powered by [nom-exif](h
 ```dart
 import 'package:xue_hua_media_info/xue_hua_media_info.dart';
 
-await RustLib.init();
+await XueHuaMediaInfo.initialize();
 ```
 
 ## Quick start
 
 ```dart
 // Auto-detect image or video from a file path
-final metadata = readMediaMetadataFromFile(path: '/path/to/media.jpg');
+final metadata = XueHuaMediaInfo.readMediaMetadataFromFile(path: '/path/to/media.jpg');
 
 // Read image EXIF from bytes
-final exif = readImageExifFromBytes(data: jpegBytes);
+final exif = XueHuaMediaInfo.readImageExifFromBytes(data: jpegBytes);
 
 // Read video / audio track metadata
-final track = readVideoMetadataFromBytes(data: mp4Bytes);
+final track = XueHuaMediaInfo.readVideoMetadataFromBytes(data: mp4Bytes);
 
 // Detect media type
-final kind = detectMediaKindFromBytes(data: bytes); // MediaKindDto.image or .videoOrAudio
+final kind = XueHuaMediaInfo.detectMediaKindFromBytes(data: bytes); // MediaKind.image or .videoOrAudio
 
 // Full image metadata (EXIF + PNG tEXt chunks)
-final full = readFullImageMetadataFromFile(path: '/path/to/image.png');
+final full = XueHuaMediaInfo.readFullImageMetadataFromFile(path: '/path/to/image.png');
+
+// Convenience getters on VideoTrack / ImageExif
+print(track.durationMs);        // milliseconds
+print(track.duration);          // Duration
+print(track.width);
+print(track.height);
+print(exif.make);
+print(exif.model);
+print(exif.dateTimeOriginal);
+
+// Auto-detected metadata helpers
+if (metadata.isVideo) {
+  print(metadata.videoTrackOrNull?.durationMs);
+}
 
 // Motion Photo embedded video
 if (exif.hasEmbeddedVideo) {
-  final embedded = readEmbeddedVideoFromFile(path: motionPhotoPath);
+  final embedded = XueHuaMediaInfo.readEmbeddedVideoFromFile(path: motionPhotoPath);
+  print(embedded.durationMs);
 }
 
 // Reusable parser for batch processing
-final parser = createMediaMetadataParser();
-final batchExif = parseImageExifFromBytes(parser: parser, data: jpegBytes);
+final parser = XueHuaMediaInfo.createParser();
+final batchExif = parser.parseImageExifFromBytes(data: jpegBytes);
 ```
+
+## Async API
+
+Every sync method has an async counterpart with an `Async` suffix returning `Future<T>`:
+
+```dart
+// Non-blocking reads from bytes or file paths
+final exif = await XueHuaMediaInfo.readImageExifFromBytesAsync(data: jpegBytes);
+final track = await XueHuaMediaInfo.readVideoMetadataFromFileAsync(path: videoPath);
+
+// Reusable parser with async methods
+final parser = XueHuaMediaInfo.createParser();
+final batchExif = await parser.parseImageExifFromBytesAsync(data: jpegBytes);
+```
+
+Use sync methods for simple, blocking reads; use async methods when integrating with Flutter `async`/`await` workflows or when reading from disk without blocking the UI isolate.
 
 ## API overview
 
-| Function | Description |
-|----------|-------------|
-| `readMediaMetadataFromFile` / `FromBytes` | Auto-detect and read image EXIF or video track metadata |
-| `readImageExifFromFile` / `FromBytes` | Read image EXIF (eager) |
-| `readImageExifLazyFromFile` / `FromBytes` | Read image EXIF (lazy, preserves per-tag parse errors) |
-| `readVideoMetadataFromFile` / `FromBytes` | Read video / audio track metadata |
-| `readFullImageMetadataFromFile` / `FromBytes` | EXIF plus format-specific metadata (e.g. PNG tEXt) |
-| `detectMediaKindFromFile` / `FromBytes` | Detect whether input is image or video/audio |
-| `readEmbeddedVideoFromFile` / `FromBytes` | Extract embedded MP4 metadata from Motion Photos |
-| `createMediaMetadataParser` | Create a reusable parser for batch reads |
-| `parseImageExifFromFile` / `FromBytes` | Parse image EXIF using a reusable parser |
-| `parseVideoMetadataFromFile` / `FromBytes` | Parse video metadata using a reusable parser |
-| `parseFullImageMetadataFromFile` / `FromBytes` | Parse full image metadata using a reusable parser |
-| `parseEmbeddedVideoFromFile` / `FromBytes` | Parse embedded video using a reusable parser |
+| Method | Description |
+|--------|-------------|
+| `XueHuaMediaInfo.readMediaMetadataFromFile/FromBytes` | Auto-detect and read image EXIF or video track metadata |
+| `XueHuaMediaInfo.readImageExifFromFile/FromBytes` | Read image EXIF (eager) |
+| `XueHuaMediaInfo.readImageExifLazyFromFile/FromBytes` | Read image EXIF (lazy, preserves per-tag parse errors) |
+| `XueHuaMediaInfo.readVideoMetadataFromFile/FromBytes` | Read video / audio track metadata |
+| `XueHuaMediaInfo.readFullImageMetadataFromFile/FromBytes` | EXIF plus format-specific metadata (e.g. PNG tEXt) |
+| `XueHuaMediaInfo.detectMediaKindFromFile/FromBytes` | Detect whether input is image or video/audio |
+| `XueHuaMediaInfo.readEmbeddedVideoFromFile/FromBytes` | Extract embedded MP4 metadata from Motion Photos |
+| `XueHuaMediaInfo.createParser()` | Create a reusable parser for batch reads |
+| `MediaMetadataParser.parseImageExifFromFile/FromBytes` | Parse image EXIF using a reusable parser |
+| `MediaMetadataParser.parseVideoMetadataFromFile/FromBytes` | Parse video metadata using a reusable parser |
+| `MediaMetadataParser.parseFullImageMetadataFromFile/FromBytes` | Parse full image metadata using a reusable parser |
+| `MediaMetadataParser.parseEmbeddedVideoFromFile/FromBytes` | Parse embedded video using a reusable parser |
+| `XueHuaMediaInfo.*Async` / `MediaMetadataParser.*Async` | Async variants of all reader and parser methods above |
 
 Errors are thrown as `MediaInfoError` (implements `FrbException`).
+
+## Convenience getters
+
+Extensions on result types (imported automatically):
+
+| Type | Getters |
+|------|---------|
+| `VideoTrack` | `durationMs`, `duration`, `width`, `height`, `make`, `model`, `software`, `author`, `createDate` |
+| `ImageExif` | `make`, `model`, `software`, `width`, `height`, `orientation`, `dateTimeOriginal`, `createDate`, `modifyDate` |
+| `MediaMetadata` | `isImage`, `isVideo`, `imageExifOrNull`, `videoTrackOrNull` |
+| `List<MetadataEntry>` | `entryNamed`, `stringValue`, `intValue`, `doubleValue` |
+| `FullImageMetadata` | `pngText(key)` |
 
 ## Development
 

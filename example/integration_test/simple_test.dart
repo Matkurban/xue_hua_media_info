@@ -7,7 +7,7 @@ void main() {
   IntegrationTestWidgetsFlutterBinding.ensureInitialized();
 
   setUpAll(() async {
-    await RustLib.init();
+    await XueHuaMediaInfo.initialize();
   });
 
   Future<List<int>> loadAsset(String path) async {
@@ -17,24 +17,18 @@ void main() {
 
   test('readImageExifFromBytes parses sample JPEG', () async {
     final bytes = await loadAsset('assets/testdata/exif.jpg');
-    final exif = readImageExifFromBytes(data: bytes);
+    final exif = XueHuaMediaInfo.readImageExifFromBytes(data: bytes);
 
     expect(exif.entries, isNotEmpty);
-    expect(
-      exif.entries.any((entry) => entry.tagName == 'Make'),
-      isTrue,
-    );
+    expect(exif.entries.any((entry) => entry.tagName == 'Make'), isTrue);
   });
 
   test('readVideoMetadataFromBytes parses sample MOV', () async {
     final bytes = await loadAsset('assets/testdata/meta.mov');
-    final track = readVideoMetadataFromBytes(data: bytes);
+    final track = XueHuaMediaInfo.readVideoMetadataFromBytes(data: bytes);
 
     expect(track.entries, isNotEmpty);
-    expect(
-      track.entries.any((entry) => entry.tagName == 'Width'),
-      isTrue,
-    );
+    expect(track.entries.any((entry) => entry.tagName == 'Width'), isTrue);
   });
 
   test('detectMediaKindFromBytes distinguishes image and video', () async {
@@ -42,19 +36,41 @@ void main() {
     final mov = await loadAsset('assets/testdata/meta.mov');
 
     expect(
-      detectMediaKindFromBytes(data: jpeg),
-      MediaKindDto.image,
+      XueHuaMediaInfo.detectMediaKindFromBytes(data: jpeg),
+      MediaKind.image,
     );
     expect(
-      detectMediaKindFromBytes(data: mov),
-      MediaKindDto.videoOrAudio,
+      XueHuaMediaInfo.detectMediaKindFromBytes(data: mov),
+      MediaKind.videoOrAudio,
     );
   });
 
   test('readMediaMetadataFromBytes returns error for empty bytes', () async {
     expect(
-      () => readMediaMetadataFromBytes(data: const []),
+      () => XueHuaMediaInfo.readMediaMetadataFromBytes(data: const []),
       throwsA(isA<MediaInfoError>()),
+    );
+  });
+
+  test('readImageExifFromBytesAsync parses sample JPEG', () async {
+    final bytes = await loadAsset('assets/testdata/exif.jpg');
+    final exif = await XueHuaMediaInfo.readImageExifFromBytesAsync(data: bytes);
+
+    expect(exif.entries, isNotEmpty);
+    expect(exif.entries.any((entry) => entry.tagName == 'Make'), isTrue);
+  });
+
+  test('detectMediaKindFromBytesAsync distinguishes image and video', () async {
+    final jpeg = await loadAsset('assets/testdata/exif.jpg');
+    final mov = await loadAsset('assets/testdata/meta.mov');
+
+    expect(
+      await XueHuaMediaInfo.detectMediaKindFromBytesAsync(data: jpeg),
+      MediaKind.image,
+    );
+    expect(
+      await XueHuaMediaInfo.detectMediaKindFromBytesAsync(data: mov),
+      MediaKind.videoOrAudio,
     );
   });
 }

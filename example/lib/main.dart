@@ -4,18 +4,35 @@ import 'package:xue_hua_media_info/xue_hua_media_info.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await RustLib.init();
+  await XueHuaMediaInfo.initialize();
   runApp(const MyApp());
 }
 
-class MyApp extends StatefulWidget {
+class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
   @override
-  State<MyApp> createState() => _MyAppState();
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      home: Scaffold(
+        appBar: AppBar(title: const Text('XueHua Media Info')),
+        body: const Padding(
+          padding: EdgeInsets.all(16),
+          child: _MetadataPreview(),
+        ),
+      ),
+    );
+  }
 }
 
-class _MyAppState extends State<MyApp> {
+class _MetadataPreview extends StatefulWidget {
+  const _MetadataPreview();
+
+  @override
+  State<_MetadataPreview> createState() => _MetadataPreviewState();
+}
+
+class _MetadataPreviewState extends State<_MetadataPreview> {
   String _output = 'Loading sample metadata...';
 
   @override
@@ -29,33 +46,29 @@ class _MyAppState extends State<MyApp> {
       final jpegBytes = await rootBundle.load('assets/testdata/exif.jpg');
       final movBytes = await rootBundle.load('assets/testdata/meta.mov');
 
-      final imageExif = readImageExifFromBytes(
+      final imageExif = await XueHuaMediaInfo.readImageExifFromBytesAsync(
         data: jpegBytes.buffer.asUint8List(),
       );
-      final videoTrack = readVideoMetadataFromBytes(
+      final videoTrack = await XueHuaMediaInfo.readVideoMetadataFromBytesAsync(
         data: movBytes.buffer.asUint8List(),
       );
 
-      final make = _findEntry(imageExif.entries, 'Make')?.displayValue ?? '-';
-      final model = _findEntry(imageExif.entries, 'Model')?.displayValue ?? '-';
-      final width = _findEntry(videoTrack.entries, 'Width')?.displayValue ?? '-';
-      final height =
-          _findEntry(videoTrack.entries, 'Height')?.displayValue ?? '-';
-      final duration =
-          _findEntry(videoTrack.entries, 'DurationMs')?.displayValue ?? '-';
-
       setState(() {
-        _output = '''
+        _output =
+            '''
 Image EXIF
-  Make: $make
-  Model: $model
+  Make: ${imageExif.make ?? '-'}
+  Model: ${imageExif.model ?? '-'}
+  Size: ${imageExif.width ?? '?'} x ${imageExif.height ?? '?'}
   Tags: ${imageExif.entries.length}
   Has embedded video: ${imageExif.hasEmbeddedVideo}
 
 Video metadata
-  Width: $width
-  Height: $height
-  Duration (ms): $duration
+  Make: ${videoTrack.make ?? '-'}
+  Model: ${videoTrack.model ?? '-'}
+  Size: ${videoTrack.width ?? '?'} x ${videoTrack.height ?? '?'}
+  Duration: ${videoTrack.duration ?? '-'}
+  Duration (ms): ${videoTrack.durationMs ?? '-'}
   Tags: ${videoTrack.entries.length}
 ''';
       });
@@ -66,27 +79,10 @@ Video metadata
     }
   }
 
-  MetadataEntryDto? _findEntry(List<MetadataEntryDto> entries, String tagName) {
-    for (final entry in entries) {
-      if (entry.tagName == tagName) {
-        return entry;
-      }
-    }
-    return null;
-  }
-
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      home: Scaffold(
-        appBar: AppBar(title: const Text('XueHua Media Info')),
-        body: Padding(
-          padding: const EdgeInsets.all(16),
-          child: SingleChildScrollView(
-            child: Text(_output, style: const TextStyle(fontSize: 16)),
-          ),
-        ),
-      ),
+    return SingleChildScrollView(
+      child: Text(_output, style: const TextStyle(fontSize: 16)),
     );
   }
 }

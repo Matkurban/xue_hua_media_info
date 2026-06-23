@@ -7,51 +7,48 @@ import '../frb_generated.dart';
 import 'package:flutter_rust_bridge/flutter_rust_bridge_for_generated.dart';
 import 'types.dart';
 
-// These functions are ignored because they are not marked as `pub`: `full_image_metadata_to_dto`
-
-MediaMetadataDto readMediaMetadataFromFile({required String path}) =>
+MediaMetadata readMediaMetadataFromFile({required String path}) =>
     RustLib.instance.api.crateApiReaderReadMediaMetadataFromFile(path: path);
 
-MediaMetadataDto readMediaMetadataFromBytes({required List<int> data}) =>
+MediaMetadata readMediaMetadataFromBytes({required List<int> data}) =>
     RustLib.instance.api.crateApiReaderReadMediaMetadataFromBytes(data: data);
 
-ImageExifDto readImageExifFromFile({required String path}) =>
+ImageExif readImageExifFromFile({required String path}) =>
     RustLib.instance.api.crateApiReaderReadImageExifFromFile(path: path);
 
-ImageExifDto readImageExifFromBytes({required List<int> data}) =>
+ImageExif readImageExifFromBytes({required List<int> data}) =>
     RustLib.instance.api.crateApiReaderReadImageExifFromBytes(data: data);
 
-ImageExifDto readImageExifLazyFromFile({required String path}) =>
+ImageExif readImageExifLazyFromFile({required String path}) =>
     RustLib.instance.api.crateApiReaderReadImageExifLazyFromFile(path: path);
 
-ImageExifDto readImageExifLazyFromBytes({required List<int> data}) =>
+ImageExif readImageExifLazyFromBytes({required List<int> data}) =>
     RustLib.instance.api.crateApiReaderReadImageExifLazyFromBytes(data: data);
 
-VideoTrackDto readVideoMetadataFromFile({required String path}) =>
+VideoTrack readVideoMetadataFromFile({required String path}) =>
     RustLib.instance.api.crateApiReaderReadVideoMetadataFromFile(path: path);
 
-VideoTrackDto readVideoMetadataFromBytes({required List<int> data}) =>
+VideoTrack readVideoMetadataFromBytes({required List<int> data}) =>
     RustLib.instance.api.crateApiReaderReadVideoMetadataFromBytes(data: data);
 
-FullImageMetadataDto readFullImageMetadataFromFile({required String path}) =>
+FullImageMetadata readFullImageMetadataFromFile({required String path}) =>
     RustLib.instance.api.crateApiReaderReadFullImageMetadataFromFile(
       path: path,
     );
 
-FullImageMetadataDto readFullImageMetadataFromBytes({
-  required List<int> data,
-}) => RustLib.instance.api.crateApiReaderReadFullImageMetadataFromBytes(
-  data: data,
-);
+FullImageMetadata readFullImageMetadataFromBytes({required List<int> data}) =>
+    RustLib.instance.api.crateApiReaderReadFullImageMetadataFromBytes(
+      data: data,
+    );
 
-MediaKindDto detectMediaKindFromFile({required String path}) =>
+MediaKind detectMediaKindFromFile({required String path}) =>
     RustLib.instance.api.crateApiReaderDetectMediaKindFromFile(path: path);
 
-MediaKindDto detectMediaKindFromBytes({required List<int> data}) =>
+MediaKind detectMediaKindFromBytes({required List<int> data}) =>
     RustLib.instance.api.crateApiReaderDetectMediaKindFromBytes(data: data);
 
-VideoTrackDto readEmbeddedVideoFromFile({required String path}) =>
+VideoTrack readEmbeddedVideoFromFile({required String path}) =>
     RustLib.instance.api.crateApiReaderReadEmbeddedVideoFromFile(path: path);
 
-VideoTrackDto readEmbeddedVideoFromBytes({required List<int> data}) =>
+VideoTrack readEmbeddedVideoFromBytes({required List<int> data}) =>
     RustLib.instance.api.crateApiReaderReadEmbeddedVideoFromBytes(data: data);

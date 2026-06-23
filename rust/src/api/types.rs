@@ -1,13 +1,13 @@
 #[derive(Debug, Clone)]
-pub enum MediaKindDto {
+pub enum MediaKind {
     Image,
     VideoOrAudio,
 }
 
 #[derive(Debug, Clone)]
-pub enum MediaMetadataDto {
-    ImageExif(ImageExifDto),
-    VideoTrack(VideoTrackDto),
+pub enum MediaMetadata {
+    ImageExif(ImageExif),
+    VideoTrack(VideoTrack),
 }
 
 #[derive(Debug, Clone)]
@@ -28,42 +28,42 @@ pub enum MetadataValueKind {
 }
 
 #[derive(Debug, Clone)]
-pub struct RationalDto {
+pub struct Rational {
     pub numerator: i64,
     pub denominator: i64,
 }
 
 #[derive(Debug, Clone)]
-pub enum MetadataValueDto {
+pub enum MetadataValue {
     Text(String),
     Integer(i64),
     Float(f64),
-    Rational(RationalDto),
-    SignedRational(RationalDto),
+    Rational(Rational),
+    SignedRational(Rational),
     DateTime(String),
     NaiveDateTime(String),
     Bytes(String),
-    RationalArray(Vec<RationalDto>),
-    SignedRationalArray(Vec<RationalDto>),
+    RationalArray(Vec<Rational>),
+    SignedRationalArray(Vec<Rational>),
     U8Array(Vec<u8>),
     U16Array(Vec<i32>),
     U32Array(Vec<i64>),
 }
 
 #[derive(Debug, Clone)]
-pub enum LatitudeRefDto {
+pub enum LatitudeRef {
     North,
     South,
 }
 
 #[derive(Debug, Clone)]
-pub enum LongitudeRefDto {
+pub enum LongitudeRef {
     East,
     West,
 }
 
 #[derive(Debug, Clone)]
-pub enum AltitudeRefDto {
+pub enum AltitudeRef {
     Unknown,
     AboveSeaLevel,
     BelowSeaLevel,
@@ -87,17 +87,17 @@ pub struct MediaInfoError {
 }
 
 #[derive(Debug, Clone)]
-pub struct MetadataEntryDto {
+pub struct MetadataEntry {
     pub tag_name: String,
     pub tag_code: i32,
     pub ifd_index: i32,
     pub value_kind: MetadataValueKind,
     pub display_value: String,
-    pub raw_value: Option<MetadataValueDto>,
+    pub raw_value: Option<MetadataValue>,
 }
 
 #[derive(Debug, Clone)]
-pub struct ParseErrorDto {
+pub struct ParseError {
     pub ifd_index: i32,
     pub tag_name: String,
     pub tag_code: i32,
@@ -105,39 +105,39 @@ pub struct ParseErrorDto {
 }
 
 #[derive(Debug, Clone)]
-pub struct GpsLocationDto {
+pub struct GpsLocation {
     pub latitude: Option<f64>,
     pub longitude: Option<f64>,
     pub altitude_meters: Option<f64>,
-    pub latitude_ref: LatitudeRefDto,
-    pub longitude_ref: LongitudeRefDto,
-    pub altitude_ref: AltitudeRefDto,
+    pub latitude_ref: LatitudeRef,
+    pub longitude_ref: LongitudeRef,
+    pub altitude_ref: AltitudeRef,
     pub iso6709: String,
 }
 
 #[derive(Debug, Clone)]
-pub struct ImageExifDto {
-    pub entries: Vec<MetadataEntryDto>,
-    pub gps: Option<GpsLocationDto>,
+pub struct ImageExif {
+    pub entries: Vec<MetadataEntry>,
+    pub gps: Option<GpsLocation>,
     pub has_embedded_video: bool,
-    pub parse_errors: Vec<ParseErrorDto>,
+    pub parse_errors: Vec<ParseError>,
 }
 
 #[derive(Debug, Clone)]
-pub struct VideoTrackDto {
-    pub entries: Vec<MetadataEntryDto>,
-    pub gps: Option<GpsLocationDto>,
-    pub parse_errors: Vec<ParseErrorDto>,
+pub struct VideoTrack {
+    pub entries: Vec<MetadataEntry>,
+    pub gps: Option<GpsLocation>,
+    pub parse_errors: Vec<ParseError>,
 }
 
 #[derive(Debug, Clone)]
-pub struct PngTextMetadataDto {
+pub struct PngTextMetadata {
     pub key: String,
     pub value: String,
 }
 
 #[derive(Debug, Clone)]
-pub struct FullImageMetadataDto {
-    pub exif: Option<ImageExifDto>,
-    pub png_text_chunks: Vec<PngTextMetadataDto>,
+pub struct FullImageMetadata {
+    pub exif: Option<ImageExif>,
+    pub png_text_chunks: Vec<PngTextMetadata>,
 }

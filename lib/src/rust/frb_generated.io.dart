@@ -4,7 +4,9 @@
 // ignore_for_file: unused_import, unused_element, unnecessary_import, duplicate_ignore, invalid_use_of_internal_member, annotate_overrides, non_constant_identifier_names, curly_braces_in_flow_control_structures, prefer_const_literals_to_create_immutables, unused_field
 
 import 'api/parser.dart';
+import 'api/parser_async.dart';
 import 'api/reader.dart';
+import 'api/reader_async.dart';
 import 'api/types.dart';
 import 'dart:async';
 import 'dart:convert';
@@ -46,7 +48,7 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   String dco_decode_String(dynamic raw);
 
   @protected
-  AltitudeRefDto dco_decode_altitude_ref_dto(dynamic raw);
+  AltitudeRef dco_decode_altitude_ref(dynamic raw);
 
   @protected
   bool dco_decode_bool(dynamic raw);
@@ -55,28 +57,28 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   double dco_decode_box_autoadd_f_64(dynamic raw);
 
   @protected
-  GpsLocationDto dco_decode_box_autoadd_gps_location_dto(dynamic raw);
+  GpsLocation dco_decode_box_autoadd_gps_location(dynamic raw);
 
   @protected
-  ImageExifDto dco_decode_box_autoadd_image_exif_dto(dynamic raw);
+  ImageExif dco_decode_box_autoadd_image_exif(dynamic raw);
 
   @protected
-  MetadataValueDto dco_decode_box_autoadd_metadata_value_dto(dynamic raw);
+  MetadataValue dco_decode_box_autoadd_metadata_value(dynamic raw);
 
   @protected
-  RationalDto dco_decode_box_autoadd_rational_dto(dynamic raw);
+  Rational dco_decode_box_autoadd_rational(dynamic raw);
 
   @protected
-  VideoTrackDto dco_decode_box_autoadd_video_track_dto(dynamic raw);
+  VideoTrack dco_decode_box_autoadd_video_track(dynamic raw);
 
   @protected
   double dco_decode_f_64(dynamic raw);
 
   @protected
-  FullImageMetadataDto dco_decode_full_image_metadata_dto(dynamic raw);
+  FullImageMetadata dco_decode_full_image_metadata(dynamic raw);
 
   @protected
-  GpsLocationDto dco_decode_gps_location_dto(dynamic raw);
+  GpsLocation dco_decode_gps_location(dynamic raw);
 
   @protected
   int dco_decode_i_32(dynamic raw);
@@ -85,19 +87,19 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   PlatformInt64 dco_decode_i_64(dynamic raw);
 
   @protected
-  ImageExifDto dco_decode_image_exif_dto(dynamic raw);
+  ImageExif dco_decode_image_exif(dynamic raw);
 
   @protected
-  LatitudeRefDto dco_decode_latitude_ref_dto(dynamic raw);
+  LatitudeRef dco_decode_latitude_ref(dynamic raw);
 
   @protected
-  List<MetadataEntryDto> dco_decode_list_metadata_entry_dto(dynamic raw);
+  List<MetadataEntry> dco_decode_list_metadata_entry(dynamic raw);
 
   @protected
-  List<ParseErrorDto> dco_decode_list_parse_error_dto(dynamic raw);
+  List<ParseError> dco_decode_list_parse_error(dynamic raw);
 
   @protected
-  List<PngTextMetadataDto> dco_decode_list_png_text_metadata_dto(dynamic raw);
+  List<PngTextMetadata> dco_decode_list_png_text_metadata(dynamic raw);
 
   @protected
   Int32List dco_decode_list_prim_i_32_strict(dynamic raw);
@@ -112,10 +114,10 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   Uint8List dco_decode_list_prim_u_8_strict(dynamic raw);
 
   @protected
-  List<RationalDto> dco_decode_list_rational_dto(dynamic raw);
+  List<Rational> dco_decode_list_rational(dynamic raw);
 
   @protected
-  LongitudeRefDto dco_decode_longitude_ref_dto(dynamic raw);
+  LongitudeRef dco_decode_longitude_ref(dynamic raw);
 
   @protected
   MediaInfoError dco_decode_media_info_error(dynamic raw);
@@ -124,16 +126,16 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   MediaInfoErrorCode dco_decode_media_info_error_code(dynamic raw);
 
   @protected
-  MediaKindDto dco_decode_media_kind_dto(dynamic raw);
+  MediaKind dco_decode_media_kind(dynamic raw);
 
   @protected
-  MediaMetadataDto dco_decode_media_metadata_dto(dynamic raw);
+  MediaMetadata dco_decode_media_metadata(dynamic raw);
 
   @protected
-  MetadataEntryDto dco_decode_metadata_entry_dto(dynamic raw);
+  MetadataEntry dco_decode_metadata_entry(dynamic raw);
 
   @protected
-  MetadataValueDto dco_decode_metadata_value_dto(dynamic raw);
+  MetadataValue dco_decode_metadata_value(dynamic raw);
 
   @protected
   MetadataValueKind dco_decode_metadata_value_kind(dynamic raw);
@@ -142,22 +144,22 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   double? dco_decode_opt_box_autoadd_f_64(dynamic raw);
 
   @protected
-  GpsLocationDto? dco_decode_opt_box_autoadd_gps_location_dto(dynamic raw);
+  GpsLocation? dco_decode_opt_box_autoadd_gps_location(dynamic raw);
 
   @protected
-  ImageExifDto? dco_decode_opt_box_autoadd_image_exif_dto(dynamic raw);
+  ImageExif? dco_decode_opt_box_autoadd_image_exif(dynamic raw);
 
   @protected
-  MetadataValueDto? dco_decode_opt_box_autoadd_metadata_value_dto(dynamic raw);
+  MetadataValue? dco_decode_opt_box_autoadd_metadata_value(dynamic raw);
 
   @protected
-  ParseErrorDto dco_decode_parse_error_dto(dynamic raw);
+  ParseError dco_decode_parse_error(dynamic raw);
 
   @protected
-  PngTextMetadataDto dco_decode_png_text_metadata_dto(dynamic raw);
+  PngTextMetadata dco_decode_png_text_metadata(dynamic raw);
 
   @protected
-  RationalDto dco_decode_rational_dto(dynamic raw);
+  Rational dco_decode_rational(dynamic raw);
 
   @protected
   int dco_decode_u_8(dynamic raw);
@@ -169,7 +171,7 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   BigInt dco_decode_usize(dynamic raw);
 
   @protected
-  VideoTrackDto dco_decode_video_track_dto(dynamic raw);
+  VideoTrack dco_decode_video_track(dynamic raw);
 
   @protected
   MediaMetadataParser
@@ -193,7 +195,7 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   String sse_decode_String(SseDeserializer deserializer);
 
   @protected
-  AltitudeRefDto sse_decode_altitude_ref_dto(SseDeserializer deserializer);
+  AltitudeRef sse_decode_altitude_ref(SseDeserializer deserializer);
 
   @protected
   bool sse_decode_bool(SseDeserializer deserializer);
@@ -202,38 +204,32 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   double sse_decode_box_autoadd_f_64(SseDeserializer deserializer);
 
   @protected
-  GpsLocationDto sse_decode_box_autoadd_gps_location_dto(
+  GpsLocation sse_decode_box_autoadd_gps_location(SseDeserializer deserializer);
+
+  @protected
+  ImageExif sse_decode_box_autoadd_image_exif(SseDeserializer deserializer);
+
+  @protected
+  MetadataValue sse_decode_box_autoadd_metadata_value(
     SseDeserializer deserializer,
   );
 
   @protected
-  ImageExifDto sse_decode_box_autoadd_image_exif_dto(
-    SseDeserializer deserializer,
-  );
+  Rational sse_decode_box_autoadd_rational(SseDeserializer deserializer);
 
   @protected
-  MetadataValueDto sse_decode_box_autoadd_metadata_value_dto(
-    SseDeserializer deserializer,
-  );
-
-  @protected
-  RationalDto sse_decode_box_autoadd_rational_dto(SseDeserializer deserializer);
-
-  @protected
-  VideoTrackDto sse_decode_box_autoadd_video_track_dto(
-    SseDeserializer deserializer,
-  );
+  VideoTrack sse_decode_box_autoadd_video_track(SseDeserializer deserializer);
 
   @protected
   double sse_decode_f_64(SseDeserializer deserializer);
 
   @protected
-  FullImageMetadataDto sse_decode_full_image_metadata_dto(
+  FullImageMetadata sse_decode_full_image_metadata(
     SseDeserializer deserializer,
   );
 
   @protected
-  GpsLocationDto sse_decode_gps_location_dto(SseDeserializer deserializer);
+  GpsLocation sse_decode_gps_location(SseDeserializer deserializer);
 
   @protected
   int sse_decode_i_32(SseDeserializer deserializer);
@@ -242,23 +238,21 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   PlatformInt64 sse_decode_i_64(SseDeserializer deserializer);
 
   @protected
-  ImageExifDto sse_decode_image_exif_dto(SseDeserializer deserializer);
+  ImageExif sse_decode_image_exif(SseDeserializer deserializer);
 
   @protected
-  LatitudeRefDto sse_decode_latitude_ref_dto(SseDeserializer deserializer);
+  LatitudeRef sse_decode_latitude_ref(SseDeserializer deserializer);
 
   @protected
-  List<MetadataEntryDto> sse_decode_list_metadata_entry_dto(
+  List<MetadataEntry> sse_decode_list_metadata_entry(
     SseDeserializer deserializer,
   );
 
   @protected
-  List<ParseErrorDto> sse_decode_list_parse_error_dto(
-    SseDeserializer deserializer,
-  );
+  List<ParseError> sse_decode_list_parse_error(SseDeserializer deserializer);
 
   @protected
-  List<PngTextMetadataDto> sse_decode_list_png_text_metadata_dto(
+  List<PngTextMetadata> sse_decode_list_png_text_metadata(
     SseDeserializer deserializer,
   );
 
@@ -275,10 +269,10 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   Uint8List sse_decode_list_prim_u_8_strict(SseDeserializer deserializer);
 
   @protected
-  List<RationalDto> sse_decode_list_rational_dto(SseDeserializer deserializer);
+  List<Rational> sse_decode_list_rational(SseDeserializer deserializer);
 
   @protected
-  LongitudeRefDto sse_decode_longitude_ref_dto(SseDeserializer deserializer);
+  LongitudeRef sse_decode_longitude_ref(SseDeserializer deserializer);
 
   @protected
   MediaInfoError sse_decode_media_info_error(SseDeserializer deserializer);
@@ -289,16 +283,16 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   );
 
   @protected
-  MediaKindDto sse_decode_media_kind_dto(SseDeserializer deserializer);
+  MediaKind sse_decode_media_kind(SseDeserializer deserializer);
 
   @protected
-  MediaMetadataDto sse_decode_media_metadata_dto(SseDeserializer deserializer);
+  MediaMetadata sse_decode_media_metadata(SseDeserializer deserializer);
 
   @protected
-  MetadataEntryDto sse_decode_metadata_entry_dto(SseDeserializer deserializer);
+  MetadataEntry sse_decode_metadata_entry(SseDeserializer deserializer);
 
   @protected
-  MetadataValueDto sse_decode_metadata_value_dto(SseDeserializer deserializer);
+  MetadataValue sse_decode_metadata_value(SseDeserializer deserializer);
 
   @protected
   MetadataValueKind sse_decode_metadata_value_kind(
@@ -309,30 +303,28 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   double? sse_decode_opt_box_autoadd_f_64(SseDeserializer deserializer);
 
   @protected
-  GpsLocationDto? sse_decode_opt_box_autoadd_gps_location_dto(
+  GpsLocation? sse_decode_opt_box_autoadd_gps_location(
     SseDeserializer deserializer,
   );
 
   @protected
-  ImageExifDto? sse_decode_opt_box_autoadd_image_exif_dto(
+  ImageExif? sse_decode_opt_box_autoadd_image_exif(
     SseDeserializer deserializer,
   );
 
   @protected
-  MetadataValueDto? sse_decode_opt_box_autoadd_metadata_value_dto(
+  MetadataValue? sse_decode_opt_box_autoadd_metadata_value(
     SseDeserializer deserializer,
   );
 
   @protected
-  ParseErrorDto sse_decode_parse_error_dto(SseDeserializer deserializer);
+  ParseError sse_decode_parse_error(SseDeserializer deserializer);
 
   @protected
-  PngTextMetadataDto sse_decode_png_text_metadata_dto(
-    SseDeserializer deserializer,
-  );
+  PngTextMetadata sse_decode_png_text_metadata(SseDeserializer deserializer);
 
   @protected
-  RationalDto sse_decode_rational_dto(SseDeserializer deserializer);
+  Rational sse_decode_rational(SseDeserializer deserializer);
 
   @protected
   int sse_decode_u_8(SseDeserializer deserializer);
@@ -344,7 +336,7 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   BigInt sse_decode_usize(SseDeserializer deserializer);
 
   @protected
-  VideoTrackDto sse_decode_video_track_dto(SseDeserializer deserializer);
+  VideoTrack sse_decode_video_track(SseDeserializer deserializer);
 
   @protected
   void
@@ -371,10 +363,7 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   void sse_encode_String(String self, SseSerializer serializer);
 
   @protected
-  void sse_encode_altitude_ref_dto(
-    AltitudeRefDto self,
-    SseSerializer serializer,
-  );
+  void sse_encode_altitude_ref(AltitudeRef self, SseSerializer serializer);
 
   @protected
   void sse_encode_bool(bool self, SseSerializer serializer);
@@ -383,32 +372,29 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   void sse_encode_box_autoadd_f_64(double self, SseSerializer serializer);
 
   @protected
-  void sse_encode_box_autoadd_gps_location_dto(
-    GpsLocationDto self,
+  void sse_encode_box_autoadd_gps_location(
+    GpsLocation self,
     SseSerializer serializer,
   );
 
   @protected
-  void sse_encode_box_autoadd_image_exif_dto(
-    ImageExifDto self,
+  void sse_encode_box_autoadd_image_exif(
+    ImageExif self,
     SseSerializer serializer,
   );
 
   @protected
-  void sse_encode_box_autoadd_metadata_value_dto(
-    MetadataValueDto self,
+  void sse_encode_box_autoadd_metadata_value(
+    MetadataValue self,
     SseSerializer serializer,
   );
 
   @protected
-  void sse_encode_box_autoadd_rational_dto(
-    RationalDto self,
-    SseSerializer serializer,
-  );
+  void sse_encode_box_autoadd_rational(Rational self, SseSerializer serializer);
 
   @protected
-  void sse_encode_box_autoadd_video_track_dto(
-    VideoTrackDto self,
+  void sse_encode_box_autoadd_video_track(
+    VideoTrack self,
     SseSerializer serializer,
   );
 
@@ -416,16 +402,13 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   void sse_encode_f_64(double self, SseSerializer serializer);
 
   @protected
-  void sse_encode_full_image_metadata_dto(
-    FullImageMetadataDto self,
+  void sse_encode_full_image_metadata(
+    FullImageMetadata self,
     SseSerializer serializer,
   );
 
   @protected
-  void sse_encode_gps_location_dto(
-    GpsLocationDto self,
-    SseSerializer serializer,
-  );
+  void sse_encode_gps_location(GpsLocation self, SseSerializer serializer);
 
   @protected
   void sse_encode_i_32(int self, SseSerializer serializer);
@@ -434,29 +417,26 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   void sse_encode_i_64(PlatformInt64 self, SseSerializer serializer);
 
   @protected
-  void sse_encode_image_exif_dto(ImageExifDto self, SseSerializer serializer);
+  void sse_encode_image_exif(ImageExif self, SseSerializer serializer);
 
   @protected
-  void sse_encode_latitude_ref_dto(
-    LatitudeRefDto self,
+  void sse_encode_latitude_ref(LatitudeRef self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_list_metadata_entry(
+    List<MetadataEntry> self,
     SseSerializer serializer,
   );
 
   @protected
-  void sse_encode_list_metadata_entry_dto(
-    List<MetadataEntryDto> self,
+  void sse_encode_list_parse_error(
+    List<ParseError> self,
     SseSerializer serializer,
   );
 
   @protected
-  void sse_encode_list_parse_error_dto(
-    List<ParseErrorDto> self,
-    SseSerializer serializer,
-  );
-
-  @protected
-  void sse_encode_list_png_text_metadata_dto(
-    List<PngTextMetadataDto> self,
+  void sse_encode_list_png_text_metadata(
+    List<PngTextMetadata> self,
     SseSerializer serializer,
   );
 
@@ -482,16 +462,10 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   );
 
   @protected
-  void sse_encode_list_rational_dto(
-    List<RationalDto> self,
-    SseSerializer serializer,
-  );
+  void sse_encode_list_rational(List<Rational> self, SseSerializer serializer);
 
   @protected
-  void sse_encode_longitude_ref_dto(
-    LongitudeRefDto self,
-    SseSerializer serializer,
-  );
+  void sse_encode_longitude_ref(LongitudeRef self, SseSerializer serializer);
 
   @protected
   void sse_encode_media_info_error(
@@ -506,25 +480,16 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   );
 
   @protected
-  void sse_encode_media_kind_dto(MediaKindDto self, SseSerializer serializer);
+  void sse_encode_media_kind(MediaKind self, SseSerializer serializer);
 
   @protected
-  void sse_encode_media_metadata_dto(
-    MediaMetadataDto self,
-    SseSerializer serializer,
-  );
+  void sse_encode_media_metadata(MediaMetadata self, SseSerializer serializer);
 
   @protected
-  void sse_encode_metadata_entry_dto(
-    MetadataEntryDto self,
-    SseSerializer serializer,
-  );
+  void sse_encode_metadata_entry(MetadataEntry self, SseSerializer serializer);
 
   @protected
-  void sse_encode_metadata_value_dto(
-    MetadataValueDto self,
-    SseSerializer serializer,
-  );
+  void sse_encode_metadata_value(MetadataValue self, SseSerializer serializer);
 
   @protected
   void sse_encode_metadata_value_kind(
@@ -536,34 +501,34 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   void sse_encode_opt_box_autoadd_f_64(double? self, SseSerializer serializer);
 
   @protected
-  void sse_encode_opt_box_autoadd_gps_location_dto(
-    GpsLocationDto? self,
+  void sse_encode_opt_box_autoadd_gps_location(
+    GpsLocation? self,
     SseSerializer serializer,
   );
 
   @protected
-  void sse_encode_opt_box_autoadd_image_exif_dto(
-    ImageExifDto? self,
+  void sse_encode_opt_box_autoadd_image_exif(
+    ImageExif? self,
     SseSerializer serializer,
   );
 
   @protected
-  void sse_encode_opt_box_autoadd_metadata_value_dto(
-    MetadataValueDto? self,
+  void sse_encode_opt_box_autoadd_metadata_value(
+    MetadataValue? self,
     SseSerializer serializer,
   );
 
   @protected
-  void sse_encode_parse_error_dto(ParseErrorDto self, SseSerializer serializer);
+  void sse_encode_parse_error(ParseError self, SseSerializer serializer);
 
   @protected
-  void sse_encode_png_text_metadata_dto(
-    PngTextMetadataDto self,
+  void sse_encode_png_text_metadata(
+    PngTextMetadata self,
     SseSerializer serializer,
   );
 
   @protected
-  void sse_encode_rational_dto(RationalDto self, SseSerializer serializer);
+  void sse_encode_rational(Rational self, SseSerializer serializer);
 
   @protected
   void sse_encode_u_8(int self, SseSerializer serializer);
@@ -575,7 +540,7 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   void sse_encode_usize(BigInt self, SseSerializer serializer);
 
   @protected
-  void sse_encode_video_track_dto(VideoTrackDto self, SseSerializer serializer);
+  void sse_encode_video_track(VideoTrack self, SseSerializer serializer);
 }
 
 // Section: wire_class

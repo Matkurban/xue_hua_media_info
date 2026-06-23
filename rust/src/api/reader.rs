@@ -1,18 +1,20 @@
-use nom_exif::{read_exif, read_exif_iter, read_metadata, read_track, ExifIter, MediaSource};
+use nom_exif::{read_exif, read_exif_iter, read_metadata, read_track, MediaSource};
 
-use crate::convert::{
-    exif_iter_to_dto, exif_to_dto, image_format_metadata_to_png, map_error, media_kind_to_dto,
-    metadata_to_dto, track_to_dto,
-};
 use super::types::*;
+use crate::convert::{
+    from_exif_iter, map_error, to_full_image_metadata, to_image_exif, to_media_kind,
+    to_media_metadata, to_video_track,
+};
 
 #[flutter_rust_bridge::frb(sync)]
-pub fn read_media_metadata_from_file(path: String) -> Result<MediaMetadataDto, MediaInfoError> {
-    read_metadata(path).map(metadata_to_dto).map_err(map_error)
+pub fn read_media_metadata_from_file(path: String) -> Result<MediaMetadata, MediaInfoError> {
+    read_metadata(path)
+        .map(to_media_metadata)
+        .map_err(map_error)
 }
 
 #[flutter_rust_bridge::frb(sync)]
-pub fn read_media_metadata_from_bytes(data: Vec<u8>) -> Result<MediaMetadataDto, MediaInfoError> {
+pub fn read_media_metadata_from_bytes(data: Vec<u8>) -> Result<MediaMetadata, MediaInfoError> {
     let source = MediaSource::from_memory(data).map_err(map_error)?;
     let mut parser = nom_exif::MediaParser::new();
     let metadata = match source.kind() {
@@ -25,121 +27,110 @@ pub fn read_media_metadata_from_bytes(data: Vec<u8>) -> Result<MediaMetadataDto,
             .map(nom_exif::Metadata::Track)
             .map_err(map_error)?,
     };
-    Ok(metadata_to_dto(metadata))
+    Ok(to_media_metadata(metadata))
 }
 
 #[flutter_rust_bridge::frb(sync)]
-pub fn read_image_exif_from_file(path: String) -> Result<ImageExifDto, MediaInfoError> {
-    read_exif(path).map(|exif| exif_to_dto(&exif)).map_err(map_error)
+pub fn read_image_exif_from_file(path: String) -> Result<ImageExif, MediaInfoError> {
+    read_exif(path)
+        .map(|exif| to_image_exif(&exif))
+        .map_err(map_error)
 }
 
 #[flutter_rust_bridge::frb(sync)]
-pub fn read_image_exif_from_bytes(data: Vec<u8>) -> Result<ImageExifDto, MediaInfoError> {
+pub fn read_image_exif_from_bytes(data: Vec<u8>) -> Result<ImageExif, MediaInfoError> {
     let mut parser = nom_exif::MediaParser::new();
     let source = MediaSource::from_memory(data).map_err(map_error)?;
     parser
         .parse_exif(source)
-        .map(|iter| exif_to_dto(&iter.into()))
+        .map(|iter| to_image_exif(&iter.into()))
         .map_err(map_error)
 }
 
 #[flutter_rust_bridge::frb(sync)]
-pub fn read_image_exif_lazy_from_file(path: String) -> Result<ImageExifDto, MediaInfoError> {
-    read_exif_iter(path)
-        .map(exif_iter_to_dto)
-        .map_err(map_error)
+pub fn read_image_exif_lazy_from_file(path: String) -> Result<ImageExif, MediaInfoError> {
+    read_exif_iter(path).map(from_exif_iter).map_err(map_error)
 }
 
 #[flutter_rust_bridge::frb(sync)]
-pub fn read_image_exif_lazy_from_bytes(data: Vec<u8>) -> Result<ImageExifDto, MediaInfoError> {
+pub fn read_image_exif_lazy_from_bytes(data: Vec<u8>) -> Result<ImageExif, MediaInfoError> {
     let mut parser = nom_exif::MediaParser::new();
     let source = MediaSource::from_memory(data).map_err(map_error)?;
     parser
         .parse_exif(source)
-        .map(exif_iter_to_dto)
+        .map(from_exif_iter)
         .map_err(map_error)
 }
 
 #[flutter_rust_bridge::frb(sync)]
-pub fn read_video_metadata_from_file(path: String) -> Result<VideoTrackDto, MediaInfoError> {
+pub fn read_video_metadata_from_file(path: String) -> Result<VideoTrack, MediaInfoError> {
     read_track(path)
-        .map(|track| track_to_dto(&track))
+        .map(|track| to_video_track(&track))
         .map_err(map_error)
 }
 
 #[flutter_rust_bridge::frb(sync)]
-pub fn read_video_metadata_from_bytes(data: Vec<u8>) -> Result<VideoTrackDto, MediaInfoError> {
+pub fn read_video_metadata_from_bytes(data: Vec<u8>) -> Result<VideoTrack, MediaInfoError> {
     let mut parser = nom_exif::MediaParser::new();
     let source = MediaSource::from_memory(data).map_err(map_error)?;
     parser
         .parse_track(source)
-        .map(|track| track_to_dto(&track))
+        .map(|track| to_video_track(&track))
         .map_err(map_error)
 }
 
 #[flutter_rust_bridge::frb(sync)]
 pub fn read_full_image_metadata_from_file(
     path: String,
-) -> Result<FullImageMetadataDto, MediaInfoError> {
+) -> Result<FullImageMetadata, MediaInfoError> {
     let mut parser = nom_exif::MediaParser::new();
     let source = MediaSource::open(path).map_err(map_error)?;
-    let image_metadata = parser
+    parser
         .parse_image_metadata(source)
-        .map_err(map_error)?;
-    Ok(full_image_metadata_to_dto(image_metadata))
+        .map(to_full_image_metadata)
+        .map_err(map_error)
 }
 
 #[flutter_rust_bridge::frb(sync)]
 pub fn read_full_image_metadata_from_bytes(
     data: Vec<u8>,
-) -> Result<FullImageMetadataDto, MediaInfoError> {
+) -> Result<FullImageMetadata, MediaInfoError> {
     let mut parser = nom_exif::MediaParser::new();
     let source = MediaSource::from_memory(data).map_err(map_error)?;
-    let image_metadata = parser
+    parser
         .parse_image_metadata(source)
-        .map_err(map_error)?;
-    Ok(full_image_metadata_to_dto(image_metadata))
-}
-
-#[flutter_rust_bridge::frb(sync)]
-pub fn detect_media_kind_from_file(path: String) -> Result<MediaKindDto, MediaInfoError> {
-    let source = MediaSource::open(path).map_err(map_error)?;
-    Ok(media_kind_to_dto(source.kind()))
-}
-
-#[flutter_rust_bridge::frb(sync)]
-pub fn detect_media_kind_from_bytes(data: Vec<u8>) -> Result<MediaKindDto, MediaInfoError> {
-    let source = MediaSource::from_memory(data).map_err(map_error)?;
-    Ok(media_kind_to_dto(source.kind()))
-}
-
-#[flutter_rust_bridge::frb(sync)]
-pub fn read_embedded_video_from_file(path: String) -> Result<VideoTrackDto, MediaInfoError> {
-    let mut parser = nom_exif::MediaParser::new();
-    let source = MediaSource::open(path).map_err(map_error)?;
-    parser
-        .parse_track(source)
-        .map(|track| track_to_dto(&track))
+        .map(to_full_image_metadata)
         .map_err(map_error)
 }
 
 #[flutter_rust_bridge::frb(sync)]
-pub fn read_embedded_video_from_bytes(data: Vec<u8>) -> Result<VideoTrackDto, MediaInfoError> {
+pub fn detect_media_kind_from_file(path: String) -> Result<MediaKind, MediaInfoError> {
+    let source = MediaSource::open(path).map_err(map_error)?;
+    Ok(to_media_kind(source.kind()))
+}
+
+#[flutter_rust_bridge::frb(sync)]
+pub fn detect_media_kind_from_bytes(data: Vec<u8>) -> Result<MediaKind, MediaInfoError> {
+    let source = MediaSource::from_memory(data).map_err(map_error)?;
+    Ok(to_media_kind(source.kind()))
+}
+
+#[flutter_rust_bridge::frb(sync)]
+pub fn read_embedded_video_from_file(path: String) -> Result<VideoTrack, MediaInfoError> {
+    let mut parser = nom_exif::MediaParser::new();
+    let source = MediaSource::open(path).map_err(map_error)?;
+    parser
+        .parse_track(source)
+        .map(|track| to_video_track(&track))
+        .map_err(map_error)
+}
+
+#[flutter_rust_bridge::frb(sync)]
+pub fn read_embedded_video_from_bytes(data: Vec<u8>) -> Result<VideoTrack, MediaInfoError> {
     let mut parser = nom_exif::MediaParser::new();
     let source = MediaSource::from_memory(data).map_err(map_error)?;
     parser
         .parse_track(source)
-        .map(|track| track_to_dto(&track))
+        .map(|track| to_video_track(&track))
         .map_err(map_error)
-}
-
-fn full_image_metadata_to_dto(
-    image_metadata: nom_exif::ImageMetadata<ExifIter>,
-) -> FullImageMetadataDto {
-    FullImageMetadataDto {
-        exif: image_metadata
-            .exif
-            .map(|exif| exif_to_dto(&exif.into())),
-        png_text_chunks: image_format_metadata_to_png(image_metadata.format),
-    }
 }

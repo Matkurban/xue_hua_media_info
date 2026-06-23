@@ -1,5 +1,7 @@
 pub mod parser;
+pub mod parser_async;
 pub mod reader;
+pub mod reader_async;
 pub mod types;
 
 #[flutter_rust_bridge::frb(init)]

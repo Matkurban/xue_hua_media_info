@@ -16,95 +16,94 @@ final _privateConstructorUsedError = UnsupportedError(
 );
 
 /// @nodoc
-mixin _$MediaMetadataDto {
+mixin _$MediaMetadata {
   Object get field0 => throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function(ImageExifDto field0) imageExif,
-    required TResult Function(VideoTrackDto field0) videoTrack,
+    required TResult Function(ImageExif field0) imageExif,
+    required TResult Function(VideoTrack field0) videoTrack,
   }) => throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(ImageExifDto field0)? imageExif,
-    TResult? Function(VideoTrackDto field0)? videoTrack,
+    TResult? Function(ImageExif field0)? imageExif,
+    TResult? Function(VideoTrack field0)? videoTrack,
   }) => throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function(ImageExifDto field0)? imageExif,
-    TResult Function(VideoTrackDto field0)? videoTrack,
+    TResult Function(ImageExif field0)? imageExif,
+    TResult Function(VideoTrack field0)? videoTrack,
     required TResult orElse(),
   }) => throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
-    required TResult Function(MediaMetadataDto_ImageExif value) imageExif,
-    required TResult Function(MediaMetadataDto_VideoTrack value) videoTrack,
+    required TResult Function(MediaMetadata_ImageExif value) imageExif,
+    required TResult Function(MediaMetadata_VideoTrack value) videoTrack,
   }) => throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(MediaMetadataDto_ImageExif value)? imageExif,
-    TResult? Function(MediaMetadataDto_VideoTrack value)? videoTrack,
+    TResult? Function(MediaMetadata_ImageExif value)? imageExif,
+    TResult? Function(MediaMetadata_VideoTrack value)? videoTrack,
   }) => throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
-    TResult Function(MediaMetadataDto_ImageExif value)? imageExif,
-    TResult Function(MediaMetadataDto_VideoTrack value)? videoTrack,
+    TResult Function(MediaMetadata_ImageExif value)? imageExif,
+    TResult Function(MediaMetadata_VideoTrack value)? videoTrack,
     required TResult orElse(),
   }) => throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class $MediaMetadataDtoCopyWith<$Res> {
-  factory $MediaMetadataDtoCopyWith(
-    MediaMetadataDto value,
-    $Res Function(MediaMetadataDto) then,
-  ) = _$MediaMetadataDtoCopyWithImpl<$Res, MediaMetadataDto>;
+abstract class $MediaMetadataCopyWith<$Res> {
+  factory $MediaMetadataCopyWith(
+    MediaMetadata value,
+    $Res Function(MediaMetadata) then,
+  ) = _$MediaMetadataCopyWithImpl<$Res, MediaMetadata>;
 }
 
 /// @nodoc
-class _$MediaMetadataDtoCopyWithImpl<$Res, $Val extends MediaMetadataDto>
-    implements $MediaMetadataDtoCopyWith<$Res> {
-  _$MediaMetadataDtoCopyWithImpl(this._value, this._then);
+class _$MediaMetadataCopyWithImpl<$Res, $Val extends MediaMetadata>
+    implements $MediaMetadataCopyWith<$Res> {
+  _$MediaMetadataCopyWithImpl(this._value, this._then);
 
   // ignore: unused_field
   final $Val _value;
   // ignore: unused_field
   final $Res Function($Val) _then;
 
-  /// Create a copy of MediaMetadataDto
+  /// Create a copy of MediaMetadata
   /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
-abstract class _$$MediaMetadataDto_ImageExifImplCopyWith<$Res> {
-  factory _$$MediaMetadataDto_ImageExifImplCopyWith(
-    _$MediaMetadataDto_ImageExifImpl value,
-    $Res Function(_$MediaMetadataDto_ImageExifImpl) then,
-  ) = __$$MediaMetadataDto_ImageExifImplCopyWithImpl<$Res>;
+abstract class _$$MediaMetadata_ImageExifImplCopyWith<$Res> {
+  factory _$$MediaMetadata_ImageExifImplCopyWith(
+    _$MediaMetadata_ImageExifImpl value,
+    $Res Function(_$MediaMetadata_ImageExifImpl) then,
+  ) = __$$MediaMetadata_ImageExifImplCopyWithImpl<$Res>;
   @useResult
-  $Res call({ImageExifDto field0});
+  $Res call({ImageExif field0});
 }
 
 /// @nodoc
-class __$$MediaMetadataDto_ImageExifImplCopyWithImpl<$Res>
-    extends
-        _$MediaMetadataDtoCopyWithImpl<$Res, _$MediaMetadataDto_ImageExifImpl>
-    implements _$$MediaMetadataDto_ImageExifImplCopyWith<$Res> {
-  __$$MediaMetadataDto_ImageExifImplCopyWithImpl(
-    _$MediaMetadataDto_ImageExifImpl _value,
-    $Res Function(_$MediaMetadataDto_ImageExifImpl) _then,
+class __$$MediaMetadata_ImageExifImplCopyWithImpl<$Res>
+    extends _$MediaMetadataCopyWithImpl<$Res, _$MediaMetadata_ImageExifImpl>
+    implements _$$MediaMetadata_ImageExifImplCopyWith<$Res> {
+  __$$MediaMetadata_ImageExifImplCopyWithImpl(
+    _$MediaMetadata_ImageExifImpl _value,
+    $Res Function(_$MediaMetadata_ImageExifImpl) _then,
   ) : super(_value, _then);
 
-  /// Create a copy of MediaMetadataDto
+  /// Create a copy of MediaMetadata
   /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({Object? field0 = null}) {
     return _then(
-      _$MediaMetadataDto_ImageExifImpl(
+      _$MediaMetadata_ImageExifImpl(
         null == field0
             ? _value.field0
             : field0 // ignore: cast_nullable_to_non_nullable
-                  as ImageExifDto,
+                  as ImageExif,
       ),
     );
   }
@@ -112,44 +111,44 @@ class __$$MediaMetadataDto_ImageExifImplCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$MediaMetadataDto_ImageExifImpl extends MediaMetadataDto_ImageExif {
-  const _$MediaMetadataDto_ImageExifImpl(this.field0) : super._();
+class _$MediaMetadata_ImageExifImpl extends MediaMetadata_ImageExif {
+  const _$MediaMetadata_ImageExifImpl(this.field0) : super._();
 
   @override
-  final ImageExifDto field0;
+  final ImageExif field0;
 
   @override
   String toString() {
-    return 'MediaMetadataDto.imageExif(field0: $field0)';
+    return 'MediaMetadata.imageExif(field0: $field0)';
   }
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$MediaMetadataDto_ImageExifImpl &&
+            other is _$MediaMetadata_ImageExifImpl &&
             (identical(other.field0, field0) || other.field0 == field0));
   }
 
   @override
   int get hashCode => Object.hash(runtimeType, field0);
 
-  /// Create a copy of MediaMetadataDto
+  /// Create a copy of MediaMetadata
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
-  _$$MediaMetadataDto_ImageExifImplCopyWith<_$MediaMetadataDto_ImageExifImpl>
+  _$$MediaMetadata_ImageExifImplCopyWith<_$MediaMetadata_ImageExifImpl>
   get copyWith =>
-      __$$MediaMetadataDto_ImageExifImplCopyWithImpl<
-        _$MediaMetadataDto_ImageExifImpl
+      __$$MediaMetadata_ImageExifImplCopyWithImpl<
+        _$MediaMetadata_ImageExifImpl
       >(this, _$identity);
 
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function(ImageExifDto field0) imageExif,
-    required TResult Function(VideoTrackDto field0) videoTrack,
+    required TResult Function(ImageExif field0) imageExif,
+    required TResult Function(VideoTrack field0) videoTrack,
   }) {
     return imageExif(field0);
   }
@@ -157,8 +156,8 @@ class _$MediaMetadataDto_ImageExifImpl extends MediaMetadataDto_ImageExif {
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(ImageExifDto field0)? imageExif,
-    TResult? Function(VideoTrackDto field0)? videoTrack,
+    TResult? Function(ImageExif field0)? imageExif,
+    TResult? Function(VideoTrack field0)? videoTrack,
   }) {
     return imageExif?.call(field0);
   }
@@ -166,8 +165,8 @@ class _$MediaMetadataDto_ImageExifImpl extends MediaMetadataDto_ImageExif {
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function(ImageExifDto field0)? imageExif,
-    TResult Function(VideoTrackDto field0)? videoTrack,
+    TResult Function(ImageExif field0)? imageExif,
+    TResult Function(VideoTrack field0)? videoTrack,
     required TResult orElse(),
   }) {
     if (imageExif != null) {
@@ -179,8 +178,8 @@ class _$MediaMetadataDto_ImageExifImpl extends MediaMetadataDto_ImageExif {
   @override
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
-    required TResult Function(MediaMetadataDto_ImageExif value) imageExif,
-    required TResult Function(MediaMetadataDto_VideoTrack value) videoTrack,
+    required TResult Function(MediaMetadata_ImageExif value) imageExif,
+    required TResult Function(MediaMetadata_VideoTrack value) videoTrack,
   }) {
     return imageExif(this);
   }
@@ -188,8 +187,8 @@ class _$MediaMetadataDto_ImageExifImpl extends MediaMetadataDto_ImageExif {
   @override
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(MediaMetadataDto_ImageExif value)? imageExif,
-    TResult? Function(MediaMetadataDto_VideoTrack value)? videoTrack,
+    TResult? Function(MediaMetadata_ImageExif value)? imageExif,
+    TResult? Function(MediaMetadata_VideoTrack value)? videoTrack,
   }) {
     return imageExif?.call(this);
   }
@@ -197,8 +196,8 @@ class _$MediaMetadataDto_ImageExifImpl extends MediaMetadataDto_ImageExif {
   @override
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
-    TResult Function(MediaMetadataDto_ImageExif value)? imageExif,
-    TResult Function(MediaMetadataDto_VideoTrack value)? videoTrack,
+    TResult Function(MediaMetadata_ImageExif value)? imageExif,
+    TResult Function(MediaMetadata_VideoTrack value)? videoTrack,
     required TResult orElse(),
   }) {
     if (imageExif != null) {
@@ -208,52 +207,51 @@ class _$MediaMetadataDto_ImageExifImpl extends MediaMetadataDto_ImageExif {
   }
 }
 
-abstract class MediaMetadataDto_ImageExif extends MediaMetadataDto {
-  const factory MediaMetadataDto_ImageExif(final ImageExifDto field0) =
-      _$MediaMetadataDto_ImageExifImpl;
-  const MediaMetadataDto_ImageExif._() : super._();
+abstract class MediaMetadata_ImageExif extends MediaMetadata {
+  const factory MediaMetadata_ImageExif(final ImageExif field0) =
+      _$MediaMetadata_ImageExifImpl;
+  const MediaMetadata_ImageExif._() : super._();
 
   @override
-  ImageExifDto get field0;
+  ImageExif get field0;
 
-  /// Create a copy of MediaMetadataDto
+  /// Create a copy of MediaMetadata
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$MediaMetadataDto_ImageExifImplCopyWith<_$MediaMetadataDto_ImageExifImpl>
+  _$$MediaMetadata_ImageExifImplCopyWith<_$MediaMetadata_ImageExifImpl>
   get copyWith => throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class _$$MediaMetadataDto_VideoTrackImplCopyWith<$Res> {
-  factory _$$MediaMetadataDto_VideoTrackImplCopyWith(
-    _$MediaMetadataDto_VideoTrackImpl value,
-    $Res Function(_$MediaMetadataDto_VideoTrackImpl) then,
-  ) = __$$MediaMetadataDto_VideoTrackImplCopyWithImpl<$Res>;
+abstract class _$$MediaMetadata_VideoTrackImplCopyWith<$Res> {
+  factory _$$MediaMetadata_VideoTrackImplCopyWith(
+    _$MediaMetadata_VideoTrackImpl value,
+    $Res Function(_$MediaMetadata_VideoTrackImpl) then,
+  ) = __$$MediaMetadata_VideoTrackImplCopyWithImpl<$Res>;
   @useResult
-  $Res call({VideoTrackDto field0});
+  $Res call({VideoTrack field0});
 }
 
 /// @nodoc
-class __$$MediaMetadataDto_VideoTrackImplCopyWithImpl<$Res>
-    extends
-        _$MediaMetadataDtoCopyWithImpl<$Res, _$MediaMetadataDto_VideoTrackImpl>
-    implements _$$MediaMetadataDto_VideoTrackImplCopyWith<$Res> {
-  __$$MediaMetadataDto_VideoTrackImplCopyWithImpl(
-    _$MediaMetadataDto_VideoTrackImpl _value,
-    $Res Function(_$MediaMetadataDto_VideoTrackImpl) _then,
+class __$$MediaMetadata_VideoTrackImplCopyWithImpl<$Res>
+    extends _$MediaMetadataCopyWithImpl<$Res, _$MediaMetadata_VideoTrackImpl>
+    implements _$$MediaMetadata_VideoTrackImplCopyWith<$Res> {
+  __$$MediaMetadata_VideoTrackImplCopyWithImpl(
+    _$MediaMetadata_VideoTrackImpl _value,
+    $Res Function(_$MediaMetadata_VideoTrackImpl) _then,
   ) : super(_value, _then);
 
-  /// Create a copy of MediaMetadataDto
+  /// Create a copy of MediaMetadata
   /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({Object? field0 = null}) {
     return _then(
-      _$MediaMetadataDto_VideoTrackImpl(
+      _$MediaMetadata_VideoTrackImpl(
         null == field0
             ? _value.field0
             : field0 // ignore: cast_nullable_to_non_nullable
-                  as VideoTrackDto,
+                  as VideoTrack,
       ),
     );
   }
@@ -261,44 +259,44 @@ class __$$MediaMetadataDto_VideoTrackImplCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$MediaMetadataDto_VideoTrackImpl extends MediaMetadataDto_VideoTrack {
-  const _$MediaMetadataDto_VideoTrackImpl(this.field0) : super._();
+class _$MediaMetadata_VideoTrackImpl extends MediaMetadata_VideoTrack {
+  const _$MediaMetadata_VideoTrackImpl(this.field0) : super._();
 
   @override
-  final VideoTrackDto field0;
+  final VideoTrack field0;
 
   @override
   String toString() {
-    return 'MediaMetadataDto.videoTrack(field0: $field0)';
+    return 'MediaMetadata.videoTrack(field0: $field0)';
   }
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$MediaMetadataDto_VideoTrackImpl &&
+            other is _$MediaMetadata_VideoTrackImpl &&
             (identical(other.field0, field0) || other.field0 == field0));
   }
 
   @override
   int get hashCode => Object.hash(runtimeType, field0);
 
-  /// Create a copy of MediaMetadataDto
+  /// Create a copy of MediaMetadata
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
-  _$$MediaMetadataDto_VideoTrackImplCopyWith<_$MediaMetadataDto_VideoTrackImpl>
+  _$$MediaMetadata_VideoTrackImplCopyWith<_$MediaMetadata_VideoTrackImpl>
   get copyWith =>
-      __$$MediaMetadataDto_VideoTrackImplCopyWithImpl<
-        _$MediaMetadataDto_VideoTrackImpl
+      __$$MediaMetadata_VideoTrackImplCopyWithImpl<
+        _$MediaMetadata_VideoTrackImpl
       >(this, _$identity);
 
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function(ImageExifDto field0) imageExif,
-    required TResult Function(VideoTrackDto field0) videoTrack,
+    required TResult Function(ImageExif field0) imageExif,
+    required TResult Function(VideoTrack field0) videoTrack,
   }) {
     return videoTrack(field0);
   }
@@ -306,8 +304,8 @@ class _$MediaMetadataDto_VideoTrackImpl extends MediaMetadataDto_VideoTrack {
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(ImageExifDto field0)? imageExif,
-    TResult? Function(VideoTrackDto field0)? videoTrack,
+    TResult? Function(ImageExif field0)? imageExif,
+    TResult? Function(VideoTrack field0)? videoTrack,
   }) {
     return videoTrack?.call(field0);
   }
@@ -315,8 +313,8 @@ class _$MediaMetadataDto_VideoTrackImpl extends MediaMetadataDto_VideoTrack {
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function(ImageExifDto field0)? imageExif,
-    TResult Function(VideoTrackDto field0)? videoTrack,
+    TResult Function(ImageExif field0)? imageExif,
+    TResult Function(VideoTrack field0)? videoTrack,
     required TResult orElse(),
   }) {
     if (videoTrack != null) {
@@ -328,8 +326,8 @@ class _$MediaMetadataDto_VideoTrackImpl extends MediaMetadataDto_VideoTrack {
   @override
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
-    required TResult Function(MediaMetadataDto_ImageExif value) imageExif,
-    required TResult Function(MediaMetadataDto_VideoTrack value) videoTrack,
+    required TResult Function(MediaMetadata_ImageExif value) imageExif,
+    required TResult Function(MediaMetadata_VideoTrack value) videoTrack,
   }) {
     return videoTrack(this);
   }
@@ -337,8 +335,8 @@ class _$MediaMetadataDto_VideoTrackImpl extends MediaMetadataDto_VideoTrack {
   @override
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(MediaMetadataDto_ImageExif value)? imageExif,
-    TResult? Function(MediaMetadataDto_VideoTrack value)? videoTrack,
+    TResult? Function(MediaMetadata_ImageExif value)? imageExif,
+    TResult? Function(MediaMetadata_VideoTrack value)? videoTrack,
   }) {
     return videoTrack?.call(this);
   }
@@ -346,8 +344,8 @@ class _$MediaMetadataDto_VideoTrackImpl extends MediaMetadataDto_VideoTrack {
   @override
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
-    TResult Function(MediaMetadataDto_ImageExif value)? imageExif,
-    TResult Function(MediaMetadataDto_VideoTrack value)? videoTrack,
+    TResult Function(MediaMetadata_ImageExif value)? imageExif,
+    TResult Function(MediaMetadata_VideoTrack value)? videoTrack,
     required TResult orElse(),
   }) {
     if (videoTrack != null) {
@@ -357,36 +355,36 @@ class _$MediaMetadataDto_VideoTrackImpl extends MediaMetadataDto_VideoTrack {
   }
 }
 
-abstract class MediaMetadataDto_VideoTrack extends MediaMetadataDto {
-  const factory MediaMetadataDto_VideoTrack(final VideoTrackDto field0) =
-      _$MediaMetadataDto_VideoTrackImpl;
-  const MediaMetadataDto_VideoTrack._() : super._();
+abstract class MediaMetadata_VideoTrack extends MediaMetadata {
+  const factory MediaMetadata_VideoTrack(final VideoTrack field0) =
+      _$MediaMetadata_VideoTrackImpl;
+  const MediaMetadata_VideoTrack._() : super._();
 
   @override
-  VideoTrackDto get field0;
+  VideoTrack get field0;
 
-  /// Create a copy of MediaMetadataDto
+  /// Create a copy of MediaMetadata
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$MediaMetadataDto_VideoTrackImplCopyWith<_$MediaMetadataDto_VideoTrackImpl>
+  _$$MediaMetadata_VideoTrackImplCopyWith<_$MediaMetadata_VideoTrackImpl>
   get copyWith => throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-mixin _$MetadataValueDto {
+mixin _$MetadataValue {
   Object get field0 => throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function(String field0) text,
     required TResult Function(int field0) integer,
     required TResult Function(double field0) float,
-    required TResult Function(RationalDto field0) rational,
-    required TResult Function(RationalDto field0) signedRational,
+    required TResult Function(Rational field0) rational,
+    required TResult Function(Rational field0) signedRational,
     required TResult Function(String field0) dateTime,
     required TResult Function(String field0) naiveDateTime,
     required TResult Function(String field0) bytes,
-    required TResult Function(List<RationalDto> field0) rationalArray,
-    required TResult Function(List<RationalDto> field0) signedRationalArray,
+    required TResult Function(List<Rational> field0) rationalArray,
+    required TResult Function(List<Rational> field0) signedRationalArray,
     required TResult Function(Uint8List field0) u8Array,
     required TResult Function(Int32List field0) u16Array,
     required TResult Function(Int64List field0) u32Array,
@@ -396,13 +394,13 @@ mixin _$MetadataValueDto {
     TResult? Function(String field0)? text,
     TResult? Function(int field0)? integer,
     TResult? Function(double field0)? float,
-    TResult? Function(RationalDto field0)? rational,
-    TResult? Function(RationalDto field0)? signedRational,
+    TResult? Function(Rational field0)? rational,
+    TResult? Function(Rational field0)? signedRational,
     TResult? Function(String field0)? dateTime,
     TResult? Function(String field0)? naiveDateTime,
     TResult? Function(String field0)? bytes,
-    TResult? Function(List<RationalDto> field0)? rationalArray,
-    TResult? Function(List<RationalDto> field0)? signedRationalArray,
+    TResult? Function(List<Rational> field0)? rationalArray,
+    TResult? Function(List<Rational> field0)? signedRationalArray,
     TResult? Function(Uint8List field0)? u8Array,
     TResult? Function(Int32List field0)? u16Array,
     TResult? Function(Int64List field0)? u32Array,
@@ -412,13 +410,13 @@ mixin _$MetadataValueDto {
     TResult Function(String field0)? text,
     TResult Function(int field0)? integer,
     TResult Function(double field0)? float,
-    TResult Function(RationalDto field0)? rational,
-    TResult Function(RationalDto field0)? signedRational,
+    TResult Function(Rational field0)? rational,
+    TResult Function(Rational field0)? signedRational,
     TResult Function(String field0)? dateTime,
     TResult Function(String field0)? naiveDateTime,
     TResult Function(String field0)? bytes,
-    TResult Function(List<RationalDto> field0)? rationalArray,
-    TResult Function(List<RationalDto> field0)? signedRationalArray,
+    TResult Function(List<Rational> field0)? rationalArray,
+    TResult Function(List<Rational> field0)? signedRationalArray,
     TResult Function(Uint8List field0)? u8Array,
     TResult Function(Int32List field0)? u16Array,
     TResult Function(Int64List field0)? u32Array,
@@ -426,109 +424,107 @@ mixin _$MetadataValueDto {
   }) => throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
-    required TResult Function(MetadataValueDto_Text value) text,
-    required TResult Function(MetadataValueDto_Integer value) integer,
-    required TResult Function(MetadataValueDto_Float value) float,
-    required TResult Function(MetadataValueDto_Rational value) rational,
-    required TResult Function(MetadataValueDto_SignedRational value)
+    required TResult Function(MetadataValue_Text value) text,
+    required TResult Function(MetadataValue_Integer value) integer,
+    required TResult Function(MetadataValue_Float value) float,
+    required TResult Function(MetadataValue_Rational value) rational,
+    required TResult Function(MetadataValue_SignedRational value)
     signedRational,
-    required TResult Function(MetadataValueDto_DateTime value) dateTime,
-    required TResult Function(MetadataValueDto_NaiveDateTime value)
-    naiveDateTime,
-    required TResult Function(MetadataValueDto_Bytes value) bytes,
-    required TResult Function(MetadataValueDto_RationalArray value)
-    rationalArray,
-    required TResult Function(MetadataValueDto_SignedRationalArray value)
+    required TResult Function(MetadataValue_DateTime value) dateTime,
+    required TResult Function(MetadataValue_NaiveDateTime value) naiveDateTime,
+    required TResult Function(MetadataValue_Bytes value) bytes,
+    required TResult Function(MetadataValue_RationalArray value) rationalArray,
+    required TResult Function(MetadataValue_SignedRationalArray value)
     signedRationalArray,
-    required TResult Function(MetadataValueDto_U8Array value) u8Array,
-    required TResult Function(MetadataValueDto_U16Array value) u16Array,
-    required TResult Function(MetadataValueDto_U32Array value) u32Array,
+    required TResult Function(MetadataValue_U8Array value) u8Array,
+    required TResult Function(MetadataValue_U16Array value) u16Array,
+    required TResult Function(MetadataValue_U32Array value) u32Array,
   }) => throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(MetadataValueDto_Text value)? text,
-    TResult? Function(MetadataValueDto_Integer value)? integer,
-    TResult? Function(MetadataValueDto_Float value)? float,
-    TResult? Function(MetadataValueDto_Rational value)? rational,
-    TResult? Function(MetadataValueDto_SignedRational value)? signedRational,
-    TResult? Function(MetadataValueDto_DateTime value)? dateTime,
-    TResult? Function(MetadataValueDto_NaiveDateTime value)? naiveDateTime,
-    TResult? Function(MetadataValueDto_Bytes value)? bytes,
-    TResult? Function(MetadataValueDto_RationalArray value)? rationalArray,
-    TResult? Function(MetadataValueDto_SignedRationalArray value)?
+    TResult? Function(MetadataValue_Text value)? text,
+    TResult? Function(MetadataValue_Integer value)? integer,
+    TResult? Function(MetadataValue_Float value)? float,
+    TResult? Function(MetadataValue_Rational value)? rational,
+    TResult? Function(MetadataValue_SignedRational value)? signedRational,
+    TResult? Function(MetadataValue_DateTime value)? dateTime,
+    TResult? Function(MetadataValue_NaiveDateTime value)? naiveDateTime,
+    TResult? Function(MetadataValue_Bytes value)? bytes,
+    TResult? Function(MetadataValue_RationalArray value)? rationalArray,
+    TResult? Function(MetadataValue_SignedRationalArray value)?
     signedRationalArray,
-    TResult? Function(MetadataValueDto_U8Array value)? u8Array,
-    TResult? Function(MetadataValueDto_U16Array value)? u16Array,
-    TResult? Function(MetadataValueDto_U32Array value)? u32Array,
+    TResult? Function(MetadataValue_U8Array value)? u8Array,
+    TResult? Function(MetadataValue_U16Array value)? u16Array,
+    TResult? Function(MetadataValue_U32Array value)? u32Array,
   }) => throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
-    TResult Function(MetadataValueDto_Text value)? text,
-    TResult Function(MetadataValueDto_Integer value)? integer,
-    TResult Function(MetadataValueDto_Float value)? float,
-    TResult Function(MetadataValueDto_Rational value)? rational,
-    TResult Function(MetadataValueDto_SignedRational value)? signedRational,
-    TResult Function(MetadataValueDto_DateTime value)? dateTime,
-    TResult Function(MetadataValueDto_NaiveDateTime value)? naiveDateTime,
-    TResult Function(MetadataValueDto_Bytes value)? bytes,
-    TResult Function(MetadataValueDto_RationalArray value)? rationalArray,
-    TResult Function(MetadataValueDto_SignedRationalArray value)?
+    TResult Function(MetadataValue_Text value)? text,
+    TResult Function(MetadataValue_Integer value)? integer,
+    TResult Function(MetadataValue_Float value)? float,
+    TResult Function(MetadataValue_Rational value)? rational,
+    TResult Function(MetadataValue_SignedRational value)? signedRational,
+    TResult Function(MetadataValue_DateTime value)? dateTime,
+    TResult Function(MetadataValue_NaiveDateTime value)? naiveDateTime,
+    TResult Function(MetadataValue_Bytes value)? bytes,
+    TResult Function(MetadataValue_RationalArray value)? rationalArray,
+    TResult Function(MetadataValue_SignedRationalArray value)?
     signedRationalArray,
-    TResult Function(MetadataValueDto_U8Array value)? u8Array,
-    TResult Function(MetadataValueDto_U16Array value)? u16Array,
-    TResult Function(MetadataValueDto_U32Array value)? u32Array,
+    TResult Function(MetadataValue_U8Array value)? u8Array,
+    TResult Function(MetadataValue_U16Array value)? u16Array,
+    TResult Function(MetadataValue_U32Array value)? u32Array,
     required TResult orElse(),
   }) => throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class $MetadataValueDtoCopyWith<$Res> {
-  factory $MetadataValueDtoCopyWith(
-    MetadataValueDto value,
-    $Res Function(MetadataValueDto) then,
-  ) = _$MetadataValueDtoCopyWithImpl<$Res, MetadataValueDto>;
+abstract class $MetadataValueCopyWith<$Res> {
+  factory $MetadataValueCopyWith(
+    MetadataValue value,
+    $Res Function(MetadataValue) then,
+  ) = _$MetadataValueCopyWithImpl<$Res, MetadataValue>;
 }
 
 /// @nodoc
-class _$MetadataValueDtoCopyWithImpl<$Res, $Val extends MetadataValueDto>
-    implements $MetadataValueDtoCopyWith<$Res> {
-  _$MetadataValueDtoCopyWithImpl(this._value, this._then);
+class _$MetadataValueCopyWithImpl<$Res, $Val extends MetadataValue>
+    implements $MetadataValueCopyWith<$Res> {
+  _$MetadataValueCopyWithImpl(this._value, this._then);
 
   // ignore: unused_field
   final $Val _value;
   // ignore: unused_field
   final $Res Function($Val) _then;
 
-  /// Create a copy of MetadataValueDto
+  /// Create a copy of MetadataValue
   /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
-abstract class _$$MetadataValueDto_TextImplCopyWith<$Res> {
-  factory _$$MetadataValueDto_TextImplCopyWith(
-    _$MetadataValueDto_TextImpl value,
-    $Res Function(_$MetadataValueDto_TextImpl) then,
-  ) = __$$MetadataValueDto_TextImplCopyWithImpl<$Res>;
+abstract class _$$MetadataValue_TextImplCopyWith<$Res> {
+  factory _$$MetadataValue_TextImplCopyWith(
+    _$MetadataValue_TextImpl value,
+    $Res Function(_$MetadataValue_TextImpl) then,
+  ) = __$$MetadataValue_TextImplCopyWithImpl<$Res>;
   @useResult
   $Res call({String field0});
 }
 
 /// @nodoc
-class __$$MetadataValueDto_TextImplCopyWithImpl<$Res>
-    extends _$MetadataValueDtoCopyWithImpl<$Res, _$MetadataValueDto_TextImpl>
-    implements _$$MetadataValueDto_TextImplCopyWith<$Res> {
-  __$$MetadataValueDto_TextImplCopyWithImpl(
-    _$MetadataValueDto_TextImpl _value,
-    $Res Function(_$MetadataValueDto_TextImpl) _then,
+class __$$MetadataValue_TextImplCopyWithImpl<$Res>
+    extends _$MetadataValueCopyWithImpl<$Res, _$MetadataValue_TextImpl>
+    implements _$$MetadataValue_TextImplCopyWith<$Res> {
+  __$$MetadataValue_TextImplCopyWithImpl(
+    _$MetadataValue_TextImpl _value,
+    $Res Function(_$MetadataValue_TextImpl) _then,
   ) : super(_value, _then);
 
-  /// Create a copy of MetadataValueDto
+  /// Create a copy of MetadataValue
   /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({Object? field0 = null}) {
     return _then(
-      _$MetadataValueDto_TextImpl(
+      _$MetadataValue_TextImpl(
         null == field0
             ? _value.field0
             : field0 // ignore: cast_nullable_to_non_nullable
@@ -540,36 +536,35 @@ class __$$MetadataValueDto_TextImplCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$MetadataValueDto_TextImpl extends MetadataValueDto_Text {
-  const _$MetadataValueDto_TextImpl(this.field0) : super._();
+class _$MetadataValue_TextImpl extends MetadataValue_Text {
+  const _$MetadataValue_TextImpl(this.field0) : super._();
 
   @override
   final String field0;
 
   @override
   String toString() {
-    return 'MetadataValueDto.text(field0: $field0)';
+    return 'MetadataValue.text(field0: $field0)';
   }
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$MetadataValueDto_TextImpl &&
+            other is _$MetadataValue_TextImpl &&
             (identical(other.field0, field0) || other.field0 == field0));
   }
 
   @override
   int get hashCode => Object.hash(runtimeType, field0);
 
-  /// Create a copy of MetadataValueDto
+  /// Create a copy of MetadataValue
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
-  _$$MetadataValueDto_TextImplCopyWith<_$MetadataValueDto_TextImpl>
-  get copyWith =>
-      __$$MetadataValueDto_TextImplCopyWithImpl<_$MetadataValueDto_TextImpl>(
+  _$$MetadataValue_TextImplCopyWith<_$MetadataValue_TextImpl> get copyWith =>
+      __$$MetadataValue_TextImplCopyWithImpl<_$MetadataValue_TextImpl>(
         this,
         _$identity,
       );
@@ -580,13 +575,13 @@ class _$MetadataValueDto_TextImpl extends MetadataValueDto_Text {
     required TResult Function(String field0) text,
     required TResult Function(int field0) integer,
     required TResult Function(double field0) float,
-    required TResult Function(RationalDto field0) rational,
-    required TResult Function(RationalDto field0) signedRational,
+    required TResult Function(Rational field0) rational,
+    required TResult Function(Rational field0) signedRational,
     required TResult Function(String field0) dateTime,
     required TResult Function(String field0) naiveDateTime,
     required TResult Function(String field0) bytes,
-    required TResult Function(List<RationalDto> field0) rationalArray,
-    required TResult Function(List<RationalDto> field0) signedRationalArray,
+    required TResult Function(List<Rational> field0) rationalArray,
+    required TResult Function(List<Rational> field0) signedRationalArray,
     required TResult Function(Uint8List field0) u8Array,
     required TResult Function(Int32List field0) u16Array,
     required TResult Function(Int64List field0) u32Array,
@@ -600,13 +595,13 @@ class _$MetadataValueDto_TextImpl extends MetadataValueDto_Text {
     TResult? Function(String field0)? text,
     TResult? Function(int field0)? integer,
     TResult? Function(double field0)? float,
-    TResult? Function(RationalDto field0)? rational,
-    TResult? Function(RationalDto field0)? signedRational,
+    TResult? Function(Rational field0)? rational,
+    TResult? Function(Rational field0)? signedRational,
     TResult? Function(String field0)? dateTime,
     TResult? Function(String field0)? naiveDateTime,
     TResult? Function(String field0)? bytes,
-    TResult? Function(List<RationalDto> field0)? rationalArray,
-    TResult? Function(List<RationalDto> field0)? signedRationalArray,
+    TResult? Function(List<Rational> field0)? rationalArray,
+    TResult? Function(List<Rational> field0)? signedRationalArray,
     TResult? Function(Uint8List field0)? u8Array,
     TResult? Function(Int32List field0)? u16Array,
     TResult? Function(Int64List field0)? u32Array,
@@ -620,13 +615,13 @@ class _$MetadataValueDto_TextImpl extends MetadataValueDto_Text {
     TResult Function(String field0)? text,
     TResult Function(int field0)? integer,
     TResult Function(double field0)? float,
-    TResult Function(RationalDto field0)? rational,
-    TResult Function(RationalDto field0)? signedRational,
+    TResult Function(Rational field0)? rational,
+    TResult Function(Rational field0)? signedRational,
     TResult Function(String field0)? dateTime,
     TResult Function(String field0)? naiveDateTime,
     TResult Function(String field0)? bytes,
-    TResult Function(List<RationalDto> field0)? rationalArray,
-    TResult Function(List<RationalDto> field0)? signedRationalArray,
+    TResult Function(List<Rational> field0)? rationalArray,
+    TResult Function(List<Rational> field0)? signedRationalArray,
     TResult Function(Uint8List field0)? u8Array,
     TResult Function(Int32List field0)? u16Array,
     TResult Function(Int64List field0)? u32Array,
@@ -641,23 +636,21 @@ class _$MetadataValueDto_TextImpl extends MetadataValueDto_Text {
   @override
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
-    required TResult Function(MetadataValueDto_Text value) text,
-    required TResult Function(MetadataValueDto_Integer value) integer,
-    required TResult Function(MetadataValueDto_Float value) float,
-    required TResult Function(MetadataValueDto_Rational value) rational,
-    required TResult Function(MetadataValueDto_SignedRational value)
+    required TResult Function(MetadataValue_Text value) text,
+    required TResult Function(MetadataValue_Integer value) integer,
+    required TResult Function(MetadataValue_Float value) float,
+    required TResult Function(MetadataValue_Rational value) rational,
+    required TResult Function(MetadataValue_SignedRational value)
     signedRational,
-    required TResult Function(MetadataValueDto_DateTime value) dateTime,
-    required TResult Function(MetadataValueDto_NaiveDateTime value)
-    naiveDateTime,
-    required TResult Function(MetadataValueDto_Bytes value) bytes,
-    required TResult Function(MetadataValueDto_RationalArray value)
-    rationalArray,
-    required TResult Function(MetadataValueDto_SignedRationalArray value)
+    required TResult Function(MetadataValue_DateTime value) dateTime,
+    required TResult Function(MetadataValue_NaiveDateTime value) naiveDateTime,
+    required TResult Function(MetadataValue_Bytes value) bytes,
+    required TResult Function(MetadataValue_RationalArray value) rationalArray,
+    required TResult Function(MetadataValue_SignedRationalArray value)
     signedRationalArray,
-    required TResult Function(MetadataValueDto_U8Array value) u8Array,
-    required TResult Function(MetadataValueDto_U16Array value) u16Array,
-    required TResult Function(MetadataValueDto_U32Array value) u32Array,
+    required TResult Function(MetadataValue_U8Array value) u8Array,
+    required TResult Function(MetadataValue_U16Array value) u16Array,
+    required TResult Function(MetadataValue_U32Array value) u32Array,
   }) {
     return text(this);
   }
@@ -665,20 +658,20 @@ class _$MetadataValueDto_TextImpl extends MetadataValueDto_Text {
   @override
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(MetadataValueDto_Text value)? text,
-    TResult? Function(MetadataValueDto_Integer value)? integer,
-    TResult? Function(MetadataValueDto_Float value)? float,
-    TResult? Function(MetadataValueDto_Rational value)? rational,
-    TResult? Function(MetadataValueDto_SignedRational value)? signedRational,
-    TResult? Function(MetadataValueDto_DateTime value)? dateTime,
-    TResult? Function(MetadataValueDto_NaiveDateTime value)? naiveDateTime,
-    TResult? Function(MetadataValueDto_Bytes value)? bytes,
-    TResult? Function(MetadataValueDto_RationalArray value)? rationalArray,
-    TResult? Function(MetadataValueDto_SignedRationalArray value)?
+    TResult? Function(MetadataValue_Text value)? text,
+    TResult? Function(MetadataValue_Integer value)? integer,
+    TResult? Function(MetadataValue_Float value)? float,
+    TResult? Function(MetadataValue_Rational value)? rational,
+    TResult? Function(MetadataValue_SignedRational value)? signedRational,
+    TResult? Function(MetadataValue_DateTime value)? dateTime,
+    TResult? Function(MetadataValue_NaiveDateTime value)? naiveDateTime,
+    TResult? Function(MetadataValue_Bytes value)? bytes,
+    TResult? Function(MetadataValue_RationalArray value)? rationalArray,
+    TResult? Function(MetadataValue_SignedRationalArray value)?
     signedRationalArray,
-    TResult? Function(MetadataValueDto_U8Array value)? u8Array,
-    TResult? Function(MetadataValueDto_U16Array value)? u16Array,
-    TResult? Function(MetadataValueDto_U32Array value)? u32Array,
+    TResult? Function(MetadataValue_U8Array value)? u8Array,
+    TResult? Function(MetadataValue_U16Array value)? u16Array,
+    TResult? Function(MetadataValue_U32Array value)? u32Array,
   }) {
     return text?.call(this);
   }
@@ -686,20 +679,20 @@ class _$MetadataValueDto_TextImpl extends MetadataValueDto_Text {
   @override
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
-    TResult Function(MetadataValueDto_Text value)? text,
-    TResult Function(MetadataValueDto_Integer value)? integer,
-    TResult Function(MetadataValueDto_Float value)? float,
-    TResult Function(MetadataValueDto_Rational value)? rational,
-    TResult Function(MetadataValueDto_SignedRational value)? signedRational,
-    TResult Function(MetadataValueDto_DateTime value)? dateTime,
-    TResult Function(MetadataValueDto_NaiveDateTime value)? naiveDateTime,
-    TResult Function(MetadataValueDto_Bytes value)? bytes,
-    TResult Function(MetadataValueDto_RationalArray value)? rationalArray,
-    TResult Function(MetadataValueDto_SignedRationalArray value)?
+    TResult Function(MetadataValue_Text value)? text,
+    TResult Function(MetadataValue_Integer value)? integer,
+    TResult Function(MetadataValue_Float value)? float,
+    TResult Function(MetadataValue_Rational value)? rational,
+    TResult Function(MetadataValue_SignedRational value)? signedRational,
+    TResult Function(MetadataValue_DateTime value)? dateTime,
+    TResult Function(MetadataValue_NaiveDateTime value)? naiveDateTime,
+    TResult Function(MetadataValue_Bytes value)? bytes,
+    TResult Function(MetadataValue_RationalArray value)? rationalArray,
+    TResult Function(MetadataValue_SignedRationalArray value)?
     signedRationalArray,
-    TResult Function(MetadataValueDto_U8Array value)? u8Array,
-    TResult Function(MetadataValueDto_U16Array value)? u16Array,
-    TResult Function(MetadataValueDto_U32Array value)? u32Array,
+    TResult Function(MetadataValue_U8Array value)? u8Array,
+    TResult Function(MetadataValue_U16Array value)? u16Array,
+    TResult Function(MetadataValue_U32Array value)? u32Array,
     required TResult orElse(),
   }) {
     if (text != null) {
@@ -709,47 +702,47 @@ class _$MetadataValueDto_TextImpl extends MetadataValueDto_Text {
   }
 }
 
-abstract class MetadataValueDto_Text extends MetadataValueDto {
-  const factory MetadataValueDto_Text(final String field0) =
-      _$MetadataValueDto_TextImpl;
-  const MetadataValueDto_Text._() : super._();
+abstract class MetadataValue_Text extends MetadataValue {
+  const factory MetadataValue_Text(final String field0) =
+      _$MetadataValue_TextImpl;
+  const MetadataValue_Text._() : super._();
 
   @override
   String get field0;
 
-  /// Create a copy of MetadataValueDto
+  /// Create a copy of MetadataValue
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$MetadataValueDto_TextImplCopyWith<_$MetadataValueDto_TextImpl>
-  get copyWith => throw _privateConstructorUsedError;
+  _$$MetadataValue_TextImplCopyWith<_$MetadataValue_TextImpl> get copyWith =>
+      throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class _$$MetadataValueDto_IntegerImplCopyWith<$Res> {
-  factory _$$MetadataValueDto_IntegerImplCopyWith(
-    _$MetadataValueDto_IntegerImpl value,
-    $Res Function(_$MetadataValueDto_IntegerImpl) then,
-  ) = __$$MetadataValueDto_IntegerImplCopyWithImpl<$Res>;
+abstract class _$$MetadataValue_IntegerImplCopyWith<$Res> {
+  factory _$$MetadataValue_IntegerImplCopyWith(
+    _$MetadataValue_IntegerImpl value,
+    $Res Function(_$MetadataValue_IntegerImpl) then,
+  ) = __$$MetadataValue_IntegerImplCopyWithImpl<$Res>;
   @useResult
   $Res call({int field0});
 }
 
 /// @nodoc
-class __$$MetadataValueDto_IntegerImplCopyWithImpl<$Res>
-    extends _$MetadataValueDtoCopyWithImpl<$Res, _$MetadataValueDto_IntegerImpl>
-    implements _$$MetadataValueDto_IntegerImplCopyWith<$Res> {
-  __$$MetadataValueDto_IntegerImplCopyWithImpl(
-    _$MetadataValueDto_IntegerImpl _value,
-    $Res Function(_$MetadataValueDto_IntegerImpl) _then,
+class __$$MetadataValue_IntegerImplCopyWithImpl<$Res>
+    extends _$MetadataValueCopyWithImpl<$Res, _$MetadataValue_IntegerImpl>
+    implements _$$MetadataValue_IntegerImplCopyWith<$Res> {
+  __$$MetadataValue_IntegerImplCopyWithImpl(
+    _$MetadataValue_IntegerImpl _value,
+    $Res Function(_$MetadataValue_IntegerImpl) _then,
   ) : super(_value, _then);
 
-  /// Create a copy of MetadataValueDto
+  /// Create a copy of MetadataValue
   /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({Object? field0 = null}) {
     return _then(
-      _$MetadataValueDto_IntegerImpl(
+      _$MetadataValue_IntegerImpl(
         null == field0
             ? _value.field0
             : field0 // ignore: cast_nullable_to_non_nullable
@@ -761,38 +754,39 @@ class __$$MetadataValueDto_IntegerImplCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$MetadataValueDto_IntegerImpl extends MetadataValueDto_Integer {
-  const _$MetadataValueDto_IntegerImpl(this.field0) : super._();
+class _$MetadataValue_IntegerImpl extends MetadataValue_Integer {
+  const _$MetadataValue_IntegerImpl(this.field0) : super._();
 
   @override
   final int field0;
 
   @override
   String toString() {
-    return 'MetadataValueDto.integer(field0: $field0)';
+    return 'MetadataValue.integer(field0: $field0)';
   }
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$MetadataValueDto_IntegerImpl &&
+            other is _$MetadataValue_IntegerImpl &&
             (identical(other.field0, field0) || other.field0 == field0));
   }
 
   @override
   int get hashCode => Object.hash(runtimeType, field0);
 
-  /// Create a copy of MetadataValueDto
+  /// Create a copy of MetadataValue
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
-  _$$MetadataValueDto_IntegerImplCopyWith<_$MetadataValueDto_IntegerImpl>
+  _$$MetadataValue_IntegerImplCopyWith<_$MetadataValue_IntegerImpl>
   get copyWith =>
-      __$$MetadataValueDto_IntegerImplCopyWithImpl<
-        _$MetadataValueDto_IntegerImpl
-      >(this, _$identity);
+      __$$MetadataValue_IntegerImplCopyWithImpl<_$MetadataValue_IntegerImpl>(
+        this,
+        _$identity,
+      );
 
   @override
   @optionalTypeArgs
@@ -800,13 +794,13 @@ class _$MetadataValueDto_IntegerImpl extends MetadataValueDto_Integer {
     required TResult Function(String field0) text,
     required TResult Function(int field0) integer,
     required TResult Function(double field0) float,
-    required TResult Function(RationalDto field0) rational,
-    required TResult Function(RationalDto field0) signedRational,
+    required TResult Function(Rational field0) rational,
+    required TResult Function(Rational field0) signedRational,
     required TResult Function(String field0) dateTime,
     required TResult Function(String field0) naiveDateTime,
     required TResult Function(String field0) bytes,
-    required TResult Function(List<RationalDto> field0) rationalArray,
-    required TResult Function(List<RationalDto> field0) signedRationalArray,
+    required TResult Function(List<Rational> field0) rationalArray,
+    required TResult Function(List<Rational> field0) signedRationalArray,
     required TResult Function(Uint8List field0) u8Array,
     required TResult Function(Int32List field0) u16Array,
     required TResult Function(Int64List field0) u32Array,
@@ -820,13 +814,13 @@ class _$MetadataValueDto_IntegerImpl extends MetadataValueDto_Integer {
     TResult? Function(String field0)? text,
     TResult? Function(int field0)? integer,
     TResult? Function(double field0)? float,
-    TResult? Function(RationalDto field0)? rational,
-    TResult? Function(RationalDto field0)? signedRational,
+    TResult? Function(Rational field0)? rational,
+    TResult? Function(Rational field0)? signedRational,
     TResult? Function(String field0)? dateTime,
     TResult? Function(String field0)? naiveDateTime,
     TResult? Function(String field0)? bytes,
-    TResult? Function(List<RationalDto> field0)? rationalArray,
-    TResult? Function(List<RationalDto> field0)? signedRationalArray,
+    TResult? Function(List<Rational> field0)? rationalArray,
+    TResult? Function(List<Rational> field0)? signedRationalArray,
     TResult? Function(Uint8List field0)? u8Array,
     TResult? Function(Int32List field0)? u16Array,
     TResult? Function(Int64List field0)? u32Array,
@@ -840,13 +834,13 @@ class _$MetadataValueDto_IntegerImpl extends MetadataValueDto_Integer {
     TResult Function(String field0)? text,
     TResult Function(int field0)? integer,
     TResult Function(double field0)? float,
-    TResult Function(RationalDto field0)? rational,
-    TResult Function(RationalDto field0)? signedRational,
+    TResult Function(Rational field0)? rational,
+    TResult Function(Rational field0)? signedRational,
     TResult Function(String field0)? dateTime,
     TResult Function(String field0)? naiveDateTime,
     TResult Function(String field0)? bytes,
-    TResult Function(List<RationalDto> field0)? rationalArray,
-    TResult Function(List<RationalDto> field0)? signedRationalArray,
+    TResult Function(List<Rational> field0)? rationalArray,
+    TResult Function(List<Rational> field0)? signedRationalArray,
     TResult Function(Uint8List field0)? u8Array,
     TResult Function(Int32List field0)? u16Array,
     TResult Function(Int64List field0)? u32Array,
@@ -861,23 +855,21 @@ class _$MetadataValueDto_IntegerImpl extends MetadataValueDto_Integer {
   @override
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
-    required TResult Function(MetadataValueDto_Text value) text,
-    required TResult Function(MetadataValueDto_Integer value) integer,
-    required TResult Function(MetadataValueDto_Float value) float,
-    required TResult Function(MetadataValueDto_Rational value) rational,
-    required TResult Function(MetadataValueDto_SignedRational value)
+    required TResult Function(MetadataValue_Text value) text,
+    required TResult Function(MetadataValue_Integer value) integer,
+    required TResult Function(MetadataValue_Float value) float,
+    required TResult Function(MetadataValue_Rational value) rational,
+    required TResult Function(MetadataValue_SignedRational value)
     signedRational,
-    required TResult Function(MetadataValueDto_DateTime value) dateTime,
-    required TResult Function(MetadataValueDto_NaiveDateTime value)
-    naiveDateTime,
-    required TResult Function(MetadataValueDto_Bytes value) bytes,
-    required TResult Function(MetadataValueDto_RationalArray value)
-    rationalArray,
-    required TResult Function(MetadataValueDto_SignedRationalArray value)
+    required TResult Function(MetadataValue_DateTime value) dateTime,
+    required TResult Function(MetadataValue_NaiveDateTime value) naiveDateTime,
+    required TResult Function(MetadataValue_Bytes value) bytes,
+    required TResult Function(MetadataValue_RationalArray value) rationalArray,
+    required TResult Function(MetadataValue_SignedRationalArray value)
     signedRationalArray,
-    required TResult Function(MetadataValueDto_U8Array value) u8Array,
-    required TResult Function(MetadataValueDto_U16Array value) u16Array,
-    required TResult Function(MetadataValueDto_U32Array value) u32Array,
+    required TResult Function(MetadataValue_U8Array value) u8Array,
+    required TResult Function(MetadataValue_U16Array value) u16Array,
+    required TResult Function(MetadataValue_U32Array value) u32Array,
   }) {
     return integer(this);
   }
@@ -885,20 +877,20 @@ class _$MetadataValueDto_IntegerImpl extends MetadataValueDto_Integer {
   @override
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(MetadataValueDto_Text value)? text,
-    TResult? Function(MetadataValueDto_Integer value)? integer,
-    TResult? Function(MetadataValueDto_Float value)? float,
-    TResult? Function(MetadataValueDto_Rational value)? rational,
-    TResult? Function(MetadataValueDto_SignedRational value)? signedRational,
-    TResult? Function(MetadataValueDto_DateTime value)? dateTime,
-    TResult? Function(MetadataValueDto_NaiveDateTime value)? naiveDateTime,
-    TResult? Function(MetadataValueDto_Bytes value)? bytes,
-    TResult? Function(MetadataValueDto_RationalArray value)? rationalArray,
-    TResult? Function(MetadataValueDto_SignedRationalArray value)?
+    TResult? Function(MetadataValue_Text value)? text,
+    TResult? Function(MetadataValue_Integer value)? integer,
+    TResult? Function(MetadataValue_Float value)? float,
+    TResult? Function(MetadataValue_Rational value)? rational,
+    TResult? Function(MetadataValue_SignedRational value)? signedRational,
+    TResult? Function(MetadataValue_DateTime value)? dateTime,
+    TResult? Function(MetadataValue_NaiveDateTime value)? naiveDateTime,
+    TResult? Function(MetadataValue_Bytes value)? bytes,
+    TResult? Function(MetadataValue_RationalArray value)? rationalArray,
+    TResult? Function(MetadataValue_SignedRationalArray value)?
     signedRationalArray,
-    TResult? Function(MetadataValueDto_U8Array value)? u8Array,
-    TResult? Function(MetadataValueDto_U16Array value)? u16Array,
-    TResult? Function(MetadataValueDto_U32Array value)? u32Array,
+    TResult? Function(MetadataValue_U8Array value)? u8Array,
+    TResult? Function(MetadataValue_U16Array value)? u16Array,
+    TResult? Function(MetadataValue_U32Array value)? u32Array,
   }) {
     return integer?.call(this);
   }
@@ -906,20 +898,20 @@ class _$MetadataValueDto_IntegerImpl extends MetadataValueDto_Integer {
   @override
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
-    TResult Function(MetadataValueDto_Text value)? text,
-    TResult Function(MetadataValueDto_Integer value)? integer,
-    TResult Function(MetadataValueDto_Float value)? float,
-    TResult Function(MetadataValueDto_Rational value)? rational,
-    TResult Function(MetadataValueDto_SignedRational value)? signedRational,
-    TResult Function(MetadataValueDto_DateTime value)? dateTime,
-    TResult Function(MetadataValueDto_NaiveDateTime value)? naiveDateTime,
-    TResult Function(MetadataValueDto_Bytes value)? bytes,
-    TResult Function(MetadataValueDto_RationalArray value)? rationalArray,
-    TResult Function(MetadataValueDto_SignedRationalArray value)?
+    TResult Function(MetadataValue_Text value)? text,
+    TResult Function(MetadataValue_Integer value)? integer,
+    TResult Function(MetadataValue_Float value)? float,
+    TResult Function(MetadataValue_Rational value)? rational,
+    TResult Function(MetadataValue_SignedRational value)? signedRational,
+    TResult Function(MetadataValue_DateTime value)? dateTime,
+    TResult Function(MetadataValue_NaiveDateTime value)? naiveDateTime,
+    TResult Function(MetadataValue_Bytes value)? bytes,
+    TResult Function(MetadataValue_RationalArray value)? rationalArray,
+    TResult Function(MetadataValue_SignedRationalArray value)?
     signedRationalArray,
-    TResult Function(MetadataValueDto_U8Array value)? u8Array,
-    TResult Function(MetadataValueDto_U16Array value)? u16Array,
-    TResult Function(MetadataValueDto_U32Array value)? u32Array,
+    TResult Function(MetadataValue_U8Array value)? u8Array,
+    TResult Function(MetadataValue_U16Array value)? u16Array,
+    TResult Function(MetadataValue_U32Array value)? u32Array,
     required TResult orElse(),
   }) {
     if (integer != null) {
@@ -929,47 +921,47 @@ class _$MetadataValueDto_IntegerImpl extends MetadataValueDto_Integer {
   }
 }
 
-abstract class MetadataValueDto_Integer extends MetadataValueDto {
-  const factory MetadataValueDto_Integer(final int field0) =
-      _$MetadataValueDto_IntegerImpl;
-  const MetadataValueDto_Integer._() : super._();
+abstract class MetadataValue_Integer extends MetadataValue {
+  const factory MetadataValue_Integer(final int field0) =
+      _$MetadataValue_IntegerImpl;
+  const MetadataValue_Integer._() : super._();
 
   @override
   int get field0;
 
-  /// Create a copy of MetadataValueDto
+  /// Create a copy of MetadataValue
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$MetadataValueDto_IntegerImplCopyWith<_$MetadataValueDto_IntegerImpl>
+  _$$MetadataValue_IntegerImplCopyWith<_$MetadataValue_IntegerImpl>
   get copyWith => throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class _$$MetadataValueDto_FloatImplCopyWith<$Res> {
-  factory _$$MetadataValueDto_FloatImplCopyWith(
-    _$MetadataValueDto_FloatImpl value,
-    $Res Function(_$MetadataValueDto_FloatImpl) then,
-  ) = __$$MetadataValueDto_FloatImplCopyWithImpl<$Res>;
+abstract class _$$MetadataValue_FloatImplCopyWith<$Res> {
+  factory _$$MetadataValue_FloatImplCopyWith(
+    _$MetadataValue_FloatImpl value,
+    $Res Function(_$MetadataValue_FloatImpl) then,
+  ) = __$$MetadataValue_FloatImplCopyWithImpl<$Res>;
   @useResult
   $Res call({double field0});
 }
 
 /// @nodoc
-class __$$MetadataValueDto_FloatImplCopyWithImpl<$Res>
-    extends _$MetadataValueDtoCopyWithImpl<$Res, _$MetadataValueDto_FloatImpl>
-    implements _$$MetadataValueDto_FloatImplCopyWith<$Res> {
-  __$$MetadataValueDto_FloatImplCopyWithImpl(
-    _$MetadataValueDto_FloatImpl _value,
-    $Res Function(_$MetadataValueDto_FloatImpl) _then,
+class __$$MetadataValue_FloatImplCopyWithImpl<$Res>
+    extends _$MetadataValueCopyWithImpl<$Res, _$MetadataValue_FloatImpl>
+    implements _$$MetadataValue_FloatImplCopyWith<$Res> {
+  __$$MetadataValue_FloatImplCopyWithImpl(
+    _$MetadataValue_FloatImpl _value,
+    $Res Function(_$MetadataValue_FloatImpl) _then,
   ) : super(_value, _then);
 
-  /// Create a copy of MetadataValueDto
+  /// Create a copy of MetadataValue
   /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({Object? field0 = null}) {
     return _then(
-      _$MetadataValueDto_FloatImpl(
+      _$MetadataValue_FloatImpl(
         null == field0
             ? _value.field0
             : field0 // ignore: cast_nullable_to_non_nullable
@@ -981,36 +973,35 @@ class __$$MetadataValueDto_FloatImplCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$MetadataValueDto_FloatImpl extends MetadataValueDto_Float {
-  const _$MetadataValueDto_FloatImpl(this.field0) : super._();
+class _$MetadataValue_FloatImpl extends MetadataValue_Float {
+  const _$MetadataValue_FloatImpl(this.field0) : super._();
 
   @override
   final double field0;
 
   @override
   String toString() {
-    return 'MetadataValueDto.float(field0: $field0)';
+    return 'MetadataValue.float(field0: $field0)';
   }
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$MetadataValueDto_FloatImpl &&
+            other is _$MetadataValue_FloatImpl &&
             (identical(other.field0, field0) || other.field0 == field0));
   }
 
   @override
   int get hashCode => Object.hash(runtimeType, field0);
 
-  /// Create a copy of MetadataValueDto
+  /// Create a copy of MetadataValue
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
-  _$$MetadataValueDto_FloatImplCopyWith<_$MetadataValueDto_FloatImpl>
-  get copyWith =>
-      __$$MetadataValueDto_FloatImplCopyWithImpl<_$MetadataValueDto_FloatImpl>(
+  _$$MetadataValue_FloatImplCopyWith<_$MetadataValue_FloatImpl> get copyWith =>
+      __$$MetadataValue_FloatImplCopyWithImpl<_$MetadataValue_FloatImpl>(
         this,
         _$identity,
       );
@@ -1021,13 +1012,13 @@ class _$MetadataValueDto_FloatImpl extends MetadataValueDto_Float {
     required TResult Function(String field0) text,
     required TResult Function(int field0) integer,
     required TResult Function(double field0) float,
-    required TResult Function(RationalDto field0) rational,
-    required TResult Function(RationalDto field0) signedRational,
+    required TResult Function(Rational field0) rational,
+    required TResult Function(Rational field0) signedRational,
     required TResult Function(String field0) dateTime,
     required TResult Function(String field0) naiveDateTime,
     required TResult Function(String field0) bytes,
-    required TResult Function(List<RationalDto> field0) rationalArray,
-    required TResult Function(List<RationalDto> field0) signedRationalArray,
+    required TResult Function(List<Rational> field0) rationalArray,
+    required TResult Function(List<Rational> field0) signedRationalArray,
     required TResult Function(Uint8List field0) u8Array,
     required TResult Function(Int32List field0) u16Array,
     required TResult Function(Int64List field0) u32Array,
@@ -1041,13 +1032,13 @@ class _$MetadataValueDto_FloatImpl extends MetadataValueDto_Float {
     TResult? Function(String field0)? text,
     TResult? Function(int field0)? integer,
     TResult? Function(double field0)? float,
-    TResult? Function(RationalDto field0)? rational,
-    TResult? Function(RationalDto field0)? signedRational,
+    TResult? Function(Rational field0)? rational,
+    TResult? Function(Rational field0)? signedRational,
     TResult? Function(String field0)? dateTime,
     TResult? Function(String field0)? naiveDateTime,
     TResult? Function(String field0)? bytes,
-    TResult? Function(List<RationalDto> field0)? rationalArray,
-    TResult? Function(List<RationalDto> field0)? signedRationalArray,
+    TResult? Function(List<Rational> field0)? rationalArray,
+    TResult? Function(List<Rational> field0)? signedRationalArray,
     TResult? Function(Uint8List field0)? u8Array,
     TResult? Function(Int32List field0)? u16Array,
     TResult? Function(Int64List field0)? u32Array,
@@ -1061,13 +1052,13 @@ class _$MetadataValueDto_FloatImpl extends MetadataValueDto_Float {
     TResult Function(String field0)? text,
     TResult Function(int field0)? integer,
     TResult Function(double field0)? float,
-    TResult Function(RationalDto field0)? rational,
-    TResult Function(RationalDto field0)? signedRational,
+    TResult Function(Rational field0)? rational,
+    TResult Function(Rational field0)? signedRational,
     TResult Function(String field0)? dateTime,
     TResult Function(String field0)? naiveDateTime,
     TResult Function(String field0)? bytes,
-    TResult Function(List<RationalDto> field0)? rationalArray,
-    TResult Function(List<RationalDto> field0)? signedRationalArray,
+    TResult Function(List<Rational> field0)? rationalArray,
+    TResult Function(List<Rational> field0)? signedRationalArray,
     TResult Function(Uint8List field0)? u8Array,
     TResult Function(Int32List field0)? u16Array,
     TResult Function(Int64List field0)? u32Array,
@@ -1082,23 +1073,21 @@ class _$MetadataValueDto_FloatImpl extends MetadataValueDto_Float {
   @override
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
-    required TResult Function(MetadataValueDto_Text value) text,
-    required TResult Function(MetadataValueDto_Integer value) integer,
-    required TResult Function(MetadataValueDto_Float value) float,
-    required TResult Function(MetadataValueDto_Rational value) rational,
-    required TResult Function(MetadataValueDto_SignedRational value)
+    required TResult Function(MetadataValue_Text value) text,
+    required TResult Function(MetadataValue_Integer value) integer,
+    required TResult Function(MetadataValue_Float value) float,
+    required TResult Function(MetadataValue_Rational value) rational,
+    required TResult Function(MetadataValue_SignedRational value)
     signedRational,
-    required TResult Function(MetadataValueDto_DateTime value) dateTime,
-    required TResult Function(MetadataValueDto_NaiveDateTime value)
-    naiveDateTime,
-    required TResult Function(MetadataValueDto_Bytes value) bytes,
-    required TResult Function(MetadataValueDto_RationalArray value)
-    rationalArray,
-    required TResult Function(MetadataValueDto_SignedRationalArray value)
+    required TResult Function(MetadataValue_DateTime value) dateTime,
+    required TResult Function(MetadataValue_NaiveDateTime value) naiveDateTime,
+    required TResult Function(MetadataValue_Bytes value) bytes,
+    required TResult Function(MetadataValue_RationalArray value) rationalArray,
+    required TResult Function(MetadataValue_SignedRationalArray value)
     signedRationalArray,
-    required TResult Function(MetadataValueDto_U8Array value) u8Array,
-    required TResult Function(MetadataValueDto_U16Array value) u16Array,
-    required TResult Function(MetadataValueDto_U32Array value) u32Array,
+    required TResult Function(MetadataValue_U8Array value) u8Array,
+    required TResult Function(MetadataValue_U16Array value) u16Array,
+    required TResult Function(MetadataValue_U32Array value) u32Array,
   }) {
     return float(this);
   }
@@ -1106,20 +1095,20 @@ class _$MetadataValueDto_FloatImpl extends MetadataValueDto_Float {
   @override
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(MetadataValueDto_Text value)? text,
-    TResult? Function(MetadataValueDto_Integer value)? integer,
-    TResult? Function(MetadataValueDto_Float value)? float,
-    TResult? Function(MetadataValueDto_Rational value)? rational,
-    TResult? Function(MetadataValueDto_SignedRational value)? signedRational,
-    TResult? Function(MetadataValueDto_DateTime value)? dateTime,
-    TResult? Function(MetadataValueDto_NaiveDateTime value)? naiveDateTime,
-    TResult? Function(MetadataValueDto_Bytes value)? bytes,
-    TResult? Function(MetadataValueDto_RationalArray value)? rationalArray,
-    TResult? Function(MetadataValueDto_SignedRationalArray value)?
+    TResult? Function(MetadataValue_Text value)? text,
+    TResult? Function(MetadataValue_Integer value)? integer,
+    TResult? Function(MetadataValue_Float value)? float,
+    TResult? Function(MetadataValue_Rational value)? rational,
+    TResult? Function(MetadataValue_SignedRational value)? signedRational,
+    TResult? Function(MetadataValue_DateTime value)? dateTime,
+    TResult? Function(MetadataValue_NaiveDateTime value)? naiveDateTime,
+    TResult? Function(MetadataValue_Bytes value)? bytes,
+    TResult? Function(MetadataValue_RationalArray value)? rationalArray,
+    TResult? Function(MetadataValue_SignedRationalArray value)?
     signedRationalArray,
-    TResult? Function(MetadataValueDto_U8Array value)? u8Array,
-    TResult? Function(MetadataValueDto_U16Array value)? u16Array,
-    TResult? Function(MetadataValueDto_U32Array value)? u32Array,
+    TResult? Function(MetadataValue_U8Array value)? u8Array,
+    TResult? Function(MetadataValue_U16Array value)? u16Array,
+    TResult? Function(MetadataValue_U32Array value)? u32Array,
   }) {
     return float?.call(this);
   }
@@ -1127,20 +1116,20 @@ class _$MetadataValueDto_FloatImpl extends MetadataValueDto_Float {
   @override
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
-    TResult Function(MetadataValueDto_Text value)? text,
-    TResult Function(MetadataValueDto_Integer value)? integer,
-    TResult Function(MetadataValueDto_Float value)? float,
-    TResult Function(MetadataValueDto_Rational value)? rational,
-    TResult Function(MetadataValueDto_SignedRational value)? signedRational,
-    TResult Function(MetadataValueDto_DateTime value)? dateTime,
-    TResult Function(MetadataValueDto_NaiveDateTime value)? naiveDateTime,
-    TResult Function(MetadataValueDto_Bytes value)? bytes,
-    TResult Function(MetadataValueDto_RationalArray value)? rationalArray,
-    TResult Function(MetadataValueDto_SignedRationalArray value)?
+    TResult Function(MetadataValue_Text value)? text,
+    TResult Function(MetadataValue_Integer value)? integer,
+    TResult Function(MetadataValue_Float value)? float,
+    TResult Function(MetadataValue_Rational value)? rational,
+    TResult Function(MetadataValue_SignedRational value)? signedRational,
+    TResult Function(MetadataValue_DateTime value)? dateTime,
+    TResult Function(MetadataValue_NaiveDateTime value)? naiveDateTime,
+    TResult Function(MetadataValue_Bytes value)? bytes,
+    TResult Function(MetadataValue_RationalArray value)? rationalArray,
+    TResult Function(MetadataValue_SignedRationalArray value)?
     signedRationalArray,
-    TResult Function(MetadataValueDto_U8Array value)? u8Array,
-    TResult Function(MetadataValueDto_U16Array value)? u16Array,
-    TResult Function(MetadataValueDto_U32Array value)? u32Array,
+    TResult Function(MetadataValue_U8Array value)? u8Array,
+    TResult Function(MetadataValue_U16Array value)? u16Array,
+    TResult Function(MetadataValue_U32Array value)? u32Array,
     required TResult orElse(),
   }) {
     if (float != null) {
@@ -1150,52 +1139,51 @@ class _$MetadataValueDto_FloatImpl extends MetadataValueDto_Float {
   }
 }
 
-abstract class MetadataValueDto_Float extends MetadataValueDto {
-  const factory MetadataValueDto_Float(final double field0) =
-      _$MetadataValueDto_FloatImpl;
-  const MetadataValueDto_Float._() : super._();
+abstract class MetadataValue_Float extends MetadataValue {
+  const factory MetadataValue_Float(final double field0) =
+      _$MetadataValue_FloatImpl;
+  const MetadataValue_Float._() : super._();
 
   @override
   double get field0;
 
-  /// Create a copy of MetadataValueDto
+  /// Create a copy of MetadataValue
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$MetadataValueDto_FloatImplCopyWith<_$MetadataValueDto_FloatImpl>
-  get copyWith => throw _privateConstructorUsedError;
+  _$$MetadataValue_FloatImplCopyWith<_$MetadataValue_FloatImpl> get copyWith =>
+      throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class _$$MetadataValueDto_RationalImplCopyWith<$Res> {
-  factory _$$MetadataValueDto_RationalImplCopyWith(
-    _$MetadataValueDto_RationalImpl value,
-    $Res Function(_$MetadataValueDto_RationalImpl) then,
-  ) = __$$MetadataValueDto_RationalImplCopyWithImpl<$Res>;
+abstract class _$$MetadataValue_RationalImplCopyWith<$Res> {
+  factory _$$MetadataValue_RationalImplCopyWith(
+    _$MetadataValue_RationalImpl value,
+    $Res Function(_$MetadataValue_RationalImpl) then,
+  ) = __$$MetadataValue_RationalImplCopyWithImpl<$Res>;
   @useResult
-  $Res call({RationalDto field0});
+  $Res call({Rational field0});
 }
 
 /// @nodoc
-class __$$MetadataValueDto_RationalImplCopyWithImpl<$Res>
-    extends
-        _$MetadataValueDtoCopyWithImpl<$Res, _$MetadataValueDto_RationalImpl>
-    implements _$$MetadataValueDto_RationalImplCopyWith<$Res> {
-  __$$MetadataValueDto_RationalImplCopyWithImpl(
-    _$MetadataValueDto_RationalImpl _value,
-    $Res Function(_$MetadataValueDto_RationalImpl) _then,
+class __$$MetadataValue_RationalImplCopyWithImpl<$Res>
+    extends _$MetadataValueCopyWithImpl<$Res, _$MetadataValue_RationalImpl>
+    implements _$$MetadataValue_RationalImplCopyWith<$Res> {
+  __$$MetadataValue_RationalImplCopyWithImpl(
+    _$MetadataValue_RationalImpl _value,
+    $Res Function(_$MetadataValue_RationalImpl) _then,
   ) : super(_value, _then);
 
-  /// Create a copy of MetadataValueDto
+  /// Create a copy of MetadataValue
   /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({Object? field0 = null}) {
     return _then(
-      _$MetadataValueDto_RationalImpl(
+      _$MetadataValue_RationalImpl(
         null == field0
             ? _value.field0
             : field0 // ignore: cast_nullable_to_non_nullable
-                  as RationalDto,
+                  as Rational,
       ),
     );
   }
@@ -1203,38 +1191,39 @@ class __$$MetadataValueDto_RationalImplCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$MetadataValueDto_RationalImpl extends MetadataValueDto_Rational {
-  const _$MetadataValueDto_RationalImpl(this.field0) : super._();
+class _$MetadataValue_RationalImpl extends MetadataValue_Rational {
+  const _$MetadataValue_RationalImpl(this.field0) : super._();
 
   @override
-  final RationalDto field0;
+  final Rational field0;
 
   @override
   String toString() {
-    return 'MetadataValueDto.rational(field0: $field0)';
+    return 'MetadataValue.rational(field0: $field0)';
   }
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$MetadataValueDto_RationalImpl &&
+            other is _$MetadataValue_RationalImpl &&
             (identical(other.field0, field0) || other.field0 == field0));
   }
 
   @override
   int get hashCode => Object.hash(runtimeType, field0);
 
-  /// Create a copy of MetadataValueDto
+  /// Create a copy of MetadataValue
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
-  _$$MetadataValueDto_RationalImplCopyWith<_$MetadataValueDto_RationalImpl>
+  _$$MetadataValue_RationalImplCopyWith<_$MetadataValue_RationalImpl>
   get copyWith =>
-      __$$MetadataValueDto_RationalImplCopyWithImpl<
-        _$MetadataValueDto_RationalImpl
-      >(this, _$identity);
+      __$$MetadataValue_RationalImplCopyWithImpl<_$MetadataValue_RationalImpl>(
+        this,
+        _$identity,
+      );
 
   @override
   @optionalTypeArgs
@@ -1242,13 +1231,13 @@ class _$MetadataValueDto_RationalImpl extends MetadataValueDto_Rational {
     required TResult Function(String field0) text,
     required TResult Function(int field0) integer,
     required TResult Function(double field0) float,
-    required TResult Function(RationalDto field0) rational,
-    required TResult Function(RationalDto field0) signedRational,
+    required TResult Function(Rational field0) rational,
+    required TResult Function(Rational field0) signedRational,
     required TResult Function(String field0) dateTime,
     required TResult Function(String field0) naiveDateTime,
     required TResult Function(String field0) bytes,
-    required TResult Function(List<RationalDto> field0) rationalArray,
-    required TResult Function(List<RationalDto> field0) signedRationalArray,
+    required TResult Function(List<Rational> field0) rationalArray,
+    required TResult Function(List<Rational> field0) signedRationalArray,
     required TResult Function(Uint8List field0) u8Array,
     required TResult Function(Int32List field0) u16Array,
     required TResult Function(Int64List field0) u32Array,
@@ -1262,13 +1251,13 @@ class _$MetadataValueDto_RationalImpl extends MetadataValueDto_Rational {
     TResult? Function(String field0)? text,
     TResult? Function(int field0)? integer,
     TResult? Function(double field0)? float,
-    TResult? Function(RationalDto field0)? rational,
-    TResult? Function(RationalDto field0)? signedRational,
+    TResult? Function(Rational field0)? rational,
+    TResult? Function(Rational field0)? signedRational,
     TResult? Function(String field0)? dateTime,
     TResult? Function(String field0)? naiveDateTime,
     TResult? Function(String field0)? bytes,
-    TResult? Function(List<RationalDto> field0)? rationalArray,
-    TResult? Function(List<RationalDto> field0)? signedRationalArray,
+    TResult? Function(List<Rational> field0)? rationalArray,
+    TResult? Function(List<Rational> field0)? signedRationalArray,
     TResult? Function(Uint8List field0)? u8Array,
     TResult? Function(Int32List field0)? u16Array,
     TResult? Function(Int64List field0)? u32Array,
@@ -1282,13 +1271,13 @@ class _$MetadataValueDto_RationalImpl extends MetadataValueDto_Rational {
     TResult Function(String field0)? text,
     TResult Function(int field0)? integer,
     TResult Function(double field0)? float,
-    TResult Function(RationalDto field0)? rational,
-    TResult Function(RationalDto field0)? signedRational,
+    TResult Function(Rational field0)? rational,
+    TResult Function(Rational field0)? signedRational,
     TResult Function(String field0)? dateTime,
     TResult Function(String field0)? naiveDateTime,
     TResult Function(String field0)? bytes,
-    TResult Function(List<RationalDto> field0)? rationalArray,
-    TResult Function(List<RationalDto> field0)? signedRationalArray,
+    TResult Function(List<Rational> field0)? rationalArray,
+    TResult Function(List<Rational> field0)? signedRationalArray,
     TResult Function(Uint8List field0)? u8Array,
     TResult Function(Int32List field0)? u16Array,
     TResult Function(Int64List field0)? u32Array,
@@ -1303,23 +1292,21 @@ class _$MetadataValueDto_RationalImpl extends MetadataValueDto_Rational {
   @override
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
-    required TResult Function(MetadataValueDto_Text value) text,
-    required TResult Function(MetadataValueDto_Integer value) integer,
-    required TResult Function(MetadataValueDto_Float value) float,
-    required TResult Function(MetadataValueDto_Rational value) rational,
-    required TResult Function(MetadataValueDto_SignedRational value)
+    required TResult Function(MetadataValue_Text value) text,
+    required TResult Function(MetadataValue_Integer value) integer,
+    required TResult Function(MetadataValue_Float value) float,
+    required TResult Function(MetadataValue_Rational value) rational,
+    required TResult Function(MetadataValue_SignedRational value)
     signedRational,
-    required TResult Function(MetadataValueDto_DateTime value) dateTime,
-    required TResult Function(MetadataValueDto_NaiveDateTime value)
-    naiveDateTime,
-    required TResult Function(MetadataValueDto_Bytes value) bytes,
-    required TResult Function(MetadataValueDto_RationalArray value)
-    rationalArray,
-    required TResult Function(MetadataValueDto_SignedRationalArray value)
+    required TResult Function(MetadataValue_DateTime value) dateTime,
+    required TResult Function(MetadataValue_NaiveDateTime value) naiveDateTime,
+    required TResult Function(MetadataValue_Bytes value) bytes,
+    required TResult Function(MetadataValue_RationalArray value) rationalArray,
+    required TResult Function(MetadataValue_SignedRationalArray value)
     signedRationalArray,
-    required TResult Function(MetadataValueDto_U8Array value) u8Array,
-    required TResult Function(MetadataValueDto_U16Array value) u16Array,
-    required TResult Function(MetadataValueDto_U32Array value) u32Array,
+    required TResult Function(MetadataValue_U8Array value) u8Array,
+    required TResult Function(MetadataValue_U16Array value) u16Array,
+    required TResult Function(MetadataValue_U32Array value) u32Array,
   }) {
     return rational(this);
   }
@@ -1327,20 +1314,20 @@ class _$MetadataValueDto_RationalImpl extends MetadataValueDto_Rational {
   @override
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(MetadataValueDto_Text value)? text,
-    TResult? Function(MetadataValueDto_Integer value)? integer,
-    TResult? Function(MetadataValueDto_Float value)? float,
-    TResult? Function(MetadataValueDto_Rational value)? rational,
-    TResult? Function(MetadataValueDto_SignedRational value)? signedRational,
-    TResult? Function(MetadataValueDto_DateTime value)? dateTime,
-    TResult? Function(MetadataValueDto_NaiveDateTime value)? naiveDateTime,
-    TResult? Function(MetadataValueDto_Bytes value)? bytes,
-    TResult? Function(MetadataValueDto_RationalArray value)? rationalArray,
-    TResult? Function(MetadataValueDto_SignedRationalArray value)?
+    TResult? Function(MetadataValue_Text value)? text,
+    TResult? Function(MetadataValue_Integer value)? integer,
+    TResult? Function(MetadataValue_Float value)? float,
+    TResult? Function(MetadataValue_Rational value)? rational,
+    TResult? Function(MetadataValue_SignedRational value)? signedRational,
+    TResult? Function(MetadataValue_DateTime value)? dateTime,
+    TResult? Function(MetadataValue_NaiveDateTime value)? naiveDateTime,
+    TResult? Function(MetadataValue_Bytes value)? bytes,
+    TResult? Function(MetadataValue_RationalArray value)? rationalArray,
+    TResult? Function(MetadataValue_SignedRationalArray value)?
     signedRationalArray,
-    TResult? Function(MetadataValueDto_U8Array value)? u8Array,
-    TResult? Function(MetadataValueDto_U16Array value)? u16Array,
-    TResult? Function(MetadataValueDto_U32Array value)? u32Array,
+    TResult? Function(MetadataValue_U8Array value)? u8Array,
+    TResult? Function(MetadataValue_U16Array value)? u16Array,
+    TResult? Function(MetadataValue_U32Array value)? u32Array,
   }) {
     return rational?.call(this);
   }
@@ -1348,20 +1335,20 @@ class _$MetadataValueDto_RationalImpl extends MetadataValueDto_Rational {
   @override
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
-    TResult Function(MetadataValueDto_Text value)? text,
-    TResult Function(MetadataValueDto_Integer value)? integer,
-    TResult Function(MetadataValueDto_Float value)? float,
-    TResult Function(MetadataValueDto_Rational value)? rational,
-    TResult Function(MetadataValueDto_SignedRational value)? signedRational,
-    TResult Function(MetadataValueDto_DateTime value)? dateTime,
-    TResult Function(MetadataValueDto_NaiveDateTime value)? naiveDateTime,
-    TResult Function(MetadataValueDto_Bytes value)? bytes,
-    TResult Function(MetadataValueDto_RationalArray value)? rationalArray,
-    TResult Function(MetadataValueDto_SignedRationalArray value)?
+    TResult Function(MetadataValue_Text value)? text,
+    TResult Function(MetadataValue_Integer value)? integer,
+    TResult Function(MetadataValue_Float value)? float,
+    TResult Function(MetadataValue_Rational value)? rational,
+    TResult Function(MetadataValue_SignedRational value)? signedRational,
+    TResult Function(MetadataValue_DateTime value)? dateTime,
+    TResult Function(MetadataValue_NaiveDateTime value)? naiveDateTime,
+    TResult Function(MetadataValue_Bytes value)? bytes,
+    TResult Function(MetadataValue_RationalArray value)? rationalArray,
+    TResult Function(MetadataValue_SignedRationalArray value)?
     signedRationalArray,
-    TResult Function(MetadataValueDto_U8Array value)? u8Array,
-    TResult Function(MetadataValueDto_U16Array value)? u16Array,
-    TResult Function(MetadataValueDto_U32Array value)? u32Array,
+    TResult Function(MetadataValue_U8Array value)? u8Array,
+    TResult Function(MetadataValue_U16Array value)? u16Array,
+    TResult Function(MetadataValue_U32Array value)? u32Array,
     required TResult orElse(),
   }) {
     if (rational != null) {
@@ -1371,55 +1358,52 @@ class _$MetadataValueDto_RationalImpl extends MetadataValueDto_Rational {
   }
 }
 
-abstract class MetadataValueDto_Rational extends MetadataValueDto {
-  const factory MetadataValueDto_Rational(final RationalDto field0) =
-      _$MetadataValueDto_RationalImpl;
-  const MetadataValueDto_Rational._() : super._();
+abstract class MetadataValue_Rational extends MetadataValue {
+  const factory MetadataValue_Rational(final Rational field0) =
+      _$MetadataValue_RationalImpl;
+  const MetadataValue_Rational._() : super._();
 
   @override
-  RationalDto get field0;
+  Rational get field0;
 
-  /// Create a copy of MetadataValueDto
+  /// Create a copy of MetadataValue
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$MetadataValueDto_RationalImplCopyWith<_$MetadataValueDto_RationalImpl>
+  _$$MetadataValue_RationalImplCopyWith<_$MetadataValue_RationalImpl>
   get copyWith => throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class _$$MetadataValueDto_SignedRationalImplCopyWith<$Res> {
-  factory _$$MetadataValueDto_SignedRationalImplCopyWith(
-    _$MetadataValueDto_SignedRationalImpl value,
-    $Res Function(_$MetadataValueDto_SignedRationalImpl) then,
-  ) = __$$MetadataValueDto_SignedRationalImplCopyWithImpl<$Res>;
+abstract class _$$MetadataValue_SignedRationalImplCopyWith<$Res> {
+  factory _$$MetadataValue_SignedRationalImplCopyWith(
+    _$MetadataValue_SignedRationalImpl value,
+    $Res Function(_$MetadataValue_SignedRationalImpl) then,
+  ) = __$$MetadataValue_SignedRationalImplCopyWithImpl<$Res>;
   @useResult
-  $Res call({RationalDto field0});
+  $Res call({Rational field0});
 }
 
 /// @nodoc
-class __$$MetadataValueDto_SignedRationalImplCopyWithImpl<$Res>
+class __$$MetadataValue_SignedRationalImplCopyWithImpl<$Res>
     extends
-        _$MetadataValueDtoCopyWithImpl<
-          $Res,
-          _$MetadataValueDto_SignedRationalImpl
-        >
-    implements _$$MetadataValueDto_SignedRationalImplCopyWith<$Res> {
-  __$$MetadataValueDto_SignedRationalImplCopyWithImpl(
-    _$MetadataValueDto_SignedRationalImpl _value,
-    $Res Function(_$MetadataValueDto_SignedRationalImpl) _then,
+        _$MetadataValueCopyWithImpl<$Res, _$MetadataValue_SignedRationalImpl>
+    implements _$$MetadataValue_SignedRationalImplCopyWith<$Res> {
+  __$$MetadataValue_SignedRationalImplCopyWithImpl(
+    _$MetadataValue_SignedRationalImpl _value,
+    $Res Function(_$MetadataValue_SignedRationalImpl) _then,
   ) : super(_value, _then);
 
-  /// Create a copy of MetadataValueDto
+  /// Create a copy of MetadataValue
   /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({Object? field0 = null}) {
     return _then(
-      _$MetadataValueDto_SignedRationalImpl(
+      _$MetadataValue_SignedRationalImpl(
         null == field0
             ? _value.field0
             : field0 // ignore: cast_nullable_to_non_nullable
-                  as RationalDto,
+                  as Rational,
       ),
     );
   }
@@ -1427,40 +1411,39 @@ class __$$MetadataValueDto_SignedRationalImplCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$MetadataValueDto_SignedRationalImpl
-    extends MetadataValueDto_SignedRational {
-  const _$MetadataValueDto_SignedRationalImpl(this.field0) : super._();
+class _$MetadataValue_SignedRationalImpl extends MetadataValue_SignedRational {
+  const _$MetadataValue_SignedRationalImpl(this.field0) : super._();
 
   @override
-  final RationalDto field0;
+  final Rational field0;
 
   @override
   String toString() {
-    return 'MetadataValueDto.signedRational(field0: $field0)';
+    return 'MetadataValue.signedRational(field0: $field0)';
   }
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$MetadataValueDto_SignedRationalImpl &&
+            other is _$MetadataValue_SignedRationalImpl &&
             (identical(other.field0, field0) || other.field0 == field0));
   }
 
   @override
   int get hashCode => Object.hash(runtimeType, field0);
 
-  /// Create a copy of MetadataValueDto
+  /// Create a copy of MetadataValue
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
-  _$$MetadataValueDto_SignedRationalImplCopyWith<
-    _$MetadataValueDto_SignedRationalImpl
+  _$$MetadataValue_SignedRationalImplCopyWith<
+    _$MetadataValue_SignedRationalImpl
   >
   get copyWith =>
-      __$$MetadataValueDto_SignedRationalImplCopyWithImpl<
-        _$MetadataValueDto_SignedRationalImpl
+      __$$MetadataValue_SignedRationalImplCopyWithImpl<
+        _$MetadataValue_SignedRationalImpl
       >(this, _$identity);
 
   @override
@@ -1469,13 +1452,13 @@ class _$MetadataValueDto_SignedRationalImpl
     required TResult Function(String field0) text,
     required TResult Function(int field0) integer,
     required TResult Function(double field0) float,
-    required TResult Function(RationalDto field0) rational,
-    required TResult Function(RationalDto field0) signedRational,
+    required TResult Function(Rational field0) rational,
+    required TResult Function(Rational field0) signedRational,
     required TResult Function(String field0) dateTime,
     required TResult Function(String field0) naiveDateTime,
     required TResult Function(String field0) bytes,
-    required TResult Function(List<RationalDto> field0) rationalArray,
-    required TResult Function(List<RationalDto> field0) signedRationalArray,
+    required TResult Function(List<Rational> field0) rationalArray,
+    required TResult Function(List<Rational> field0) signedRationalArray,
     required TResult Function(Uint8List field0) u8Array,
     required TResult Function(Int32List field0) u16Array,
     required TResult Function(Int64List field0) u32Array,
@@ -1489,13 +1472,13 @@ class _$MetadataValueDto_SignedRationalImpl
     TResult? Function(String field0)? text,
     TResult? Function(int field0)? integer,
     TResult? Function(double field0)? float,
-    TResult? Function(RationalDto field0)? rational,
-    TResult? Function(RationalDto field0)? signedRational,
+    TResult? Function(Rational field0)? rational,
+    TResult? Function(Rational field0)? signedRational,
     TResult? Function(String field0)? dateTime,
     TResult? Function(String field0)? naiveDateTime,
     TResult? Function(String field0)? bytes,
-    TResult? Function(List<RationalDto> field0)? rationalArray,
-    TResult? Function(List<RationalDto> field0)? signedRationalArray,
+    TResult? Function(List<Rational> field0)? rationalArray,
+    TResult? Function(List<Rational> field0)? signedRationalArray,
     TResult? Function(Uint8List field0)? u8Array,
     TResult? Function(Int32List field0)? u16Array,
     TResult? Function(Int64List field0)? u32Array,
@@ -1509,13 +1492,13 @@ class _$MetadataValueDto_SignedRationalImpl
     TResult Function(String field0)? text,
     TResult Function(int field0)? integer,
     TResult Function(double field0)? float,
-    TResult Function(RationalDto field0)? rational,
-    TResult Function(RationalDto field0)? signedRational,
+    TResult Function(Rational field0)? rational,
+    TResult Function(Rational field0)? signedRational,
     TResult Function(String field0)? dateTime,
     TResult Function(String field0)? naiveDateTime,
     TResult Function(String field0)? bytes,
-    TResult Function(List<RationalDto> field0)? rationalArray,
-    TResult Function(List<RationalDto> field0)? signedRationalArray,
+    TResult Function(List<Rational> field0)? rationalArray,
+    TResult Function(List<Rational> field0)? signedRationalArray,
     TResult Function(Uint8List field0)? u8Array,
     TResult Function(Int32List field0)? u16Array,
     TResult Function(Int64List field0)? u32Array,
@@ -1530,23 +1513,21 @@ class _$MetadataValueDto_SignedRationalImpl
   @override
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
-    required TResult Function(MetadataValueDto_Text value) text,
-    required TResult Function(MetadataValueDto_Integer value) integer,
-    required TResult Function(MetadataValueDto_Float value) float,
-    required TResult Function(MetadataValueDto_Rational value) rational,
-    required TResult Function(MetadataValueDto_SignedRational value)
+    required TResult Function(MetadataValue_Text value) text,
+    required TResult Function(MetadataValue_Integer value) integer,
+    required TResult Function(MetadataValue_Float value) float,
+    required TResult Function(MetadataValue_Rational value) rational,
+    required TResult Function(MetadataValue_SignedRational value)
     signedRational,
-    required TResult Function(MetadataValueDto_DateTime value) dateTime,
-    required TResult Function(MetadataValueDto_NaiveDateTime value)
-    naiveDateTime,
-    required TResult Function(MetadataValueDto_Bytes value) bytes,
-    required TResult Function(MetadataValueDto_RationalArray value)
-    rationalArray,
-    required TResult Function(MetadataValueDto_SignedRationalArray value)
+    required TResult Function(MetadataValue_DateTime value) dateTime,
+    required TResult Function(MetadataValue_NaiveDateTime value) naiveDateTime,
+    required TResult Function(MetadataValue_Bytes value) bytes,
+    required TResult Function(MetadataValue_RationalArray value) rationalArray,
+    required TResult Function(MetadataValue_SignedRationalArray value)
     signedRationalArray,
-    required TResult Function(MetadataValueDto_U8Array value) u8Array,
-    required TResult Function(MetadataValueDto_U16Array value) u16Array,
-    required TResult Function(MetadataValueDto_U32Array value) u32Array,
+    required TResult Function(MetadataValue_U8Array value) u8Array,
+    required TResult Function(MetadataValue_U16Array value) u16Array,
+    required TResult Function(MetadataValue_U32Array value) u32Array,
   }) {
     return signedRational(this);
   }
@@ -1554,20 +1535,20 @@ class _$MetadataValueDto_SignedRationalImpl
   @override
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(MetadataValueDto_Text value)? text,
-    TResult? Function(MetadataValueDto_Integer value)? integer,
-    TResult? Function(MetadataValueDto_Float value)? float,
-    TResult? Function(MetadataValueDto_Rational value)? rational,
-    TResult? Function(MetadataValueDto_SignedRational value)? signedRational,
-    TResult? Function(MetadataValueDto_DateTime value)? dateTime,
-    TResult? Function(MetadataValueDto_NaiveDateTime value)? naiveDateTime,
-    TResult? Function(MetadataValueDto_Bytes value)? bytes,
-    TResult? Function(MetadataValueDto_RationalArray value)? rationalArray,
-    TResult? Function(MetadataValueDto_SignedRationalArray value)?
+    TResult? Function(MetadataValue_Text value)? text,
+    TResult? Function(MetadataValue_Integer value)? integer,
+    TResult? Function(MetadataValue_Float value)? float,
+    TResult? Function(MetadataValue_Rational value)? rational,
+    TResult? Function(MetadataValue_SignedRational value)? signedRational,
+    TResult? Function(MetadataValue_DateTime value)? dateTime,
+    TResult? Function(MetadataValue_NaiveDateTime value)? naiveDateTime,
+    TResult? Function(MetadataValue_Bytes value)? bytes,
+    TResult? Function(MetadataValue_RationalArray value)? rationalArray,
+    TResult? Function(MetadataValue_SignedRationalArray value)?
     signedRationalArray,
-    TResult? Function(MetadataValueDto_U8Array value)? u8Array,
-    TResult? Function(MetadataValueDto_U16Array value)? u16Array,
-    TResult? Function(MetadataValueDto_U32Array value)? u32Array,
+    TResult? Function(MetadataValue_U8Array value)? u8Array,
+    TResult? Function(MetadataValue_U16Array value)? u16Array,
+    TResult? Function(MetadataValue_U32Array value)? u32Array,
   }) {
     return signedRational?.call(this);
   }
@@ -1575,20 +1556,20 @@ class _$MetadataValueDto_SignedRationalImpl
   @override
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
-    TResult Function(MetadataValueDto_Text value)? text,
-    TResult Function(MetadataValueDto_Integer value)? integer,
-    TResult Function(MetadataValueDto_Float value)? float,
-    TResult Function(MetadataValueDto_Rational value)? rational,
-    TResult Function(MetadataValueDto_SignedRational value)? signedRational,
-    TResult Function(MetadataValueDto_DateTime value)? dateTime,
-    TResult Function(MetadataValueDto_NaiveDateTime value)? naiveDateTime,
-    TResult Function(MetadataValueDto_Bytes value)? bytes,
-    TResult Function(MetadataValueDto_RationalArray value)? rationalArray,
-    TResult Function(MetadataValueDto_SignedRationalArray value)?
+    TResult Function(MetadataValue_Text value)? text,
+    TResult Function(MetadataValue_Integer value)? integer,
+    TResult Function(MetadataValue_Float value)? float,
+    TResult Function(MetadataValue_Rational value)? rational,
+    TResult Function(MetadataValue_SignedRational value)? signedRational,
+    TResult Function(MetadataValue_DateTime value)? dateTime,
+    TResult Function(MetadataValue_NaiveDateTime value)? naiveDateTime,
+    TResult Function(MetadataValue_Bytes value)? bytes,
+    TResult Function(MetadataValue_RationalArray value)? rationalArray,
+    TResult Function(MetadataValue_SignedRationalArray value)?
     signedRationalArray,
-    TResult Function(MetadataValueDto_U8Array value)? u8Array,
-    TResult Function(MetadataValueDto_U16Array value)? u16Array,
-    TResult Function(MetadataValueDto_U32Array value)? u32Array,
+    TResult Function(MetadataValue_U8Array value)? u8Array,
+    TResult Function(MetadataValue_U16Array value)? u16Array,
+    TResult Function(MetadataValue_U32Array value)? u32Array,
     required TResult orElse(),
   }) {
     if (signedRational != null) {
@@ -1598,50 +1579,49 @@ class _$MetadataValueDto_SignedRationalImpl
   }
 }
 
-abstract class MetadataValueDto_SignedRational extends MetadataValueDto {
-  const factory MetadataValueDto_SignedRational(final RationalDto field0) =
-      _$MetadataValueDto_SignedRationalImpl;
-  const MetadataValueDto_SignedRational._() : super._();
+abstract class MetadataValue_SignedRational extends MetadataValue {
+  const factory MetadataValue_SignedRational(final Rational field0) =
+      _$MetadataValue_SignedRationalImpl;
+  const MetadataValue_SignedRational._() : super._();
 
   @override
-  RationalDto get field0;
+  Rational get field0;
 
-  /// Create a copy of MetadataValueDto
+  /// Create a copy of MetadataValue
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$MetadataValueDto_SignedRationalImplCopyWith<
-    _$MetadataValueDto_SignedRationalImpl
+  _$$MetadataValue_SignedRationalImplCopyWith<
+    _$MetadataValue_SignedRationalImpl
   >
   get copyWith => throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class _$$MetadataValueDto_DateTimeImplCopyWith<$Res> {
-  factory _$$MetadataValueDto_DateTimeImplCopyWith(
-    _$MetadataValueDto_DateTimeImpl value,
-    $Res Function(_$MetadataValueDto_DateTimeImpl) then,
-  ) = __$$MetadataValueDto_DateTimeImplCopyWithImpl<$Res>;
+abstract class _$$MetadataValue_DateTimeImplCopyWith<$Res> {
+  factory _$$MetadataValue_DateTimeImplCopyWith(
+    _$MetadataValue_DateTimeImpl value,
+    $Res Function(_$MetadataValue_DateTimeImpl) then,
+  ) = __$$MetadataValue_DateTimeImplCopyWithImpl<$Res>;
   @useResult
   $Res call({String field0});
 }
 
 /// @nodoc
-class __$$MetadataValueDto_DateTimeImplCopyWithImpl<$Res>
-    extends
-        _$MetadataValueDtoCopyWithImpl<$Res, _$MetadataValueDto_DateTimeImpl>
-    implements _$$MetadataValueDto_DateTimeImplCopyWith<$Res> {
-  __$$MetadataValueDto_DateTimeImplCopyWithImpl(
-    _$MetadataValueDto_DateTimeImpl _value,
-    $Res Function(_$MetadataValueDto_DateTimeImpl) _then,
+class __$$MetadataValue_DateTimeImplCopyWithImpl<$Res>
+    extends _$MetadataValueCopyWithImpl<$Res, _$MetadataValue_DateTimeImpl>
+    implements _$$MetadataValue_DateTimeImplCopyWith<$Res> {
+  __$$MetadataValue_DateTimeImplCopyWithImpl(
+    _$MetadataValue_DateTimeImpl _value,
+    $Res Function(_$MetadataValue_DateTimeImpl) _then,
   ) : super(_value, _then);
 
-  /// Create a copy of MetadataValueDto
+  /// Create a copy of MetadataValue
   /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({Object? field0 = null}) {
     return _then(
-      _$MetadataValueDto_DateTimeImpl(
+      _$MetadataValue_DateTimeImpl(
         null == field0
             ? _value.field0
             : field0 // ignore: cast_nullable_to_non_nullable
@@ -1653,38 +1633,39 @@ class __$$MetadataValueDto_DateTimeImplCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$MetadataValueDto_DateTimeImpl extends MetadataValueDto_DateTime {
-  const _$MetadataValueDto_DateTimeImpl(this.field0) : super._();
+class _$MetadataValue_DateTimeImpl extends MetadataValue_DateTime {
+  const _$MetadataValue_DateTimeImpl(this.field0) : super._();
 
   @override
   final String field0;
 
   @override
   String toString() {
-    return 'MetadataValueDto.dateTime(field0: $field0)';
+    return 'MetadataValue.dateTime(field0: $field0)';
   }
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$MetadataValueDto_DateTimeImpl &&
+            other is _$MetadataValue_DateTimeImpl &&
             (identical(other.field0, field0) || other.field0 == field0));
   }
 
   @override
   int get hashCode => Object.hash(runtimeType, field0);
 
-  /// Create a copy of MetadataValueDto
+  /// Create a copy of MetadataValue
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
-  _$$MetadataValueDto_DateTimeImplCopyWith<_$MetadataValueDto_DateTimeImpl>
+  _$$MetadataValue_DateTimeImplCopyWith<_$MetadataValue_DateTimeImpl>
   get copyWith =>
-      __$$MetadataValueDto_DateTimeImplCopyWithImpl<
-        _$MetadataValueDto_DateTimeImpl
-      >(this, _$identity);
+      __$$MetadataValue_DateTimeImplCopyWithImpl<_$MetadataValue_DateTimeImpl>(
+        this,
+        _$identity,
+      );
 
   @override
   @optionalTypeArgs
@@ -1692,13 +1673,13 @@ class _$MetadataValueDto_DateTimeImpl extends MetadataValueDto_DateTime {
     required TResult Function(String field0) text,
     required TResult Function(int field0) integer,
     required TResult Function(double field0) float,
-    required TResult Function(RationalDto field0) rational,
-    required TResult Function(RationalDto field0) signedRational,
+    required TResult Function(Rational field0) rational,
+    required TResult Function(Rational field0) signedRational,
     required TResult Function(String field0) dateTime,
     required TResult Function(String field0) naiveDateTime,
     required TResult Function(String field0) bytes,
-    required TResult Function(List<RationalDto> field0) rationalArray,
-    required TResult Function(List<RationalDto> field0) signedRationalArray,
+    required TResult Function(List<Rational> field0) rationalArray,
+    required TResult Function(List<Rational> field0) signedRationalArray,
     required TResult Function(Uint8List field0) u8Array,
     required TResult Function(Int32List field0) u16Array,
     required TResult Function(Int64List field0) u32Array,
@@ -1712,13 +1693,13 @@ class _$MetadataValueDto_DateTimeImpl extends MetadataValueDto_DateTime {
     TResult? Function(String field0)? text,
     TResult? Function(int field0)? integer,
     TResult? Function(double field0)? float,
-    TResult? Function(RationalDto field0)? rational,
-    TResult? Function(RationalDto field0)? signedRational,
+    TResult? Function(Rational field0)? rational,
+    TResult? Function(Rational field0)? signedRational,
     TResult? Function(String field0)? dateTime,
     TResult? Function(String field0)? naiveDateTime,
     TResult? Function(String field0)? bytes,
-    TResult? Function(List<RationalDto> field0)? rationalArray,
-    TResult? Function(List<RationalDto> field0)? signedRationalArray,
+    TResult? Function(List<Rational> field0)? rationalArray,
+    TResult? Function(List<Rational> field0)? signedRationalArray,
     TResult? Function(Uint8List field0)? u8Array,
     TResult? Function(Int32List field0)? u16Array,
     TResult? Function(Int64List field0)? u32Array,
@@ -1732,13 +1713,13 @@ class _$MetadataValueDto_DateTimeImpl extends MetadataValueDto_DateTime {
     TResult Function(String field0)? text,
     TResult Function(int field0)? integer,
     TResult Function(double field0)? float,
-    TResult Function(RationalDto field0)? rational,
-    TResult Function(RationalDto field0)? signedRational,
+    TResult Function(Rational field0)? rational,
+    TResult Function(Rational field0)? signedRational,
     TResult Function(String field0)? dateTime,
     TResult Function(String field0)? naiveDateTime,
     TResult Function(String field0)? bytes,
-    TResult Function(List<RationalDto> field0)? rationalArray,
-    TResult Function(List<RationalDto> field0)? signedRationalArray,
+    TResult Function(List<Rational> field0)? rationalArray,
+    TResult Function(List<Rational> field0)? signedRationalArray,
     TResult Function(Uint8List field0)? u8Array,
     TResult Function(Int32List field0)? u16Array,
     TResult Function(Int64List field0)? u32Array,
@@ -1753,23 +1734,21 @@ class _$MetadataValueDto_DateTimeImpl extends MetadataValueDto_DateTime {
   @override
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
-    required TResult Function(MetadataValueDto_Text value) text,
-    required TResult Function(MetadataValueDto_Integer value) integer,
-    required TResult Function(MetadataValueDto_Float value) float,
-    required TResult Function(MetadataValueDto_Rational value) rational,
-    required TResult Function(MetadataValueDto_SignedRational value)
+    required TResult Function(MetadataValue_Text value) text,
+    required TResult Function(MetadataValue_Integer value) integer,
+    required TResult Function(MetadataValue_Float value) float,
+    required TResult Function(MetadataValue_Rational value) rational,
+    required TResult Function(MetadataValue_SignedRational value)
     signedRational,
-    required TResult Function(MetadataValueDto_DateTime value) dateTime,
-    required TResult Function(MetadataValueDto_NaiveDateTime value)
-    naiveDateTime,
-    required TResult Function(MetadataValueDto_Bytes value) bytes,
-    required TResult Function(MetadataValueDto_RationalArray value)
-    rationalArray,
-    required TResult Function(MetadataValueDto_SignedRationalArray value)
+    required TResult Function(MetadataValue_DateTime value) dateTime,
+    required TResult Function(MetadataValue_NaiveDateTime value) naiveDateTime,
+    required TResult Function(MetadataValue_Bytes value) bytes,
+    required TResult Function(MetadataValue_RationalArray value) rationalArray,
+    required TResult Function(MetadataValue_SignedRationalArray value)
     signedRationalArray,
-    required TResult Function(MetadataValueDto_U8Array value) u8Array,
-    required TResult Function(MetadataValueDto_U16Array value) u16Array,
-    required TResult Function(MetadataValueDto_U32Array value) u32Array,
+    required TResult Function(MetadataValue_U8Array value) u8Array,
+    required TResult Function(MetadataValue_U16Array value) u16Array,
+    required TResult Function(MetadataValue_U32Array value) u32Array,
   }) {
     return dateTime(this);
   }
@@ -1777,20 +1756,20 @@ class _$MetadataValueDto_DateTimeImpl extends MetadataValueDto_DateTime {
   @override
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(MetadataValueDto_Text value)? text,
-    TResult? Function(MetadataValueDto_Integer value)? integer,
-    TResult? Function(MetadataValueDto_Float value)? float,
-    TResult? Function(MetadataValueDto_Rational value)? rational,
-    TResult? Function(MetadataValueDto_SignedRational value)? signedRational,
-    TResult? Function(MetadataValueDto_DateTime value)? dateTime,
-    TResult? Function(MetadataValueDto_NaiveDateTime value)? naiveDateTime,
-    TResult? Function(MetadataValueDto_Bytes value)? bytes,
-    TResult? Function(MetadataValueDto_RationalArray value)? rationalArray,
-    TResult? Function(MetadataValueDto_SignedRationalArray value)?
+    TResult? Function(MetadataValue_Text value)? text,
+    TResult? Function(MetadataValue_Integer value)? integer,
+    TResult? Function(MetadataValue_Float value)? float,
+    TResult? Function(MetadataValue_Rational value)? rational,
+    TResult? Function(MetadataValue_SignedRational value)? signedRational,
+    TResult? Function(MetadataValue_DateTime value)? dateTime,
+    TResult? Function(MetadataValue_NaiveDateTime value)? naiveDateTime,
+    TResult? Function(MetadataValue_Bytes value)? bytes,
+    TResult? Function(MetadataValue_RationalArray value)? rationalArray,
+    TResult? Function(MetadataValue_SignedRationalArray value)?
     signedRationalArray,
-    TResult? Function(MetadataValueDto_U8Array value)? u8Array,
-    TResult? Function(MetadataValueDto_U16Array value)? u16Array,
-    TResult? Function(MetadataValueDto_U32Array value)? u32Array,
+    TResult? Function(MetadataValue_U8Array value)? u8Array,
+    TResult? Function(MetadataValue_U16Array value)? u16Array,
+    TResult? Function(MetadataValue_U32Array value)? u32Array,
   }) {
     return dateTime?.call(this);
   }
@@ -1798,20 +1777,20 @@ class _$MetadataValueDto_DateTimeImpl extends MetadataValueDto_DateTime {
   @override
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
-    TResult Function(MetadataValueDto_Text value)? text,
-    TResult Function(MetadataValueDto_Integer value)? integer,
-    TResult Function(MetadataValueDto_Float value)? float,
-    TResult Function(MetadataValueDto_Rational value)? rational,
-    TResult Function(MetadataValueDto_SignedRational value)? signedRational,
-    TResult Function(MetadataValueDto_DateTime value)? dateTime,
-    TResult Function(MetadataValueDto_NaiveDateTime value)? naiveDateTime,
-    TResult Function(MetadataValueDto_Bytes value)? bytes,
-    TResult Function(MetadataValueDto_RationalArray value)? rationalArray,
-    TResult Function(MetadataValueDto_SignedRationalArray value)?
+    TResult Function(MetadataValue_Text value)? text,
+    TResult Function(MetadataValue_Integer value)? integer,
+    TResult Function(MetadataValue_Float value)? float,
+    TResult Function(MetadataValue_Rational value)? rational,
+    TResult Function(MetadataValue_SignedRational value)? signedRational,
+    TResult Function(MetadataValue_DateTime value)? dateTime,
+    TResult Function(MetadataValue_NaiveDateTime value)? naiveDateTime,
+    TResult Function(MetadataValue_Bytes value)? bytes,
+    TResult Function(MetadataValue_RationalArray value)? rationalArray,
+    TResult Function(MetadataValue_SignedRationalArray value)?
     signedRationalArray,
-    TResult Function(MetadataValueDto_U8Array value)? u8Array,
-    TResult Function(MetadataValueDto_U16Array value)? u16Array,
-    TResult Function(MetadataValueDto_U32Array value)? u32Array,
+    TResult Function(MetadataValue_U8Array value)? u8Array,
+    TResult Function(MetadataValue_U16Array value)? u16Array,
+    TResult Function(MetadataValue_U32Array value)? u32Array,
     required TResult orElse(),
   }) {
     if (dateTime != null) {
@@ -1821,51 +1800,47 @@ class _$MetadataValueDto_DateTimeImpl extends MetadataValueDto_DateTime {
   }
 }
 
-abstract class MetadataValueDto_DateTime extends MetadataValueDto {
-  const factory MetadataValueDto_DateTime(final String field0) =
-      _$MetadataValueDto_DateTimeImpl;
-  const MetadataValueDto_DateTime._() : super._();
+abstract class MetadataValue_DateTime extends MetadataValue {
+  const factory MetadataValue_DateTime(final String field0) =
+      _$MetadataValue_DateTimeImpl;
+  const MetadataValue_DateTime._() : super._();
 
   @override
   String get field0;
 
-  /// Create a copy of MetadataValueDto
+  /// Create a copy of MetadataValue
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$MetadataValueDto_DateTimeImplCopyWith<_$MetadataValueDto_DateTimeImpl>
+  _$$MetadataValue_DateTimeImplCopyWith<_$MetadataValue_DateTimeImpl>
   get copyWith => throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class _$$MetadataValueDto_NaiveDateTimeImplCopyWith<$Res> {
-  factory _$$MetadataValueDto_NaiveDateTimeImplCopyWith(
-    _$MetadataValueDto_NaiveDateTimeImpl value,
-    $Res Function(_$MetadataValueDto_NaiveDateTimeImpl) then,
-  ) = __$$MetadataValueDto_NaiveDateTimeImplCopyWithImpl<$Res>;
+abstract class _$$MetadataValue_NaiveDateTimeImplCopyWith<$Res> {
+  factory _$$MetadataValue_NaiveDateTimeImplCopyWith(
+    _$MetadataValue_NaiveDateTimeImpl value,
+    $Res Function(_$MetadataValue_NaiveDateTimeImpl) then,
+  ) = __$$MetadataValue_NaiveDateTimeImplCopyWithImpl<$Res>;
   @useResult
   $Res call({String field0});
 }
 
 /// @nodoc
-class __$$MetadataValueDto_NaiveDateTimeImplCopyWithImpl<$Res>
-    extends
-        _$MetadataValueDtoCopyWithImpl<
-          $Res,
-          _$MetadataValueDto_NaiveDateTimeImpl
-        >
-    implements _$$MetadataValueDto_NaiveDateTimeImplCopyWith<$Res> {
-  __$$MetadataValueDto_NaiveDateTimeImplCopyWithImpl(
-    _$MetadataValueDto_NaiveDateTimeImpl _value,
-    $Res Function(_$MetadataValueDto_NaiveDateTimeImpl) _then,
+class __$$MetadataValue_NaiveDateTimeImplCopyWithImpl<$Res>
+    extends _$MetadataValueCopyWithImpl<$Res, _$MetadataValue_NaiveDateTimeImpl>
+    implements _$$MetadataValue_NaiveDateTimeImplCopyWith<$Res> {
+  __$$MetadataValue_NaiveDateTimeImplCopyWithImpl(
+    _$MetadataValue_NaiveDateTimeImpl _value,
+    $Res Function(_$MetadataValue_NaiveDateTimeImpl) _then,
   ) : super(_value, _then);
 
-  /// Create a copy of MetadataValueDto
+  /// Create a copy of MetadataValue
   /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({Object? field0 = null}) {
     return _then(
-      _$MetadataValueDto_NaiveDateTimeImpl(
+      _$MetadataValue_NaiveDateTimeImpl(
         null == field0
             ? _value.field0
             : field0 // ignore: cast_nullable_to_non_nullable
@@ -1877,40 +1852,37 @@ class __$$MetadataValueDto_NaiveDateTimeImplCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$MetadataValueDto_NaiveDateTimeImpl
-    extends MetadataValueDto_NaiveDateTime {
-  const _$MetadataValueDto_NaiveDateTimeImpl(this.field0) : super._();
+class _$MetadataValue_NaiveDateTimeImpl extends MetadataValue_NaiveDateTime {
+  const _$MetadataValue_NaiveDateTimeImpl(this.field0) : super._();
 
   @override
   final String field0;
 
   @override
   String toString() {
-    return 'MetadataValueDto.naiveDateTime(field0: $field0)';
+    return 'MetadataValue.naiveDateTime(field0: $field0)';
   }
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$MetadataValueDto_NaiveDateTimeImpl &&
+            other is _$MetadataValue_NaiveDateTimeImpl &&
             (identical(other.field0, field0) || other.field0 == field0));
   }
 
   @override
   int get hashCode => Object.hash(runtimeType, field0);
 
-  /// Create a copy of MetadataValueDto
+  /// Create a copy of MetadataValue
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
-  _$$MetadataValueDto_NaiveDateTimeImplCopyWith<
-    _$MetadataValueDto_NaiveDateTimeImpl
-  >
+  _$$MetadataValue_NaiveDateTimeImplCopyWith<_$MetadataValue_NaiveDateTimeImpl>
   get copyWith =>
-      __$$MetadataValueDto_NaiveDateTimeImplCopyWithImpl<
-        _$MetadataValueDto_NaiveDateTimeImpl
+      __$$MetadataValue_NaiveDateTimeImplCopyWithImpl<
+        _$MetadataValue_NaiveDateTimeImpl
       >(this, _$identity);
 
   @override
@@ -1919,13 +1891,13 @@ class _$MetadataValueDto_NaiveDateTimeImpl
     required TResult Function(String field0) text,
     required TResult Function(int field0) integer,
     required TResult Function(double field0) float,
-    required TResult Function(RationalDto field0) rational,
-    required TResult Function(RationalDto field0) signedRational,
+    required TResult Function(Rational field0) rational,
+    required TResult Function(Rational field0) signedRational,
     required TResult Function(String field0) dateTime,
     required TResult Function(String field0) naiveDateTime,
     required TResult Function(String field0) bytes,
-    required TResult Function(List<RationalDto> field0) rationalArray,
-    required TResult Function(List<RationalDto> field0) signedRationalArray,
+    required TResult Function(List<Rational> field0) rationalArray,
+    required TResult Function(List<Rational> field0) signedRationalArray,
     required TResult Function(Uint8List field0) u8Array,
     required TResult Function(Int32List field0) u16Array,
     required TResult Function(Int64List field0) u32Array,
@@ -1939,13 +1911,13 @@ class _$MetadataValueDto_NaiveDateTimeImpl
     TResult? Function(String field0)? text,
     TResult? Function(int field0)? integer,
     TResult? Function(double field0)? float,
-    TResult? Function(RationalDto field0)? rational,
-    TResult? Function(RationalDto field0)? signedRational,
+    TResult? Function(Rational field0)? rational,
+    TResult? Function(Rational field0)? signedRational,
     TResult? Function(String field0)? dateTime,
     TResult? Function(String field0)? naiveDateTime,
     TResult? Function(String field0)? bytes,
-    TResult? Function(List<RationalDto> field0)? rationalArray,
-    TResult? Function(List<RationalDto> field0)? signedRationalArray,
+    TResult? Function(List<Rational> field0)? rationalArray,
+    TResult? Function(List<Rational> field0)? signedRationalArray,
     TResult? Function(Uint8List field0)? u8Array,
     TResult? Function(Int32List field0)? u16Array,
     TResult? Function(Int64List field0)? u32Array,
@@ -1959,13 +1931,13 @@ class _$MetadataValueDto_NaiveDateTimeImpl
     TResult Function(String field0)? text,
     TResult Function(int field0)? integer,
     TResult Function(double field0)? float,
-    TResult Function(RationalDto field0)? rational,
-    TResult Function(RationalDto field0)? signedRational,
+    TResult Function(Rational field0)? rational,
+    TResult Function(Rational field0)? signedRational,
     TResult Function(String field0)? dateTime,
     TResult Function(String field0)? naiveDateTime,
     TResult Function(String field0)? bytes,
-    TResult Function(List<RationalDto> field0)? rationalArray,
-    TResult Function(List<RationalDto> field0)? signedRationalArray,
+    TResult Function(List<Rational> field0)? rationalArray,
+    TResult Function(List<Rational> field0)? signedRationalArray,
     TResult Function(Uint8List field0)? u8Array,
     TResult Function(Int32List field0)? u16Array,
     TResult Function(Int64List field0)? u32Array,
@@ -1980,23 +1952,21 @@ class _$MetadataValueDto_NaiveDateTimeImpl
   @override
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
-    required TResult Function(MetadataValueDto_Text value) text,
-    required TResult Function(MetadataValueDto_Integer value) integer,
-    required TResult Function(MetadataValueDto_Float value) float,
-    required TResult Function(MetadataValueDto_Rational value) rational,
-    required TResult Function(MetadataValueDto_SignedRational value)
+    required TResult Function(MetadataValue_Text value) text,
+    required TResult Function(MetadataValue_Integer value) integer,
+    required TResult Function(MetadataValue_Float value) float,
+    required TResult Function(MetadataValue_Rational value) rational,
+    required TResult Function(MetadataValue_SignedRational value)
     signedRational,
-    required TResult Function(MetadataValueDto_DateTime value) dateTime,
-    required TResult Function(MetadataValueDto_NaiveDateTime value)
-    naiveDateTime,
-    required TResult Function(MetadataValueDto_Bytes value) bytes,
-    required TResult Function(MetadataValueDto_RationalArray value)
-    rationalArray,
-    required TResult Function(MetadataValueDto_SignedRationalArray value)
+    required TResult Function(MetadataValue_DateTime value) dateTime,
+    required TResult Function(MetadataValue_NaiveDateTime value) naiveDateTime,
+    required TResult Function(MetadataValue_Bytes value) bytes,
+    required TResult Function(MetadataValue_RationalArray value) rationalArray,
+    required TResult Function(MetadataValue_SignedRationalArray value)
     signedRationalArray,
-    required TResult Function(MetadataValueDto_U8Array value) u8Array,
-    required TResult Function(MetadataValueDto_U16Array value) u16Array,
-    required TResult Function(MetadataValueDto_U32Array value) u32Array,
+    required TResult Function(MetadataValue_U8Array value) u8Array,
+    required TResult Function(MetadataValue_U16Array value) u16Array,
+    required TResult Function(MetadataValue_U32Array value) u32Array,
   }) {
     return naiveDateTime(this);
   }
@@ -2004,20 +1974,20 @@ class _$MetadataValueDto_NaiveDateTimeImpl
   @override
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(MetadataValueDto_Text value)? text,
-    TResult? Function(MetadataValueDto_Integer value)? integer,
-    TResult? Function(MetadataValueDto_Float value)? float,
-    TResult? Function(MetadataValueDto_Rational value)? rational,
-    TResult? Function(MetadataValueDto_SignedRational value)? signedRational,
-    TResult? Function(MetadataValueDto_DateTime value)? dateTime,
-    TResult? Function(MetadataValueDto_NaiveDateTime value)? naiveDateTime,
-    TResult? Function(MetadataValueDto_Bytes value)? bytes,
-    TResult? Function(MetadataValueDto_RationalArray value)? rationalArray,
-    TResult? Function(MetadataValueDto_SignedRationalArray value)?
+    TResult? Function(MetadataValue_Text value)? text,
+    TResult? Function(MetadataValue_Integer value)? integer,
+    TResult? Function(MetadataValue_Float value)? float,
+    TResult? Function(MetadataValue_Rational value)? rational,
+    TResult? Function(MetadataValue_SignedRational value)? signedRational,
+    TResult? Function(MetadataValue_DateTime value)? dateTime,
+    TResult? Function(MetadataValue_NaiveDateTime value)? naiveDateTime,
+    TResult? Function(MetadataValue_Bytes value)? bytes,
+    TResult? Function(MetadataValue_RationalArray value)? rationalArray,
+    TResult? Function(MetadataValue_SignedRationalArray value)?
     signedRationalArray,
-    TResult? Function(MetadataValueDto_U8Array value)? u8Array,
-    TResult? Function(MetadataValueDto_U16Array value)? u16Array,
-    TResult? Function(MetadataValueDto_U32Array value)? u32Array,
+    TResult? Function(MetadataValue_U8Array value)? u8Array,
+    TResult? Function(MetadataValue_U16Array value)? u16Array,
+    TResult? Function(MetadataValue_U32Array value)? u32Array,
   }) {
     return naiveDateTime?.call(this);
   }
@@ -2025,20 +1995,20 @@ class _$MetadataValueDto_NaiveDateTimeImpl
   @override
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
-    TResult Function(MetadataValueDto_Text value)? text,
-    TResult Function(MetadataValueDto_Integer value)? integer,
-    TResult Function(MetadataValueDto_Float value)? float,
-    TResult Function(MetadataValueDto_Rational value)? rational,
-    TResult Function(MetadataValueDto_SignedRational value)? signedRational,
-    TResult Function(MetadataValueDto_DateTime value)? dateTime,
-    TResult Function(MetadataValueDto_NaiveDateTime value)? naiveDateTime,
-    TResult Function(MetadataValueDto_Bytes value)? bytes,
-    TResult Function(MetadataValueDto_RationalArray value)? rationalArray,
-    TResult Function(MetadataValueDto_SignedRationalArray value)?
+    TResult Function(MetadataValue_Text value)? text,
+    TResult Function(MetadataValue_Integer value)? integer,
+    TResult Function(MetadataValue_Float value)? float,
+    TResult Function(MetadataValue_Rational value)? rational,
+    TResult Function(MetadataValue_SignedRational value)? signedRational,
+    TResult Function(MetadataValue_DateTime value)? dateTime,
+    TResult Function(MetadataValue_NaiveDateTime value)? naiveDateTime,
+    TResult Function(MetadataValue_Bytes value)? bytes,
+    TResult Function(MetadataValue_RationalArray value)? rationalArray,
+    TResult Function(MetadataValue_SignedRationalArray value)?
     signedRationalArray,
-    TResult Function(MetadataValueDto_U8Array value)? u8Array,
-    TResult Function(MetadataValueDto_U16Array value)? u16Array,
-    TResult Function(MetadataValueDto_U32Array value)? u32Array,
+    TResult Function(MetadataValue_U8Array value)? u8Array,
+    TResult Function(MetadataValue_U16Array value)? u16Array,
+    TResult Function(MetadataValue_U32Array value)? u32Array,
     required TResult orElse(),
   }) {
     if (naiveDateTime != null) {
@@ -2048,49 +2018,47 @@ class _$MetadataValueDto_NaiveDateTimeImpl
   }
 }
 
-abstract class MetadataValueDto_NaiveDateTime extends MetadataValueDto {
-  const factory MetadataValueDto_NaiveDateTime(final String field0) =
-      _$MetadataValueDto_NaiveDateTimeImpl;
-  const MetadataValueDto_NaiveDateTime._() : super._();
+abstract class MetadataValue_NaiveDateTime extends MetadataValue {
+  const factory MetadataValue_NaiveDateTime(final String field0) =
+      _$MetadataValue_NaiveDateTimeImpl;
+  const MetadataValue_NaiveDateTime._() : super._();
 
   @override
   String get field0;
 
-  /// Create a copy of MetadataValueDto
+  /// Create a copy of MetadataValue
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$MetadataValueDto_NaiveDateTimeImplCopyWith<
-    _$MetadataValueDto_NaiveDateTimeImpl
-  >
+  _$$MetadataValue_NaiveDateTimeImplCopyWith<_$MetadataValue_NaiveDateTimeImpl>
   get copyWith => throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class _$$MetadataValueDto_BytesImplCopyWith<$Res> {
-  factory _$$MetadataValueDto_BytesImplCopyWith(
-    _$MetadataValueDto_BytesImpl value,
-    $Res Function(_$MetadataValueDto_BytesImpl) then,
-  ) = __$$MetadataValueDto_BytesImplCopyWithImpl<$Res>;
+abstract class _$$MetadataValue_BytesImplCopyWith<$Res> {
+  factory _$$MetadataValue_BytesImplCopyWith(
+    _$MetadataValue_BytesImpl value,
+    $Res Function(_$MetadataValue_BytesImpl) then,
+  ) = __$$MetadataValue_BytesImplCopyWithImpl<$Res>;
   @useResult
   $Res call({String field0});
 }
 
 /// @nodoc
-class __$$MetadataValueDto_BytesImplCopyWithImpl<$Res>
-    extends _$MetadataValueDtoCopyWithImpl<$Res, _$MetadataValueDto_BytesImpl>
-    implements _$$MetadataValueDto_BytesImplCopyWith<$Res> {
-  __$$MetadataValueDto_BytesImplCopyWithImpl(
-    _$MetadataValueDto_BytesImpl _value,
-    $Res Function(_$MetadataValueDto_BytesImpl) _then,
+class __$$MetadataValue_BytesImplCopyWithImpl<$Res>
+    extends _$MetadataValueCopyWithImpl<$Res, _$MetadataValue_BytesImpl>
+    implements _$$MetadataValue_BytesImplCopyWith<$Res> {
+  __$$MetadataValue_BytesImplCopyWithImpl(
+    _$MetadataValue_BytesImpl _value,
+    $Res Function(_$MetadataValue_BytesImpl) _then,
   ) : super(_value, _then);
 
-  /// Create a copy of MetadataValueDto
+  /// Create a copy of MetadataValue
   /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({Object? field0 = null}) {
     return _then(
-      _$MetadataValueDto_BytesImpl(
+      _$MetadataValue_BytesImpl(
         null == field0
             ? _value.field0
             : field0 // ignore: cast_nullable_to_non_nullable
@@ -2102,36 +2070,35 @@ class __$$MetadataValueDto_BytesImplCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$MetadataValueDto_BytesImpl extends MetadataValueDto_Bytes {
-  const _$MetadataValueDto_BytesImpl(this.field0) : super._();
+class _$MetadataValue_BytesImpl extends MetadataValue_Bytes {
+  const _$MetadataValue_BytesImpl(this.field0) : super._();
 
   @override
   final String field0;
 
   @override
   String toString() {
-    return 'MetadataValueDto.bytes(field0: $field0)';
+    return 'MetadataValue.bytes(field0: $field0)';
   }
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$MetadataValueDto_BytesImpl &&
+            other is _$MetadataValue_BytesImpl &&
             (identical(other.field0, field0) || other.field0 == field0));
   }
 
   @override
   int get hashCode => Object.hash(runtimeType, field0);
 
-  /// Create a copy of MetadataValueDto
+  /// Create a copy of MetadataValue
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
-  _$$MetadataValueDto_BytesImplCopyWith<_$MetadataValueDto_BytesImpl>
-  get copyWith =>
-      __$$MetadataValueDto_BytesImplCopyWithImpl<_$MetadataValueDto_BytesImpl>(
+  _$$MetadataValue_BytesImplCopyWith<_$MetadataValue_BytesImpl> get copyWith =>
+      __$$MetadataValue_BytesImplCopyWithImpl<_$MetadataValue_BytesImpl>(
         this,
         _$identity,
       );
@@ -2142,13 +2109,13 @@ class _$MetadataValueDto_BytesImpl extends MetadataValueDto_Bytes {
     required TResult Function(String field0) text,
     required TResult Function(int field0) integer,
     required TResult Function(double field0) float,
-    required TResult Function(RationalDto field0) rational,
-    required TResult Function(RationalDto field0) signedRational,
+    required TResult Function(Rational field0) rational,
+    required TResult Function(Rational field0) signedRational,
     required TResult Function(String field0) dateTime,
     required TResult Function(String field0) naiveDateTime,
     required TResult Function(String field0) bytes,
-    required TResult Function(List<RationalDto> field0) rationalArray,
-    required TResult Function(List<RationalDto> field0) signedRationalArray,
+    required TResult Function(List<Rational> field0) rationalArray,
+    required TResult Function(List<Rational> field0) signedRationalArray,
     required TResult Function(Uint8List field0) u8Array,
     required TResult Function(Int32List field0) u16Array,
     required TResult Function(Int64List field0) u32Array,
@@ -2162,13 +2129,13 @@ class _$MetadataValueDto_BytesImpl extends MetadataValueDto_Bytes {
     TResult? Function(String field0)? text,
     TResult? Function(int field0)? integer,
     TResult? Function(double field0)? float,
-    TResult? Function(RationalDto field0)? rational,
-    TResult? Function(RationalDto field0)? signedRational,
+    TResult? Function(Rational field0)? rational,
+    TResult? Function(Rational field0)? signedRational,
     TResult? Function(String field0)? dateTime,
     TResult? Function(String field0)? naiveDateTime,
     TResult? Function(String field0)? bytes,
-    TResult? Function(List<RationalDto> field0)? rationalArray,
-    TResult? Function(List<RationalDto> field0)? signedRationalArray,
+    TResult? Function(List<Rational> field0)? rationalArray,
+    TResult? Function(List<Rational> field0)? signedRationalArray,
     TResult? Function(Uint8List field0)? u8Array,
     TResult? Function(Int32List field0)? u16Array,
     TResult? Function(Int64List field0)? u32Array,
@@ -2182,13 +2149,13 @@ class _$MetadataValueDto_BytesImpl extends MetadataValueDto_Bytes {
     TResult Function(String field0)? text,
     TResult Function(int field0)? integer,
     TResult Function(double field0)? float,
-    TResult Function(RationalDto field0)? rational,
-    TResult Function(RationalDto field0)? signedRational,
+    TResult Function(Rational field0)? rational,
+    TResult Function(Rational field0)? signedRational,
     TResult Function(String field0)? dateTime,
     TResult Function(String field0)? naiveDateTime,
     TResult Function(String field0)? bytes,
-    TResult Function(List<RationalDto> field0)? rationalArray,
-    TResult Function(List<RationalDto> field0)? signedRationalArray,
+    TResult Function(List<Rational> field0)? rationalArray,
+    TResult Function(List<Rational> field0)? signedRationalArray,
     TResult Function(Uint8List field0)? u8Array,
     TResult Function(Int32List field0)? u16Array,
     TResult Function(Int64List field0)? u32Array,
@@ -2203,23 +2170,21 @@ class _$MetadataValueDto_BytesImpl extends MetadataValueDto_Bytes {
   @override
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
-    required TResult Function(MetadataValueDto_Text value) text,
-    required TResult Function(MetadataValueDto_Integer value) integer,
-    required TResult Function(MetadataValueDto_Float value) float,
-    required TResult Function(MetadataValueDto_Rational value) rational,
-    required TResult Function(MetadataValueDto_SignedRational value)
+    required TResult Function(MetadataValue_Text value) text,
+    required TResult Function(MetadataValue_Integer value) integer,
+    required TResult Function(MetadataValue_Float value) float,
+    required TResult Function(MetadataValue_Rational value) rational,
+    required TResult Function(MetadataValue_SignedRational value)
     signedRational,
-    required TResult Function(MetadataValueDto_DateTime value) dateTime,
-    required TResult Function(MetadataValueDto_NaiveDateTime value)
-    naiveDateTime,
-    required TResult Function(MetadataValueDto_Bytes value) bytes,
-    required TResult Function(MetadataValueDto_RationalArray value)
-    rationalArray,
-    required TResult Function(MetadataValueDto_SignedRationalArray value)
+    required TResult Function(MetadataValue_DateTime value) dateTime,
+    required TResult Function(MetadataValue_NaiveDateTime value) naiveDateTime,
+    required TResult Function(MetadataValue_Bytes value) bytes,
+    required TResult Function(MetadataValue_RationalArray value) rationalArray,
+    required TResult Function(MetadataValue_SignedRationalArray value)
     signedRationalArray,
-    required TResult Function(MetadataValueDto_U8Array value) u8Array,
-    required TResult Function(MetadataValueDto_U16Array value) u16Array,
-    required TResult Function(MetadataValueDto_U32Array value) u32Array,
+    required TResult Function(MetadataValue_U8Array value) u8Array,
+    required TResult Function(MetadataValue_U16Array value) u16Array,
+    required TResult Function(MetadataValue_U32Array value) u32Array,
   }) {
     return bytes(this);
   }
@@ -2227,20 +2192,20 @@ class _$MetadataValueDto_BytesImpl extends MetadataValueDto_Bytes {
   @override
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(MetadataValueDto_Text value)? text,
-    TResult? Function(MetadataValueDto_Integer value)? integer,
-    TResult? Function(MetadataValueDto_Float value)? float,
-    TResult? Function(MetadataValueDto_Rational value)? rational,
-    TResult? Function(MetadataValueDto_SignedRational value)? signedRational,
-    TResult? Function(MetadataValueDto_DateTime value)? dateTime,
-    TResult? Function(MetadataValueDto_NaiveDateTime value)? naiveDateTime,
-    TResult? Function(MetadataValueDto_Bytes value)? bytes,
-    TResult? Function(MetadataValueDto_RationalArray value)? rationalArray,
-    TResult? Function(MetadataValueDto_SignedRationalArray value)?
+    TResult? Function(MetadataValue_Text value)? text,
+    TResult? Function(MetadataValue_Integer value)? integer,
+    TResult? Function(MetadataValue_Float value)? float,
+    TResult? Function(MetadataValue_Rational value)? rational,
+    TResult? Function(MetadataValue_SignedRational value)? signedRational,
+    TResult? Function(MetadataValue_DateTime value)? dateTime,
+    TResult? Function(MetadataValue_NaiveDateTime value)? naiveDateTime,
+    TResult? Function(MetadataValue_Bytes value)? bytes,
+    TResult? Function(MetadataValue_RationalArray value)? rationalArray,
+    TResult? Function(MetadataValue_SignedRationalArray value)?
     signedRationalArray,
-    TResult? Function(MetadataValueDto_U8Array value)? u8Array,
-    TResult? Function(MetadataValueDto_U16Array value)? u16Array,
-    TResult? Function(MetadataValueDto_U32Array value)? u32Array,
+    TResult? Function(MetadataValue_U8Array value)? u8Array,
+    TResult? Function(MetadataValue_U16Array value)? u16Array,
+    TResult? Function(MetadataValue_U32Array value)? u32Array,
   }) {
     return bytes?.call(this);
   }
@@ -2248,20 +2213,20 @@ class _$MetadataValueDto_BytesImpl extends MetadataValueDto_Bytes {
   @override
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
-    TResult Function(MetadataValueDto_Text value)? text,
-    TResult Function(MetadataValueDto_Integer value)? integer,
-    TResult Function(MetadataValueDto_Float value)? float,
-    TResult Function(MetadataValueDto_Rational value)? rational,
-    TResult Function(MetadataValueDto_SignedRational value)? signedRational,
-    TResult Function(MetadataValueDto_DateTime value)? dateTime,
-    TResult Function(MetadataValueDto_NaiveDateTime value)? naiveDateTime,
-    TResult Function(MetadataValueDto_Bytes value)? bytes,
-    TResult Function(MetadataValueDto_RationalArray value)? rationalArray,
-    TResult Function(MetadataValueDto_SignedRationalArray value)?
+    TResult Function(MetadataValue_Text value)? text,
+    TResult Function(MetadataValue_Integer value)? integer,
+    TResult Function(MetadataValue_Float value)? float,
+    TResult Function(MetadataValue_Rational value)? rational,
+    TResult Function(MetadataValue_SignedRational value)? signedRational,
+    TResult Function(MetadataValue_DateTime value)? dateTime,
+    TResult Function(MetadataValue_NaiveDateTime value)? naiveDateTime,
+    TResult Function(MetadataValue_Bytes value)? bytes,
+    TResult Function(MetadataValue_RationalArray value)? rationalArray,
+    TResult Function(MetadataValue_SignedRationalArray value)?
     signedRationalArray,
-    TResult Function(MetadataValueDto_U8Array value)? u8Array,
-    TResult Function(MetadataValueDto_U16Array value)? u16Array,
-    TResult Function(MetadataValueDto_U32Array value)? u32Array,
+    TResult Function(MetadataValue_U8Array value)? u8Array,
+    TResult Function(MetadataValue_U16Array value)? u16Array,
+    TResult Function(MetadataValue_U32Array value)? u32Array,
     required TResult orElse(),
   }) {
     if (bytes != null) {
@@ -2271,55 +2236,51 @@ class _$MetadataValueDto_BytesImpl extends MetadataValueDto_Bytes {
   }
 }
 
-abstract class MetadataValueDto_Bytes extends MetadataValueDto {
-  const factory MetadataValueDto_Bytes(final String field0) =
-      _$MetadataValueDto_BytesImpl;
-  const MetadataValueDto_Bytes._() : super._();
+abstract class MetadataValue_Bytes extends MetadataValue {
+  const factory MetadataValue_Bytes(final String field0) =
+      _$MetadataValue_BytesImpl;
+  const MetadataValue_Bytes._() : super._();
 
   @override
   String get field0;
 
-  /// Create a copy of MetadataValueDto
+  /// Create a copy of MetadataValue
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$MetadataValueDto_BytesImplCopyWith<_$MetadataValueDto_BytesImpl>
-  get copyWith => throw _privateConstructorUsedError;
+  _$$MetadataValue_BytesImplCopyWith<_$MetadataValue_BytesImpl> get copyWith =>
+      throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class _$$MetadataValueDto_RationalArrayImplCopyWith<$Res> {
-  factory _$$MetadataValueDto_RationalArrayImplCopyWith(
-    _$MetadataValueDto_RationalArrayImpl value,
-    $Res Function(_$MetadataValueDto_RationalArrayImpl) then,
-  ) = __$$MetadataValueDto_RationalArrayImplCopyWithImpl<$Res>;
+abstract class _$$MetadataValue_RationalArrayImplCopyWith<$Res> {
+  factory _$$MetadataValue_RationalArrayImplCopyWith(
+    _$MetadataValue_RationalArrayImpl value,
+    $Res Function(_$MetadataValue_RationalArrayImpl) then,
+  ) = __$$MetadataValue_RationalArrayImplCopyWithImpl<$Res>;
   @useResult
-  $Res call({List<RationalDto> field0});
+  $Res call({List<Rational> field0});
 }
 
 /// @nodoc
-class __$$MetadataValueDto_RationalArrayImplCopyWithImpl<$Res>
-    extends
-        _$MetadataValueDtoCopyWithImpl<
-          $Res,
-          _$MetadataValueDto_RationalArrayImpl
-        >
-    implements _$$MetadataValueDto_RationalArrayImplCopyWith<$Res> {
-  __$$MetadataValueDto_RationalArrayImplCopyWithImpl(
-    _$MetadataValueDto_RationalArrayImpl _value,
-    $Res Function(_$MetadataValueDto_RationalArrayImpl) _then,
+class __$$MetadataValue_RationalArrayImplCopyWithImpl<$Res>
+    extends _$MetadataValueCopyWithImpl<$Res, _$MetadataValue_RationalArrayImpl>
+    implements _$$MetadataValue_RationalArrayImplCopyWith<$Res> {
+  __$$MetadataValue_RationalArrayImplCopyWithImpl(
+    _$MetadataValue_RationalArrayImpl _value,
+    $Res Function(_$MetadataValue_RationalArrayImpl) _then,
   ) : super(_value, _then);
 
-  /// Create a copy of MetadataValueDto
+  /// Create a copy of MetadataValue
   /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({Object? field0 = null}) {
     return _then(
-      _$MetadataValueDto_RationalArrayImpl(
+      _$MetadataValue_RationalArrayImpl(
         null == field0
             ? _value._field0
             : field0 // ignore: cast_nullable_to_non_nullable
-                  as List<RationalDto>,
+                  as List<Rational>,
       ),
     );
   }
@@ -2327,15 +2288,14 @@ class __$$MetadataValueDto_RationalArrayImplCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$MetadataValueDto_RationalArrayImpl
-    extends MetadataValueDto_RationalArray {
-  const _$MetadataValueDto_RationalArrayImpl(final List<RationalDto> field0)
+class _$MetadataValue_RationalArrayImpl extends MetadataValue_RationalArray {
+  const _$MetadataValue_RationalArrayImpl(final List<Rational> field0)
     : _field0 = field0,
       super._();
 
-  final List<RationalDto> _field0;
+  final List<Rational> _field0;
   @override
-  List<RationalDto> get field0 {
+  List<Rational> get field0 {
     if (_field0 is EqualUnmodifiableListView) return _field0;
     // ignore: implicit_dynamic_type
     return EqualUnmodifiableListView(_field0);
@@ -2343,14 +2303,14 @@ class _$MetadataValueDto_RationalArrayImpl
 
   @override
   String toString() {
-    return 'MetadataValueDto.rationalArray(field0: $field0)';
+    return 'MetadataValue.rationalArray(field0: $field0)';
   }
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$MetadataValueDto_RationalArrayImpl &&
+            other is _$MetadataValue_RationalArrayImpl &&
             const DeepCollectionEquality().equals(other._field0, _field0));
   }
 
@@ -2358,17 +2318,15 @@ class _$MetadataValueDto_RationalArrayImpl
   int get hashCode =>
       Object.hash(runtimeType, const DeepCollectionEquality().hash(_field0));
 
-  /// Create a copy of MetadataValueDto
+  /// Create a copy of MetadataValue
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
-  _$$MetadataValueDto_RationalArrayImplCopyWith<
-    _$MetadataValueDto_RationalArrayImpl
-  >
+  _$$MetadataValue_RationalArrayImplCopyWith<_$MetadataValue_RationalArrayImpl>
   get copyWith =>
-      __$$MetadataValueDto_RationalArrayImplCopyWithImpl<
-        _$MetadataValueDto_RationalArrayImpl
+      __$$MetadataValue_RationalArrayImplCopyWithImpl<
+        _$MetadataValue_RationalArrayImpl
       >(this, _$identity);
 
   @override
@@ -2377,13 +2335,13 @@ class _$MetadataValueDto_RationalArrayImpl
     required TResult Function(String field0) text,
     required TResult Function(int field0) integer,
     required TResult Function(double field0) float,
-    required TResult Function(RationalDto field0) rational,
-    required TResult Function(RationalDto field0) signedRational,
+    required TResult Function(Rational field0) rational,
+    required TResult Function(Rational field0) signedRational,
     required TResult Function(String field0) dateTime,
     required TResult Function(String field0) naiveDateTime,
     required TResult Function(String field0) bytes,
-    required TResult Function(List<RationalDto> field0) rationalArray,
-    required TResult Function(List<RationalDto> field0) signedRationalArray,
+    required TResult Function(List<Rational> field0) rationalArray,
+    required TResult Function(List<Rational> field0) signedRationalArray,
     required TResult Function(Uint8List field0) u8Array,
     required TResult Function(Int32List field0) u16Array,
     required TResult Function(Int64List field0) u32Array,
@@ -2397,13 +2355,13 @@ class _$MetadataValueDto_RationalArrayImpl
     TResult? Function(String field0)? text,
     TResult? Function(int field0)? integer,
     TResult? Function(double field0)? float,
-    TResult? Function(RationalDto field0)? rational,
-    TResult? Function(RationalDto field0)? signedRational,
+    TResult? Function(Rational field0)? rational,
+    TResult? Function(Rational field0)? signedRational,
     TResult? Function(String field0)? dateTime,
     TResult? Function(String field0)? naiveDateTime,
     TResult? Function(String field0)? bytes,
-    TResult? Function(List<RationalDto> field0)? rationalArray,
-    TResult? Function(List<RationalDto> field0)? signedRationalArray,
+    TResult? Function(List<Rational> field0)? rationalArray,
+    TResult? Function(List<Rational> field0)? signedRationalArray,
     TResult? Function(Uint8List field0)? u8Array,
     TResult? Function(Int32List field0)? u16Array,
     TResult? Function(Int64List field0)? u32Array,
@@ -2417,13 +2375,13 @@ class _$MetadataValueDto_RationalArrayImpl
     TResult Function(String field0)? text,
     TResult Function(int field0)? integer,
     TResult Function(double field0)? float,
-    TResult Function(RationalDto field0)? rational,
-    TResult Function(RationalDto field0)? signedRational,
+    TResult Function(Rational field0)? rational,
+    TResult Function(Rational field0)? signedRational,
     TResult Function(String field0)? dateTime,
     TResult Function(String field0)? naiveDateTime,
     TResult Function(String field0)? bytes,
-    TResult Function(List<RationalDto> field0)? rationalArray,
-    TResult Function(List<RationalDto> field0)? signedRationalArray,
+    TResult Function(List<Rational> field0)? rationalArray,
+    TResult Function(List<Rational> field0)? signedRationalArray,
     TResult Function(Uint8List field0)? u8Array,
     TResult Function(Int32List field0)? u16Array,
     TResult Function(Int64List field0)? u32Array,
@@ -2438,23 +2396,21 @@ class _$MetadataValueDto_RationalArrayImpl
   @override
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
-    required TResult Function(MetadataValueDto_Text value) text,
-    required TResult Function(MetadataValueDto_Integer value) integer,
-    required TResult Function(MetadataValueDto_Float value) float,
-    required TResult Function(MetadataValueDto_Rational value) rational,
-    required TResult Function(MetadataValueDto_SignedRational value)
+    required TResult Function(MetadataValue_Text value) text,
+    required TResult Function(MetadataValue_Integer value) integer,
+    required TResult Function(MetadataValue_Float value) float,
+    required TResult Function(MetadataValue_Rational value) rational,
+    required TResult Function(MetadataValue_SignedRational value)
     signedRational,
-    required TResult Function(MetadataValueDto_DateTime value) dateTime,
-    required TResult Function(MetadataValueDto_NaiveDateTime value)
-    naiveDateTime,
-    required TResult Function(MetadataValueDto_Bytes value) bytes,
-    required TResult Function(MetadataValueDto_RationalArray value)
-    rationalArray,
-    required TResult Function(MetadataValueDto_SignedRationalArray value)
+    required TResult Function(MetadataValue_DateTime value) dateTime,
+    required TResult Function(MetadataValue_NaiveDateTime value) naiveDateTime,
+    required TResult Function(MetadataValue_Bytes value) bytes,
+    required TResult Function(MetadataValue_RationalArray value) rationalArray,
+    required TResult Function(MetadataValue_SignedRationalArray value)
     signedRationalArray,
-    required TResult Function(MetadataValueDto_U8Array value) u8Array,
-    required TResult Function(MetadataValueDto_U16Array value) u16Array,
-    required TResult Function(MetadataValueDto_U32Array value) u32Array,
+    required TResult Function(MetadataValue_U8Array value) u8Array,
+    required TResult Function(MetadataValue_U16Array value) u16Array,
+    required TResult Function(MetadataValue_U32Array value) u32Array,
   }) {
     return rationalArray(this);
   }
@@ -2462,20 +2418,20 @@ class _$MetadataValueDto_RationalArrayImpl
   @override
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(MetadataValueDto_Text value)? text,
-    TResult? Function(MetadataValueDto_Integer value)? integer,
-    TResult? Function(MetadataValueDto_Float value)? float,
-    TResult? Function(MetadataValueDto_Rational value)? rational,
-    TResult? Function(MetadataValueDto_SignedRational value)? signedRational,
-    TResult? Function(MetadataValueDto_DateTime value)? dateTime,
-    TResult? Function(MetadataValueDto_NaiveDateTime value)? naiveDateTime,
-    TResult? Function(MetadataValueDto_Bytes value)? bytes,
-    TResult? Function(MetadataValueDto_RationalArray value)? rationalArray,
-    TResult? Function(MetadataValueDto_SignedRationalArray value)?
+    TResult? Function(MetadataValue_Text value)? text,
+    TResult? Function(MetadataValue_Integer value)? integer,
+    TResult? Function(MetadataValue_Float value)? float,
+    TResult? Function(MetadataValue_Rational value)? rational,
+    TResult? Function(MetadataValue_SignedRational value)? signedRational,
+    TResult? Function(MetadataValue_DateTime value)? dateTime,
+    TResult? Function(MetadataValue_NaiveDateTime value)? naiveDateTime,
+    TResult? Function(MetadataValue_Bytes value)? bytes,
+    TResult? Function(MetadataValue_RationalArray value)? rationalArray,
+    TResult? Function(MetadataValue_SignedRationalArray value)?
     signedRationalArray,
-    TResult? Function(MetadataValueDto_U8Array value)? u8Array,
-    TResult? Function(MetadataValueDto_U16Array value)? u16Array,
-    TResult? Function(MetadataValueDto_U32Array value)? u32Array,
+    TResult? Function(MetadataValue_U8Array value)? u8Array,
+    TResult? Function(MetadataValue_U16Array value)? u16Array,
+    TResult? Function(MetadataValue_U32Array value)? u32Array,
   }) {
     return rationalArray?.call(this);
   }
@@ -2483,20 +2439,20 @@ class _$MetadataValueDto_RationalArrayImpl
   @override
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
-    TResult Function(MetadataValueDto_Text value)? text,
-    TResult Function(MetadataValueDto_Integer value)? integer,
-    TResult Function(MetadataValueDto_Float value)? float,
-    TResult Function(MetadataValueDto_Rational value)? rational,
-    TResult Function(MetadataValueDto_SignedRational value)? signedRational,
-    TResult Function(MetadataValueDto_DateTime value)? dateTime,
-    TResult Function(MetadataValueDto_NaiveDateTime value)? naiveDateTime,
-    TResult Function(MetadataValueDto_Bytes value)? bytes,
-    TResult Function(MetadataValueDto_RationalArray value)? rationalArray,
-    TResult Function(MetadataValueDto_SignedRationalArray value)?
+    TResult Function(MetadataValue_Text value)? text,
+    TResult Function(MetadataValue_Integer value)? integer,
+    TResult Function(MetadataValue_Float value)? float,
+    TResult Function(MetadataValue_Rational value)? rational,
+    TResult Function(MetadataValue_SignedRational value)? signedRational,
+    TResult Function(MetadataValue_DateTime value)? dateTime,
+    TResult Function(MetadataValue_NaiveDateTime value)? naiveDateTime,
+    TResult Function(MetadataValue_Bytes value)? bytes,
+    TResult Function(MetadataValue_RationalArray value)? rationalArray,
+    TResult Function(MetadataValue_SignedRationalArray value)?
     signedRationalArray,
-    TResult Function(MetadataValueDto_U8Array value)? u8Array,
-    TResult Function(MetadataValueDto_U16Array value)? u16Array,
-    TResult Function(MetadataValueDto_U32Array value)? u32Array,
+    TResult Function(MetadataValue_U8Array value)? u8Array,
+    TResult Function(MetadataValue_U16Array value)? u16Array,
+    TResult Function(MetadataValue_U32Array value)? u32Array,
     required TResult orElse(),
   }) {
     if (rationalArray != null) {
@@ -2506,57 +2462,55 @@ class _$MetadataValueDto_RationalArrayImpl
   }
 }
 
-abstract class MetadataValueDto_RationalArray extends MetadataValueDto {
-  const factory MetadataValueDto_RationalArray(final List<RationalDto> field0) =
-      _$MetadataValueDto_RationalArrayImpl;
-  const MetadataValueDto_RationalArray._() : super._();
+abstract class MetadataValue_RationalArray extends MetadataValue {
+  const factory MetadataValue_RationalArray(final List<Rational> field0) =
+      _$MetadataValue_RationalArrayImpl;
+  const MetadataValue_RationalArray._() : super._();
 
   @override
-  List<RationalDto> get field0;
+  List<Rational> get field0;
 
-  /// Create a copy of MetadataValueDto
+  /// Create a copy of MetadataValue
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$MetadataValueDto_RationalArrayImplCopyWith<
-    _$MetadataValueDto_RationalArrayImpl
-  >
+  _$$MetadataValue_RationalArrayImplCopyWith<_$MetadataValue_RationalArrayImpl>
   get copyWith => throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class _$$MetadataValueDto_SignedRationalArrayImplCopyWith<$Res> {
-  factory _$$MetadataValueDto_SignedRationalArrayImplCopyWith(
-    _$MetadataValueDto_SignedRationalArrayImpl value,
-    $Res Function(_$MetadataValueDto_SignedRationalArrayImpl) then,
-  ) = __$$MetadataValueDto_SignedRationalArrayImplCopyWithImpl<$Res>;
+abstract class _$$MetadataValue_SignedRationalArrayImplCopyWith<$Res> {
+  factory _$$MetadataValue_SignedRationalArrayImplCopyWith(
+    _$MetadataValue_SignedRationalArrayImpl value,
+    $Res Function(_$MetadataValue_SignedRationalArrayImpl) then,
+  ) = __$$MetadataValue_SignedRationalArrayImplCopyWithImpl<$Res>;
   @useResult
-  $Res call({List<RationalDto> field0});
+  $Res call({List<Rational> field0});
 }
 
 /// @nodoc
-class __$$MetadataValueDto_SignedRationalArrayImplCopyWithImpl<$Res>
+class __$$MetadataValue_SignedRationalArrayImplCopyWithImpl<$Res>
     extends
-        _$MetadataValueDtoCopyWithImpl<
+        _$MetadataValueCopyWithImpl<
           $Res,
-          _$MetadataValueDto_SignedRationalArrayImpl
+          _$MetadataValue_SignedRationalArrayImpl
         >
-    implements _$$MetadataValueDto_SignedRationalArrayImplCopyWith<$Res> {
-  __$$MetadataValueDto_SignedRationalArrayImplCopyWithImpl(
-    _$MetadataValueDto_SignedRationalArrayImpl _value,
-    $Res Function(_$MetadataValueDto_SignedRationalArrayImpl) _then,
+    implements _$$MetadataValue_SignedRationalArrayImplCopyWith<$Res> {
+  __$$MetadataValue_SignedRationalArrayImplCopyWithImpl(
+    _$MetadataValue_SignedRationalArrayImpl _value,
+    $Res Function(_$MetadataValue_SignedRationalArrayImpl) _then,
   ) : super(_value, _then);
 
-  /// Create a copy of MetadataValueDto
+  /// Create a copy of MetadataValue
   /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({Object? field0 = null}) {
     return _then(
-      _$MetadataValueDto_SignedRationalArrayImpl(
+      _$MetadataValue_SignedRationalArrayImpl(
         null == field0
             ? _value._field0
             : field0 // ignore: cast_nullable_to_non_nullable
-                  as List<RationalDto>,
+                  as List<Rational>,
       ),
     );
   }
@@ -2564,16 +2518,15 @@ class __$$MetadataValueDto_SignedRationalArrayImplCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$MetadataValueDto_SignedRationalArrayImpl
-    extends MetadataValueDto_SignedRationalArray {
-  const _$MetadataValueDto_SignedRationalArrayImpl(
-    final List<RationalDto> field0,
-  ) : _field0 = field0,
+class _$MetadataValue_SignedRationalArrayImpl
+    extends MetadataValue_SignedRationalArray {
+  const _$MetadataValue_SignedRationalArrayImpl(final List<Rational> field0)
+    : _field0 = field0,
       super._();
 
-  final List<RationalDto> _field0;
+  final List<Rational> _field0;
   @override
-  List<RationalDto> get field0 {
+  List<Rational> get field0 {
     if (_field0 is EqualUnmodifiableListView) return _field0;
     // ignore: implicit_dynamic_type
     return EqualUnmodifiableListView(_field0);
@@ -2581,14 +2534,14 @@ class _$MetadataValueDto_SignedRationalArrayImpl
 
   @override
   String toString() {
-    return 'MetadataValueDto.signedRationalArray(field0: $field0)';
+    return 'MetadataValue.signedRationalArray(field0: $field0)';
   }
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$MetadataValueDto_SignedRationalArrayImpl &&
+            other is _$MetadataValue_SignedRationalArrayImpl &&
             const DeepCollectionEquality().equals(other._field0, _field0));
   }
 
@@ -2596,17 +2549,17 @@ class _$MetadataValueDto_SignedRationalArrayImpl
   int get hashCode =>
       Object.hash(runtimeType, const DeepCollectionEquality().hash(_field0));
 
-  /// Create a copy of MetadataValueDto
+  /// Create a copy of MetadataValue
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
-  _$$MetadataValueDto_SignedRationalArrayImplCopyWith<
-    _$MetadataValueDto_SignedRationalArrayImpl
+  _$$MetadataValue_SignedRationalArrayImplCopyWith<
+    _$MetadataValue_SignedRationalArrayImpl
   >
   get copyWith =>
-      __$$MetadataValueDto_SignedRationalArrayImplCopyWithImpl<
-        _$MetadataValueDto_SignedRationalArrayImpl
+      __$$MetadataValue_SignedRationalArrayImplCopyWithImpl<
+        _$MetadataValue_SignedRationalArrayImpl
       >(this, _$identity);
 
   @override
@@ -2615,13 +2568,13 @@ class _$MetadataValueDto_SignedRationalArrayImpl
     required TResult Function(String field0) text,
     required TResult Function(int field0) integer,
     required TResult Function(double field0) float,
-    required TResult Function(RationalDto field0) rational,
-    required TResult Function(RationalDto field0) signedRational,
+    required TResult Function(Rational field0) rational,
+    required TResult Function(Rational field0) signedRational,
     required TResult Function(String field0) dateTime,
     required TResult Function(String field0) naiveDateTime,
     required TResult Function(String field0) bytes,
-    required TResult Function(List<RationalDto> field0) rationalArray,
-    required TResult Function(List<RationalDto> field0) signedRationalArray,
+    required TResult Function(List<Rational> field0) rationalArray,
+    required TResult Function(List<Rational> field0) signedRationalArray,
     required TResult Function(Uint8List field0) u8Array,
     required TResult Function(Int32List field0) u16Array,
     required TResult Function(Int64List field0) u32Array,
@@ -2635,13 +2588,13 @@ class _$MetadataValueDto_SignedRationalArrayImpl
     TResult? Function(String field0)? text,
     TResult? Function(int field0)? integer,
     TResult? Function(double field0)? float,
-    TResult? Function(RationalDto field0)? rational,
-    TResult? Function(RationalDto field0)? signedRational,
+    TResult? Function(Rational field0)? rational,
+    TResult? Function(Rational field0)? signedRational,
     TResult? Function(String field0)? dateTime,
     TResult? Function(String field0)? naiveDateTime,
     TResult? Function(String field0)? bytes,
-    TResult? Function(List<RationalDto> field0)? rationalArray,
-    TResult? Function(List<RationalDto> field0)? signedRationalArray,
+    TResult? Function(List<Rational> field0)? rationalArray,
+    TResult? Function(List<Rational> field0)? signedRationalArray,
     TResult? Function(Uint8List field0)? u8Array,
     TResult? Function(Int32List field0)? u16Array,
     TResult? Function(Int64List field0)? u32Array,
@@ -2655,13 +2608,13 @@ class _$MetadataValueDto_SignedRationalArrayImpl
     TResult Function(String field0)? text,
     TResult Function(int field0)? integer,
     TResult Function(double field0)? float,
-    TResult Function(RationalDto field0)? rational,
-    TResult Function(RationalDto field0)? signedRational,
+    TResult Function(Rational field0)? rational,
+    TResult Function(Rational field0)? signedRational,
     TResult Function(String field0)? dateTime,
     TResult Function(String field0)? naiveDateTime,
     TResult Function(String field0)? bytes,
-    TResult Function(List<RationalDto> field0)? rationalArray,
-    TResult Function(List<RationalDto> field0)? signedRationalArray,
+    TResult Function(List<Rational> field0)? rationalArray,
+    TResult Function(List<Rational> field0)? signedRationalArray,
     TResult Function(Uint8List field0)? u8Array,
     TResult Function(Int32List field0)? u16Array,
     TResult Function(Int64List field0)? u32Array,
@@ -2676,23 +2629,21 @@ class _$MetadataValueDto_SignedRationalArrayImpl
   @override
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
-    required TResult Function(MetadataValueDto_Text value) text,
-    required TResult Function(MetadataValueDto_Integer value) integer,
-    required TResult Function(MetadataValueDto_Float value) float,
-    required TResult Function(MetadataValueDto_Rational value) rational,
-    required TResult Function(MetadataValueDto_SignedRational value)
+    required TResult Function(MetadataValue_Text value) text,
+    required TResult Function(MetadataValue_Integer value) integer,
+    required TResult Function(MetadataValue_Float value) float,
+    required TResult Function(MetadataValue_Rational value) rational,
+    required TResult Function(MetadataValue_SignedRational value)
     signedRational,
-    required TResult Function(MetadataValueDto_DateTime value) dateTime,
-    required TResult Function(MetadataValueDto_NaiveDateTime value)
-    naiveDateTime,
-    required TResult Function(MetadataValueDto_Bytes value) bytes,
-    required TResult Function(MetadataValueDto_RationalArray value)
-    rationalArray,
-    required TResult Function(MetadataValueDto_SignedRationalArray value)
+    required TResult Function(MetadataValue_DateTime value) dateTime,
+    required TResult Function(MetadataValue_NaiveDateTime value) naiveDateTime,
+    required TResult Function(MetadataValue_Bytes value) bytes,
+    required TResult Function(MetadataValue_RationalArray value) rationalArray,
+    required TResult Function(MetadataValue_SignedRationalArray value)
     signedRationalArray,
-    required TResult Function(MetadataValueDto_U8Array value) u8Array,
-    required TResult Function(MetadataValueDto_U16Array value) u16Array,
-    required TResult Function(MetadataValueDto_U32Array value) u32Array,
+    required TResult Function(MetadataValue_U8Array value) u8Array,
+    required TResult Function(MetadataValue_U16Array value) u16Array,
+    required TResult Function(MetadataValue_U32Array value) u32Array,
   }) {
     return signedRationalArray(this);
   }
@@ -2700,20 +2651,20 @@ class _$MetadataValueDto_SignedRationalArrayImpl
   @override
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(MetadataValueDto_Text value)? text,
-    TResult? Function(MetadataValueDto_Integer value)? integer,
-    TResult? Function(MetadataValueDto_Float value)? float,
-    TResult? Function(MetadataValueDto_Rational value)? rational,
-    TResult? Function(MetadataValueDto_SignedRational value)? signedRational,
-    TResult? Function(MetadataValueDto_DateTime value)? dateTime,
-    TResult? Function(MetadataValueDto_NaiveDateTime value)? naiveDateTime,
-    TResult? Function(MetadataValueDto_Bytes value)? bytes,
-    TResult? Function(MetadataValueDto_RationalArray value)? rationalArray,
-    TResult? Function(MetadataValueDto_SignedRationalArray value)?
+    TResult? Function(MetadataValue_Text value)? text,
+    TResult? Function(MetadataValue_Integer value)? integer,
+    TResult? Function(MetadataValue_Float value)? float,
+    TResult? Function(MetadataValue_Rational value)? rational,
+    TResult? Function(MetadataValue_SignedRational value)? signedRational,
+    TResult? Function(MetadataValue_DateTime value)? dateTime,
+    TResult? Function(MetadataValue_NaiveDateTime value)? naiveDateTime,
+    TResult? Function(MetadataValue_Bytes value)? bytes,
+    TResult? Function(MetadataValue_RationalArray value)? rationalArray,
+    TResult? Function(MetadataValue_SignedRationalArray value)?
     signedRationalArray,
-    TResult? Function(MetadataValueDto_U8Array value)? u8Array,
-    TResult? Function(MetadataValueDto_U16Array value)? u16Array,
-    TResult? Function(MetadataValueDto_U32Array value)? u32Array,
+    TResult? Function(MetadataValue_U8Array value)? u8Array,
+    TResult? Function(MetadataValue_U16Array value)? u16Array,
+    TResult? Function(MetadataValue_U32Array value)? u32Array,
   }) {
     return signedRationalArray?.call(this);
   }
@@ -2721,20 +2672,20 @@ class _$MetadataValueDto_SignedRationalArrayImpl
   @override
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
-    TResult Function(MetadataValueDto_Text value)? text,
-    TResult Function(MetadataValueDto_Integer value)? integer,
-    TResult Function(MetadataValueDto_Float value)? float,
-    TResult Function(MetadataValueDto_Rational value)? rational,
-    TResult Function(MetadataValueDto_SignedRational value)? signedRational,
-    TResult Function(MetadataValueDto_DateTime value)? dateTime,
-    TResult Function(MetadataValueDto_NaiveDateTime value)? naiveDateTime,
-    TResult Function(MetadataValueDto_Bytes value)? bytes,
-    TResult Function(MetadataValueDto_RationalArray value)? rationalArray,
-    TResult Function(MetadataValueDto_SignedRationalArray value)?
+    TResult Function(MetadataValue_Text value)? text,
+    TResult Function(MetadataValue_Integer value)? integer,
+    TResult Function(MetadataValue_Float value)? float,
+    TResult Function(MetadataValue_Rational value)? rational,
+    TResult Function(MetadataValue_SignedRational value)? signedRational,
+    TResult Function(MetadataValue_DateTime value)? dateTime,
+    TResult Function(MetadataValue_NaiveDateTime value)? naiveDateTime,
+    TResult Function(MetadataValue_Bytes value)? bytes,
+    TResult Function(MetadataValue_RationalArray value)? rationalArray,
+    TResult Function(MetadataValue_SignedRationalArray value)?
     signedRationalArray,
-    TResult Function(MetadataValueDto_U8Array value)? u8Array,
-    TResult Function(MetadataValueDto_U16Array value)? u16Array,
-    TResult Function(MetadataValueDto_U32Array value)? u32Array,
+    TResult Function(MetadataValue_U8Array value)? u8Array,
+    TResult Function(MetadataValue_U16Array value)? u16Array,
+    TResult Function(MetadataValue_U32Array value)? u32Array,
     required TResult orElse(),
   }) {
     if (signedRationalArray != null) {
@@ -2744,50 +2695,49 @@ class _$MetadataValueDto_SignedRationalArrayImpl
   }
 }
 
-abstract class MetadataValueDto_SignedRationalArray extends MetadataValueDto {
-  const factory MetadataValueDto_SignedRationalArray(
-    final List<RationalDto> field0,
-  ) = _$MetadataValueDto_SignedRationalArrayImpl;
-  const MetadataValueDto_SignedRationalArray._() : super._();
+abstract class MetadataValue_SignedRationalArray extends MetadataValue {
+  const factory MetadataValue_SignedRationalArray(final List<Rational> field0) =
+      _$MetadataValue_SignedRationalArrayImpl;
+  const MetadataValue_SignedRationalArray._() : super._();
 
   @override
-  List<RationalDto> get field0;
+  List<Rational> get field0;
 
-  /// Create a copy of MetadataValueDto
+  /// Create a copy of MetadataValue
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$MetadataValueDto_SignedRationalArrayImplCopyWith<
-    _$MetadataValueDto_SignedRationalArrayImpl
+  _$$MetadataValue_SignedRationalArrayImplCopyWith<
+    _$MetadataValue_SignedRationalArrayImpl
   >
   get copyWith => throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class _$$MetadataValueDto_U8ArrayImplCopyWith<$Res> {
-  factory _$$MetadataValueDto_U8ArrayImplCopyWith(
-    _$MetadataValueDto_U8ArrayImpl value,
-    $Res Function(_$MetadataValueDto_U8ArrayImpl) then,
-  ) = __$$MetadataValueDto_U8ArrayImplCopyWithImpl<$Res>;
+abstract class _$$MetadataValue_U8ArrayImplCopyWith<$Res> {
+  factory _$$MetadataValue_U8ArrayImplCopyWith(
+    _$MetadataValue_U8ArrayImpl value,
+    $Res Function(_$MetadataValue_U8ArrayImpl) then,
+  ) = __$$MetadataValue_U8ArrayImplCopyWithImpl<$Res>;
   @useResult
   $Res call({Uint8List field0});
 }
 
 /// @nodoc
-class __$$MetadataValueDto_U8ArrayImplCopyWithImpl<$Res>
-    extends _$MetadataValueDtoCopyWithImpl<$Res, _$MetadataValueDto_U8ArrayImpl>
-    implements _$$MetadataValueDto_U8ArrayImplCopyWith<$Res> {
-  __$$MetadataValueDto_U8ArrayImplCopyWithImpl(
-    _$MetadataValueDto_U8ArrayImpl _value,
-    $Res Function(_$MetadataValueDto_U8ArrayImpl) _then,
+class __$$MetadataValue_U8ArrayImplCopyWithImpl<$Res>
+    extends _$MetadataValueCopyWithImpl<$Res, _$MetadataValue_U8ArrayImpl>
+    implements _$$MetadataValue_U8ArrayImplCopyWith<$Res> {
+  __$$MetadataValue_U8ArrayImplCopyWithImpl(
+    _$MetadataValue_U8ArrayImpl _value,
+    $Res Function(_$MetadataValue_U8ArrayImpl) _then,
   ) : super(_value, _then);
 
-  /// Create a copy of MetadataValueDto
+  /// Create a copy of MetadataValue
   /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({Object? field0 = null}) {
     return _then(
-      _$MetadataValueDto_U8ArrayImpl(
+      _$MetadataValue_U8ArrayImpl(
         null == field0
             ? _value.field0
             : field0 // ignore: cast_nullable_to_non_nullable
@@ -2799,22 +2749,22 @@ class __$$MetadataValueDto_U8ArrayImplCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$MetadataValueDto_U8ArrayImpl extends MetadataValueDto_U8Array {
-  const _$MetadataValueDto_U8ArrayImpl(this.field0) : super._();
+class _$MetadataValue_U8ArrayImpl extends MetadataValue_U8Array {
+  const _$MetadataValue_U8ArrayImpl(this.field0) : super._();
 
   @override
   final Uint8List field0;
 
   @override
   String toString() {
-    return 'MetadataValueDto.u8Array(field0: $field0)';
+    return 'MetadataValue.u8Array(field0: $field0)';
   }
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$MetadataValueDto_U8ArrayImpl &&
+            other is _$MetadataValue_U8ArrayImpl &&
             const DeepCollectionEquality().equals(other.field0, field0));
   }
 
@@ -2822,16 +2772,17 @@ class _$MetadataValueDto_U8ArrayImpl extends MetadataValueDto_U8Array {
   int get hashCode =>
       Object.hash(runtimeType, const DeepCollectionEquality().hash(field0));
 
-  /// Create a copy of MetadataValueDto
+  /// Create a copy of MetadataValue
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
-  _$$MetadataValueDto_U8ArrayImplCopyWith<_$MetadataValueDto_U8ArrayImpl>
+  _$$MetadataValue_U8ArrayImplCopyWith<_$MetadataValue_U8ArrayImpl>
   get copyWith =>
-      __$$MetadataValueDto_U8ArrayImplCopyWithImpl<
-        _$MetadataValueDto_U8ArrayImpl
-      >(this, _$identity);
+      __$$MetadataValue_U8ArrayImplCopyWithImpl<_$MetadataValue_U8ArrayImpl>(
+        this,
+        _$identity,
+      );
 
   @override
   @optionalTypeArgs
@@ -2839,13 +2790,13 @@ class _$MetadataValueDto_U8ArrayImpl extends MetadataValueDto_U8Array {
     required TResult Function(String field0) text,
     required TResult Function(int field0) integer,
     required TResult Function(double field0) float,
-    required TResult Function(RationalDto field0) rational,
-    required TResult Function(RationalDto field0) signedRational,
+    required TResult Function(Rational field0) rational,
+    required TResult Function(Rational field0) signedRational,
     required TResult Function(String field0) dateTime,
     required TResult Function(String field0) naiveDateTime,
     required TResult Function(String field0) bytes,
-    required TResult Function(List<RationalDto> field0) rationalArray,
-    required TResult Function(List<RationalDto> field0) signedRationalArray,
+    required TResult Function(List<Rational> field0) rationalArray,
+    required TResult Function(List<Rational> field0) signedRationalArray,
     required TResult Function(Uint8List field0) u8Array,
     required TResult Function(Int32List field0) u16Array,
     required TResult Function(Int64List field0) u32Array,
@@ -2859,13 +2810,13 @@ class _$MetadataValueDto_U8ArrayImpl extends MetadataValueDto_U8Array {
     TResult? Function(String field0)? text,
     TResult? Function(int field0)? integer,
     TResult? Function(double field0)? float,
-    TResult? Function(RationalDto field0)? rational,
-    TResult? Function(RationalDto field0)? signedRational,
+    TResult? Function(Rational field0)? rational,
+    TResult? Function(Rational field0)? signedRational,
     TResult? Function(String field0)? dateTime,
     TResult? Function(String field0)? naiveDateTime,
     TResult? Function(String field0)? bytes,
-    TResult? Function(List<RationalDto> field0)? rationalArray,
-    TResult? Function(List<RationalDto> field0)? signedRationalArray,
+    TResult? Function(List<Rational> field0)? rationalArray,
+    TResult? Function(List<Rational> field0)? signedRationalArray,
     TResult? Function(Uint8List field0)? u8Array,
     TResult? Function(Int32List field0)? u16Array,
     TResult? Function(Int64List field0)? u32Array,
@@ -2879,13 +2830,13 @@ class _$MetadataValueDto_U8ArrayImpl extends MetadataValueDto_U8Array {
     TResult Function(String field0)? text,
     TResult Function(int field0)? integer,
     TResult Function(double field0)? float,
-    TResult Function(RationalDto field0)? rational,
-    TResult Function(RationalDto field0)? signedRational,
+    TResult Function(Rational field0)? rational,
+    TResult Function(Rational field0)? signedRational,
     TResult Function(String field0)? dateTime,
     TResult Function(String field0)? naiveDateTime,
     TResult Function(String field0)? bytes,
-    TResult Function(List<RationalDto> field0)? rationalArray,
-    TResult Function(List<RationalDto> field0)? signedRationalArray,
+    TResult Function(List<Rational> field0)? rationalArray,
+    TResult Function(List<Rational> field0)? signedRationalArray,
     TResult Function(Uint8List field0)? u8Array,
     TResult Function(Int32List field0)? u16Array,
     TResult Function(Int64List field0)? u32Array,
@@ -2900,23 +2851,21 @@ class _$MetadataValueDto_U8ArrayImpl extends MetadataValueDto_U8Array {
   @override
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
-    required TResult Function(MetadataValueDto_Text value) text,
-    required TResult Function(MetadataValueDto_Integer value) integer,
-    required TResult Function(MetadataValueDto_Float value) float,
-    required TResult Function(MetadataValueDto_Rational value) rational,
-    required TResult Function(MetadataValueDto_SignedRational value)
+    required TResult Function(MetadataValue_Text value) text,
+    required TResult Function(MetadataValue_Integer value) integer,
+    required TResult Function(MetadataValue_Float value) float,
+    required TResult Function(MetadataValue_Rational value) rational,
+    required TResult Function(MetadataValue_SignedRational value)
     signedRational,
-    required TResult Function(MetadataValueDto_DateTime value) dateTime,
-    required TResult Function(MetadataValueDto_NaiveDateTime value)
-    naiveDateTime,
-    required TResult Function(MetadataValueDto_Bytes value) bytes,
-    required TResult Function(MetadataValueDto_RationalArray value)
-    rationalArray,
-    required TResult Function(MetadataValueDto_SignedRationalArray value)
+    required TResult Function(MetadataValue_DateTime value) dateTime,
+    required TResult Function(MetadataValue_NaiveDateTime value) naiveDateTime,
+    required TResult Function(MetadataValue_Bytes value) bytes,
+    required TResult Function(MetadataValue_RationalArray value) rationalArray,
+    required TResult Function(MetadataValue_SignedRationalArray value)
     signedRationalArray,
-    required TResult Function(MetadataValueDto_U8Array value) u8Array,
-    required TResult Function(MetadataValueDto_U16Array value) u16Array,
-    required TResult Function(MetadataValueDto_U32Array value) u32Array,
+    required TResult Function(MetadataValue_U8Array value) u8Array,
+    required TResult Function(MetadataValue_U16Array value) u16Array,
+    required TResult Function(MetadataValue_U32Array value) u32Array,
   }) {
     return u8Array(this);
   }
@@ -2924,20 +2873,20 @@ class _$MetadataValueDto_U8ArrayImpl extends MetadataValueDto_U8Array {
   @override
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(MetadataValueDto_Text value)? text,
-    TResult? Function(MetadataValueDto_Integer value)? integer,
-    TResult? Function(MetadataValueDto_Float value)? float,
-    TResult? Function(MetadataValueDto_Rational value)? rational,
-    TResult? Function(MetadataValueDto_SignedRational value)? signedRational,
-    TResult? Function(MetadataValueDto_DateTime value)? dateTime,
-    TResult? Function(MetadataValueDto_NaiveDateTime value)? naiveDateTime,
-    TResult? Function(MetadataValueDto_Bytes value)? bytes,
-    TResult? Function(MetadataValueDto_RationalArray value)? rationalArray,
-    TResult? Function(MetadataValueDto_SignedRationalArray value)?
+    TResult? Function(MetadataValue_Text value)? text,
+    TResult? Function(MetadataValue_Integer value)? integer,
+    TResult? Function(MetadataValue_Float value)? float,
+    TResult? Function(MetadataValue_Rational value)? rational,
+    TResult? Function(MetadataValue_SignedRational value)? signedRational,
+    TResult? Function(MetadataValue_DateTime value)? dateTime,
+    TResult? Function(MetadataValue_NaiveDateTime value)? naiveDateTime,
+    TResult? Function(MetadataValue_Bytes value)? bytes,
+    TResult? Function(MetadataValue_RationalArray value)? rationalArray,
+    TResult? Function(MetadataValue_SignedRationalArray value)?
     signedRationalArray,
-    TResult? Function(MetadataValueDto_U8Array value)? u8Array,
-    TResult? Function(MetadataValueDto_U16Array value)? u16Array,
-    TResult? Function(MetadataValueDto_U32Array value)? u32Array,
+    TResult? Function(MetadataValue_U8Array value)? u8Array,
+    TResult? Function(MetadataValue_U16Array value)? u16Array,
+    TResult? Function(MetadataValue_U32Array value)? u32Array,
   }) {
     return u8Array?.call(this);
   }
@@ -2945,20 +2894,20 @@ class _$MetadataValueDto_U8ArrayImpl extends MetadataValueDto_U8Array {
   @override
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
-    TResult Function(MetadataValueDto_Text value)? text,
-    TResult Function(MetadataValueDto_Integer value)? integer,
-    TResult Function(MetadataValueDto_Float value)? float,
-    TResult Function(MetadataValueDto_Rational value)? rational,
-    TResult Function(MetadataValueDto_SignedRational value)? signedRational,
-    TResult Function(MetadataValueDto_DateTime value)? dateTime,
-    TResult Function(MetadataValueDto_NaiveDateTime value)? naiveDateTime,
-    TResult Function(MetadataValueDto_Bytes value)? bytes,
-    TResult Function(MetadataValueDto_RationalArray value)? rationalArray,
-    TResult Function(MetadataValueDto_SignedRationalArray value)?
+    TResult Function(MetadataValue_Text value)? text,
+    TResult Function(MetadataValue_Integer value)? integer,
+    TResult Function(MetadataValue_Float value)? float,
+    TResult Function(MetadataValue_Rational value)? rational,
+    TResult Function(MetadataValue_SignedRational value)? signedRational,
+    TResult Function(MetadataValue_DateTime value)? dateTime,
+    TResult Function(MetadataValue_NaiveDateTime value)? naiveDateTime,
+    TResult Function(MetadataValue_Bytes value)? bytes,
+    TResult Function(MetadataValue_RationalArray value)? rationalArray,
+    TResult Function(MetadataValue_SignedRationalArray value)?
     signedRationalArray,
-    TResult Function(MetadataValueDto_U8Array value)? u8Array,
-    TResult Function(MetadataValueDto_U16Array value)? u16Array,
-    TResult Function(MetadataValueDto_U32Array value)? u32Array,
+    TResult Function(MetadataValue_U8Array value)? u8Array,
+    TResult Function(MetadataValue_U16Array value)? u16Array,
+    TResult Function(MetadataValue_U32Array value)? u32Array,
     required TResult orElse(),
   }) {
     if (u8Array != null) {
@@ -2968,48 +2917,47 @@ class _$MetadataValueDto_U8ArrayImpl extends MetadataValueDto_U8Array {
   }
 }
 
-abstract class MetadataValueDto_U8Array extends MetadataValueDto {
-  const factory MetadataValueDto_U8Array(final Uint8List field0) =
-      _$MetadataValueDto_U8ArrayImpl;
-  const MetadataValueDto_U8Array._() : super._();
+abstract class MetadataValue_U8Array extends MetadataValue {
+  const factory MetadataValue_U8Array(final Uint8List field0) =
+      _$MetadataValue_U8ArrayImpl;
+  const MetadataValue_U8Array._() : super._();
 
   @override
   Uint8List get field0;
 
-  /// Create a copy of MetadataValueDto
+  /// Create a copy of MetadataValue
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$MetadataValueDto_U8ArrayImplCopyWith<_$MetadataValueDto_U8ArrayImpl>
+  _$$MetadataValue_U8ArrayImplCopyWith<_$MetadataValue_U8ArrayImpl>
   get copyWith => throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class _$$MetadataValueDto_U16ArrayImplCopyWith<$Res> {
-  factory _$$MetadataValueDto_U16ArrayImplCopyWith(
-    _$MetadataValueDto_U16ArrayImpl value,
-    $Res Function(_$MetadataValueDto_U16ArrayImpl) then,
-  ) = __$$MetadataValueDto_U16ArrayImplCopyWithImpl<$Res>;
+abstract class _$$MetadataValue_U16ArrayImplCopyWith<$Res> {
+  factory _$$MetadataValue_U16ArrayImplCopyWith(
+    _$MetadataValue_U16ArrayImpl value,
+    $Res Function(_$MetadataValue_U16ArrayImpl) then,
+  ) = __$$MetadataValue_U16ArrayImplCopyWithImpl<$Res>;
   @useResult
   $Res call({Int32List field0});
 }
 
 /// @nodoc
-class __$$MetadataValueDto_U16ArrayImplCopyWithImpl<$Res>
-    extends
-        _$MetadataValueDtoCopyWithImpl<$Res, _$MetadataValueDto_U16ArrayImpl>
-    implements _$$MetadataValueDto_U16ArrayImplCopyWith<$Res> {
-  __$$MetadataValueDto_U16ArrayImplCopyWithImpl(
-    _$MetadataValueDto_U16ArrayImpl _value,
-    $Res Function(_$MetadataValueDto_U16ArrayImpl) _then,
+class __$$MetadataValue_U16ArrayImplCopyWithImpl<$Res>
+    extends _$MetadataValueCopyWithImpl<$Res, _$MetadataValue_U16ArrayImpl>
+    implements _$$MetadataValue_U16ArrayImplCopyWith<$Res> {
+  __$$MetadataValue_U16ArrayImplCopyWithImpl(
+    _$MetadataValue_U16ArrayImpl _value,
+    $Res Function(_$MetadataValue_U16ArrayImpl) _then,
   ) : super(_value, _then);
 
-  /// Create a copy of MetadataValueDto
+  /// Create a copy of MetadataValue
   /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({Object? field0 = null}) {
     return _then(
-      _$MetadataValueDto_U16ArrayImpl(
+      _$MetadataValue_U16ArrayImpl(
         null == field0
             ? _value.field0
             : field0 // ignore: cast_nullable_to_non_nullable
@@ -3021,22 +2969,22 @@ class __$$MetadataValueDto_U16ArrayImplCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$MetadataValueDto_U16ArrayImpl extends MetadataValueDto_U16Array {
-  const _$MetadataValueDto_U16ArrayImpl(this.field0) : super._();
+class _$MetadataValue_U16ArrayImpl extends MetadataValue_U16Array {
+  const _$MetadataValue_U16ArrayImpl(this.field0) : super._();
 
   @override
   final Int32List field0;
 
   @override
   String toString() {
-    return 'MetadataValueDto.u16Array(field0: $field0)';
+    return 'MetadataValue.u16Array(field0: $field0)';
   }
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$MetadataValueDto_U16ArrayImpl &&
+            other is _$MetadataValue_U16ArrayImpl &&
             const DeepCollectionEquality().equals(other.field0, field0));
   }
 
@@ -3044,16 +2992,17 @@ class _$MetadataValueDto_U16ArrayImpl extends MetadataValueDto_U16Array {
   int get hashCode =>
       Object.hash(runtimeType, const DeepCollectionEquality().hash(field0));
 
-  /// Create a copy of MetadataValueDto
+  /// Create a copy of MetadataValue
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
-  _$$MetadataValueDto_U16ArrayImplCopyWith<_$MetadataValueDto_U16ArrayImpl>
+  _$$MetadataValue_U16ArrayImplCopyWith<_$MetadataValue_U16ArrayImpl>
   get copyWith =>
-      __$$MetadataValueDto_U16ArrayImplCopyWithImpl<
-        _$MetadataValueDto_U16ArrayImpl
-      >(this, _$identity);
+      __$$MetadataValue_U16ArrayImplCopyWithImpl<_$MetadataValue_U16ArrayImpl>(
+        this,
+        _$identity,
+      );
 
   @override
   @optionalTypeArgs
@@ -3061,13 +3010,13 @@ class _$MetadataValueDto_U16ArrayImpl extends MetadataValueDto_U16Array {
     required TResult Function(String field0) text,
     required TResult Function(int field0) integer,
     required TResult Function(double field0) float,
-    required TResult Function(RationalDto field0) rational,
-    required TResult Function(RationalDto field0) signedRational,
+    required TResult Function(Rational field0) rational,
+    required TResult Function(Rational field0) signedRational,
     required TResult Function(String field0) dateTime,
     required TResult Function(String field0) naiveDateTime,
     required TResult Function(String field0) bytes,
-    required TResult Function(List<RationalDto> field0) rationalArray,
-    required TResult Function(List<RationalDto> field0) signedRationalArray,
+    required TResult Function(List<Rational> field0) rationalArray,
+    required TResult Function(List<Rational> field0) signedRationalArray,
     required TResult Function(Uint8List field0) u8Array,
     required TResult Function(Int32List field0) u16Array,
     required TResult Function(Int64List field0) u32Array,
@@ -3081,13 +3030,13 @@ class _$MetadataValueDto_U16ArrayImpl extends MetadataValueDto_U16Array {
     TResult? Function(String field0)? text,
     TResult? Function(int field0)? integer,
     TResult? Function(double field0)? float,
-    TResult? Function(RationalDto field0)? rational,
-    TResult? Function(RationalDto field0)? signedRational,
+    TResult? Function(Rational field0)? rational,
+    TResult? Function(Rational field0)? signedRational,
     TResult? Function(String field0)? dateTime,
     TResult? Function(String field0)? naiveDateTime,
     TResult? Function(String field0)? bytes,
-    TResult? Function(List<RationalDto> field0)? rationalArray,
-    TResult? Function(List<RationalDto> field0)? signedRationalArray,
+    TResult? Function(List<Rational> field0)? rationalArray,
+    TResult? Function(List<Rational> field0)? signedRationalArray,
     TResult? Function(Uint8List field0)? u8Array,
     TResult? Function(Int32List field0)? u16Array,
     TResult? Function(Int64List field0)? u32Array,
@@ -3101,13 +3050,13 @@ class _$MetadataValueDto_U16ArrayImpl extends MetadataValueDto_U16Array {
     TResult Function(String field0)? text,
     TResult Function(int field0)? integer,
     TResult Function(double field0)? float,
-    TResult Function(RationalDto field0)? rational,
-    TResult Function(RationalDto field0)? signedRational,
+    TResult Function(Rational field0)? rational,
+    TResult Function(Rational field0)? signedRational,
     TResult Function(String field0)? dateTime,
     TResult Function(String field0)? naiveDateTime,
     TResult Function(String field0)? bytes,
-    TResult Function(List<RationalDto> field0)? rationalArray,
-    TResult Function(List<RationalDto> field0)? signedRationalArray,
+    TResult Function(List<Rational> field0)? rationalArray,
+    TResult Function(List<Rational> field0)? signedRationalArray,
     TResult Function(Uint8List field0)? u8Array,
     TResult Function(Int32List field0)? u16Array,
     TResult Function(Int64List field0)? u32Array,
@@ -3122,23 +3071,21 @@ class _$MetadataValueDto_U16ArrayImpl extends MetadataValueDto_U16Array {
   @override
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
-    required TResult Function(MetadataValueDto_Text value) text,
-    required TResult Function(MetadataValueDto_Integer value) integer,
-    required TResult Function(MetadataValueDto_Float value) float,
-    required TResult Function(MetadataValueDto_Rational value) rational,
-    required TResult Function(MetadataValueDto_SignedRational value)
+    required TResult Function(MetadataValue_Text value) text,
+    required TResult Function(MetadataValue_Integer value) integer,
+    required TResult Function(MetadataValue_Float value) float,
+    required TResult Function(MetadataValue_Rational value) rational,
+    required TResult Function(MetadataValue_SignedRational value)
     signedRational,
-    required TResult Function(MetadataValueDto_DateTime value) dateTime,
-    required TResult Function(MetadataValueDto_NaiveDateTime value)
-    naiveDateTime,
-    required TResult Function(MetadataValueDto_Bytes value) bytes,
-    required TResult Function(MetadataValueDto_RationalArray value)
-    rationalArray,
-    required TResult Function(MetadataValueDto_SignedRationalArray value)
+    required TResult Function(MetadataValue_DateTime value) dateTime,
+    required TResult Function(MetadataValue_NaiveDateTime value) naiveDateTime,
+    required TResult Function(MetadataValue_Bytes value) bytes,
+    required TResult Function(MetadataValue_RationalArray value) rationalArray,
+    required TResult Function(MetadataValue_SignedRationalArray value)
     signedRationalArray,
-    required TResult Function(MetadataValueDto_U8Array value) u8Array,
-    required TResult Function(MetadataValueDto_U16Array value) u16Array,
-    required TResult Function(MetadataValueDto_U32Array value) u32Array,
+    required TResult Function(MetadataValue_U8Array value) u8Array,
+    required TResult Function(MetadataValue_U16Array value) u16Array,
+    required TResult Function(MetadataValue_U32Array value) u32Array,
   }) {
     return u16Array(this);
   }
@@ -3146,20 +3093,20 @@ class _$MetadataValueDto_U16ArrayImpl extends MetadataValueDto_U16Array {
   @override
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(MetadataValueDto_Text value)? text,
-    TResult? Function(MetadataValueDto_Integer value)? integer,
-    TResult? Function(MetadataValueDto_Float value)? float,
-    TResult? Function(MetadataValueDto_Rational value)? rational,
-    TResult? Function(MetadataValueDto_SignedRational value)? signedRational,
-    TResult? Function(MetadataValueDto_DateTime value)? dateTime,
-    TResult? Function(MetadataValueDto_NaiveDateTime value)? naiveDateTime,
-    TResult? Function(MetadataValueDto_Bytes value)? bytes,
-    TResult? Function(MetadataValueDto_RationalArray value)? rationalArray,
-    TResult? Function(MetadataValueDto_SignedRationalArray value)?
+    TResult? Function(MetadataValue_Text value)? text,
+    TResult? Function(MetadataValue_Integer value)? integer,
+    TResult? Function(MetadataValue_Float value)? float,
+    TResult? Function(MetadataValue_Rational value)? rational,
+    TResult? Function(MetadataValue_SignedRational value)? signedRational,
+    TResult? Function(MetadataValue_DateTime value)? dateTime,
+    TResult? Function(MetadataValue_NaiveDateTime value)? naiveDateTime,
+    TResult? Function(MetadataValue_Bytes value)? bytes,
+    TResult? Function(MetadataValue_RationalArray value)? rationalArray,
+    TResult? Function(MetadataValue_SignedRationalArray value)?
     signedRationalArray,
-    TResult? Function(MetadataValueDto_U8Array value)? u8Array,
-    TResult? Function(MetadataValueDto_U16Array value)? u16Array,
-    TResult? Function(MetadataValueDto_U32Array value)? u32Array,
+    TResult? Function(MetadataValue_U8Array value)? u8Array,
+    TResult? Function(MetadataValue_U16Array value)? u16Array,
+    TResult? Function(MetadataValue_U32Array value)? u32Array,
   }) {
     return u16Array?.call(this);
   }
@@ -3167,20 +3114,20 @@ class _$MetadataValueDto_U16ArrayImpl extends MetadataValueDto_U16Array {
   @override
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
-    TResult Function(MetadataValueDto_Text value)? text,
-    TResult Function(MetadataValueDto_Integer value)? integer,
-    TResult Function(MetadataValueDto_Float value)? float,
-    TResult Function(MetadataValueDto_Rational value)? rational,
-    TResult Function(MetadataValueDto_SignedRational value)? signedRational,
-    TResult Function(MetadataValueDto_DateTime value)? dateTime,
-    TResult Function(MetadataValueDto_NaiveDateTime value)? naiveDateTime,
-    TResult Function(MetadataValueDto_Bytes value)? bytes,
-    TResult Function(MetadataValueDto_RationalArray value)? rationalArray,
-    TResult Function(MetadataValueDto_SignedRationalArray value)?
+    TResult Function(MetadataValue_Text value)? text,
+    TResult Function(MetadataValue_Integer value)? integer,
+    TResult Function(MetadataValue_Float value)? float,
+    TResult Function(MetadataValue_Rational value)? rational,
+    TResult Function(MetadataValue_SignedRational value)? signedRational,
+    TResult Function(MetadataValue_DateTime value)? dateTime,
+    TResult Function(MetadataValue_NaiveDateTime value)? naiveDateTime,
+    TResult Function(MetadataValue_Bytes value)? bytes,
+    TResult Function(MetadataValue_RationalArray value)? rationalArray,
+    TResult Function(MetadataValue_SignedRationalArray value)?
     signedRationalArray,
-    TResult Function(MetadataValueDto_U8Array value)? u8Array,
-    TResult Function(MetadataValueDto_U16Array value)? u16Array,
-    TResult Function(MetadataValueDto_U32Array value)? u32Array,
+    TResult Function(MetadataValue_U8Array value)? u8Array,
+    TResult Function(MetadataValue_U16Array value)? u16Array,
+    TResult Function(MetadataValue_U32Array value)? u32Array,
     required TResult orElse(),
   }) {
     if (u16Array != null) {
@@ -3190,48 +3137,47 @@ class _$MetadataValueDto_U16ArrayImpl extends MetadataValueDto_U16Array {
   }
 }
 
-abstract class MetadataValueDto_U16Array extends MetadataValueDto {
-  const factory MetadataValueDto_U16Array(final Int32List field0) =
-      _$MetadataValueDto_U16ArrayImpl;
-  const MetadataValueDto_U16Array._() : super._();
+abstract class MetadataValue_U16Array extends MetadataValue {
+  const factory MetadataValue_U16Array(final Int32List field0) =
+      _$MetadataValue_U16ArrayImpl;
+  const MetadataValue_U16Array._() : super._();
 
   @override
   Int32List get field0;
 
-  /// Create a copy of MetadataValueDto
+  /// Create a copy of MetadataValue
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$MetadataValueDto_U16ArrayImplCopyWith<_$MetadataValueDto_U16ArrayImpl>
+  _$$MetadataValue_U16ArrayImplCopyWith<_$MetadataValue_U16ArrayImpl>
   get copyWith => throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class _$$MetadataValueDto_U32ArrayImplCopyWith<$Res> {
-  factory _$$MetadataValueDto_U32ArrayImplCopyWith(
-    _$MetadataValueDto_U32ArrayImpl value,
-    $Res Function(_$MetadataValueDto_U32ArrayImpl) then,
-  ) = __$$MetadataValueDto_U32ArrayImplCopyWithImpl<$Res>;
+abstract class _$$MetadataValue_U32ArrayImplCopyWith<$Res> {
+  factory _$$MetadataValue_U32ArrayImplCopyWith(
+    _$MetadataValue_U32ArrayImpl value,
+    $Res Function(_$MetadataValue_U32ArrayImpl) then,
+  ) = __$$MetadataValue_U32ArrayImplCopyWithImpl<$Res>;
   @useResult
   $Res call({Int64List field0});
 }
 
 /// @nodoc
-class __$$MetadataValueDto_U32ArrayImplCopyWithImpl<$Res>
-    extends
-        _$MetadataValueDtoCopyWithImpl<$Res, _$MetadataValueDto_U32ArrayImpl>
-    implements _$$MetadataValueDto_U32ArrayImplCopyWith<$Res> {
-  __$$MetadataValueDto_U32ArrayImplCopyWithImpl(
-    _$MetadataValueDto_U32ArrayImpl _value,
-    $Res Function(_$MetadataValueDto_U32ArrayImpl) _then,
+class __$$MetadataValue_U32ArrayImplCopyWithImpl<$Res>
+    extends _$MetadataValueCopyWithImpl<$Res, _$MetadataValue_U32ArrayImpl>
+    implements _$$MetadataValue_U32ArrayImplCopyWith<$Res> {
+  __$$MetadataValue_U32ArrayImplCopyWithImpl(
+    _$MetadataValue_U32ArrayImpl _value,
+    $Res Function(_$MetadataValue_U32ArrayImpl) _then,
   ) : super(_value, _then);
 
-  /// Create a copy of MetadataValueDto
+  /// Create a copy of MetadataValue
   /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({Object? field0 = null}) {
     return _then(
-      _$MetadataValueDto_U32ArrayImpl(
+      _$MetadataValue_U32ArrayImpl(
         null == field0
             ? _value.field0
             : field0 // ignore: cast_nullable_to_non_nullable
@@ -3243,22 +3189,22 @@ class __$$MetadataValueDto_U32ArrayImplCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$MetadataValueDto_U32ArrayImpl extends MetadataValueDto_U32Array {
-  const _$MetadataValueDto_U32ArrayImpl(this.field0) : super._();
+class _$MetadataValue_U32ArrayImpl extends MetadataValue_U32Array {
+  const _$MetadataValue_U32ArrayImpl(this.field0) : super._();
 
   @override
   final Int64List field0;
 
   @override
   String toString() {
-    return 'MetadataValueDto.u32Array(field0: $field0)';
+    return 'MetadataValue.u32Array(field0: $field0)';
   }
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$MetadataValueDto_U32ArrayImpl &&
+            other is _$MetadataValue_U32ArrayImpl &&
             const DeepCollectionEquality().equals(other.field0, field0));
   }
 
@@ -3266,16 +3212,17 @@ class _$MetadataValueDto_U32ArrayImpl extends MetadataValueDto_U32Array {
   int get hashCode =>
       Object.hash(runtimeType, const DeepCollectionEquality().hash(field0));
 
-  /// Create a copy of MetadataValueDto
+  /// Create a copy of MetadataValue
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
-  _$$MetadataValueDto_U32ArrayImplCopyWith<_$MetadataValueDto_U32ArrayImpl>
+  _$$MetadataValue_U32ArrayImplCopyWith<_$MetadataValue_U32ArrayImpl>
   get copyWith =>
-      __$$MetadataValueDto_U32ArrayImplCopyWithImpl<
-        _$MetadataValueDto_U32ArrayImpl
-      >(this, _$identity);
+      __$$MetadataValue_U32ArrayImplCopyWithImpl<_$MetadataValue_U32ArrayImpl>(
+        this,
+        _$identity,
+      );
 
   @override
   @optionalTypeArgs
@@ -3283,13 +3230,13 @@ class _$MetadataValueDto_U32ArrayImpl extends MetadataValueDto_U32Array {
     required TResult Function(String field0) text,
     required TResult Function(int field0) integer,
     required TResult Function(double field0) float,
-    required TResult Function(RationalDto field0) rational,
-    required TResult Function(RationalDto field0) signedRational,
+    required TResult Function(Rational field0) rational,
+    required TResult Function(Rational field0) signedRational,
     required TResult Function(String field0) dateTime,
     required TResult Function(String field0) naiveDateTime,
     required TResult Function(String field0) bytes,
-    required TResult Function(List<RationalDto> field0) rationalArray,
-    required TResult Function(List<RationalDto> field0) signedRationalArray,
+    required TResult Function(List<Rational> field0) rationalArray,
+    required TResult Function(List<Rational> field0) signedRationalArray,
     required TResult Function(Uint8List field0) u8Array,
     required TResult Function(Int32List field0) u16Array,
     required TResult Function(Int64List field0) u32Array,
@@ -3303,13 +3250,13 @@ class _$MetadataValueDto_U32ArrayImpl extends MetadataValueDto_U32Array {
     TResult? Function(String field0)? text,
     TResult? Function(int field0)? integer,
     TResult? Function(double field0)? float,
-    TResult? Function(RationalDto field0)? rational,
-    TResult? Function(RationalDto field0)? signedRational,
+    TResult? Function(Rational field0)? rational,
+    TResult? Function(Rational field0)? signedRational,
     TResult? Function(String field0)? dateTime,
     TResult? Function(String field0)? naiveDateTime,
     TResult? Function(String field0)? bytes,
-    TResult? Function(List<RationalDto> field0)? rationalArray,
-    TResult? Function(List<RationalDto> field0)? signedRationalArray,
+    TResult? Function(List<Rational> field0)? rationalArray,
+    TResult? Function(List<Rational> field0)? signedRationalArray,
     TResult? Function(Uint8List field0)? u8Array,
     TResult? Function(Int32List field0)? u16Array,
     TResult? Function(Int64List field0)? u32Array,
@@ -3323,13 +3270,13 @@ class _$MetadataValueDto_U32ArrayImpl extends MetadataValueDto_U32Array {
     TResult Function(String field0)? text,
     TResult Function(int field0)? integer,
     TResult Function(double field0)? float,
-    TResult Function(RationalDto field0)? rational,
-    TResult Function(RationalDto field0)? signedRational,
+    TResult Function(Rational field0)? rational,
+    TResult Function(Rational field0)? signedRational,
     TResult Function(String field0)? dateTime,
     TResult Function(String field0)? naiveDateTime,
     TResult Function(String field0)? bytes,
-    TResult Function(List<RationalDto> field0)? rationalArray,
-    TResult Function(List<RationalDto> field0)? signedRationalArray,
+    TResult Function(List<Rational> field0)? rationalArray,
+    TResult Function(List<Rational> field0)? signedRationalArray,
     TResult Function(Uint8List field0)? u8Array,
     TResult Function(Int32List field0)? u16Array,
     TResult Function(Int64List field0)? u32Array,
@@ -3344,23 +3291,21 @@ class _$MetadataValueDto_U32ArrayImpl extends MetadataValueDto_U32Array {
   @override
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
-    required TResult Function(MetadataValueDto_Text value) text,
-    required TResult Function(MetadataValueDto_Integer value) integer,
-    required TResult Function(MetadataValueDto_Float value) float,
-    required TResult Function(MetadataValueDto_Rational value) rational,
-    required TResult Function(MetadataValueDto_SignedRational value)
+    required TResult Function(MetadataValue_Text value) text,
+    required TResult Function(MetadataValue_Integer value) integer,
+    required TResult Function(MetadataValue_Float value) float,
+    required TResult Function(MetadataValue_Rational value) rational,
+    required TResult Function(MetadataValue_SignedRational value)
     signedRational,
-    required TResult Function(MetadataValueDto_DateTime value) dateTime,
-    required TResult Function(MetadataValueDto_NaiveDateTime value)
-    naiveDateTime,
-    required TResult Function(MetadataValueDto_Bytes value) bytes,
-    required TResult Function(MetadataValueDto_RationalArray value)
-    rationalArray,
-    required TResult Function(MetadataValueDto_SignedRationalArray value)
+    required TResult Function(MetadataValue_DateTime value) dateTime,
+    required TResult Function(MetadataValue_NaiveDateTime value) naiveDateTime,
+    required TResult Function(MetadataValue_Bytes value) bytes,
+    required TResult Function(MetadataValue_RationalArray value) rationalArray,
+    required TResult Function(MetadataValue_SignedRationalArray value)
     signedRationalArray,
-    required TResult Function(MetadataValueDto_U8Array value) u8Array,
-    required TResult Function(MetadataValueDto_U16Array value) u16Array,
-    required TResult Function(MetadataValueDto_U32Array value) u32Array,
+    required TResult Function(MetadataValue_U8Array value) u8Array,
+    required TResult Function(MetadataValue_U16Array value) u16Array,
+    required TResult Function(MetadataValue_U32Array value) u32Array,
   }) {
     return u32Array(this);
   }
@@ -3368,20 +3313,20 @@ class _$MetadataValueDto_U32ArrayImpl extends MetadataValueDto_U32Array {
   @override
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(MetadataValueDto_Text value)? text,
-    TResult? Function(MetadataValueDto_Integer value)? integer,
-    TResult? Function(MetadataValueDto_Float value)? float,
-    TResult? Function(MetadataValueDto_Rational value)? rational,
-    TResult? Function(MetadataValueDto_SignedRational value)? signedRational,
-    TResult? Function(MetadataValueDto_DateTime value)? dateTime,
-    TResult? Function(MetadataValueDto_NaiveDateTime value)? naiveDateTime,
-    TResult? Function(MetadataValueDto_Bytes value)? bytes,
-    TResult? Function(MetadataValueDto_RationalArray value)? rationalArray,
-    TResult? Function(MetadataValueDto_SignedRationalArray value)?
+    TResult? Function(MetadataValue_Text value)? text,
+    TResult? Function(MetadataValue_Integer value)? integer,
+    TResult? Function(MetadataValue_Float value)? float,
+    TResult? Function(MetadataValue_Rational value)? rational,
+    TResult? Function(MetadataValue_SignedRational value)? signedRational,
+    TResult? Function(MetadataValue_DateTime value)? dateTime,
+    TResult? Function(MetadataValue_NaiveDateTime value)? naiveDateTime,
+    TResult? Function(MetadataValue_Bytes value)? bytes,
+    TResult? Function(MetadataValue_RationalArray value)? rationalArray,
+    TResult? Function(MetadataValue_SignedRationalArray value)?
     signedRationalArray,
-    TResult? Function(MetadataValueDto_U8Array value)? u8Array,
-    TResult? Function(MetadataValueDto_U16Array value)? u16Array,
-    TResult? Function(MetadataValueDto_U32Array value)? u32Array,
+    TResult? Function(MetadataValue_U8Array value)? u8Array,
+    TResult? Function(MetadataValue_U16Array value)? u16Array,
+    TResult? Function(MetadataValue_U32Array value)? u32Array,
   }) {
     return u32Array?.call(this);
   }
@@ -3389,20 +3334,20 @@ class _$MetadataValueDto_U32ArrayImpl extends MetadataValueDto_U32Array {
   @override
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
-    TResult Function(MetadataValueDto_Text value)? text,
-    TResult Function(MetadataValueDto_Integer value)? integer,
-    TResult Function(MetadataValueDto_Float value)? float,
-    TResult Function(MetadataValueDto_Rational value)? rational,
-    TResult Function(MetadataValueDto_SignedRational value)? signedRational,
-    TResult Function(MetadataValueDto_DateTime value)? dateTime,
-    TResult Function(MetadataValueDto_NaiveDateTime value)? naiveDateTime,
-    TResult Function(MetadataValueDto_Bytes value)? bytes,
-    TResult Function(MetadataValueDto_RationalArray value)? rationalArray,
-    TResult Function(MetadataValueDto_SignedRationalArray value)?
+    TResult Function(MetadataValue_Text value)? text,
+    TResult Function(MetadataValue_Integer value)? integer,
+    TResult Function(MetadataValue_Float value)? float,
+    TResult Function(MetadataValue_Rational value)? rational,
+    TResult Function(MetadataValue_SignedRational value)? signedRational,
+    TResult Function(MetadataValue_DateTime value)? dateTime,
+    TResult Function(MetadataValue_NaiveDateTime value)? naiveDateTime,
+    TResult Function(MetadataValue_Bytes value)? bytes,
+    TResult Function(MetadataValue_RationalArray value)? rationalArray,
+    TResult Function(MetadataValue_SignedRationalArray value)?
     signedRationalArray,
-    TResult Function(MetadataValueDto_U8Array value)? u8Array,
-    TResult Function(MetadataValueDto_U16Array value)? u16Array,
-    TResult Function(MetadataValueDto_U32Array value)? u32Array,
+    TResult Function(MetadataValue_U8Array value)? u8Array,
+    TResult Function(MetadataValue_U16Array value)? u16Array,
+    TResult Function(MetadataValue_U32Array value)? u32Array,
     required TResult orElse(),
   }) {
     if (u32Array != null) {
@@ -3412,17 +3357,17 @@ class _$MetadataValueDto_U32ArrayImpl extends MetadataValueDto_U32Array {
   }
 }
 
-abstract class MetadataValueDto_U32Array extends MetadataValueDto {
-  const factory MetadataValueDto_U32Array(final Int64List field0) =
-      _$MetadataValueDto_U32ArrayImpl;
-  const MetadataValueDto_U32Array._() : super._();
+abstract class MetadataValue_U32Array extends MetadataValue {
+  const factory MetadataValue_U32Array(final Int64List field0) =
+      _$MetadataValue_U32ArrayImpl;
+  const MetadataValue_U32Array._() : super._();
 
   @override
   Int64List get field0;
 
-  /// Create a copy of MetadataValueDto
+  /// Create a copy of MetadataValue
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$MetadataValueDto_U32ArrayImplCopyWith<_$MetadataValueDto_U32ArrayImpl>
+  _$$MetadataValue_U32ArrayImplCopyWith<_$MetadataValue_U32ArrayImpl>
   get copyWith => throw _privateConstructorUsedError;
 }
