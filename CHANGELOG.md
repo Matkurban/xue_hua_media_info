@@ -1,3 +1,7 @@
+## 1.0.1
+
+- update freezed version of lasted
+
 ## 1.0.0
 
 First public release. / 首次公开发布。
