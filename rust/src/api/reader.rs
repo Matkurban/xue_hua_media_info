@@ -1,4 +1,4 @@
-use nom_exif::{read_exif, read_exif_iter, read_metadata, read_track, MediaSource};
+use nom_exif::{MediaSource, read_exif, read_exif_iter, read_metadata, read_track};
 
 use super::types::*;
 use crate::convert::{
@@ -117,20 +117,10 @@ pub fn detect_media_kind_from_bytes(data: Vec<u8>) -> Result<MediaKind, MediaInf
 
 #[flutter_rust_bridge::frb(sync)]
 pub fn read_embedded_video_from_file(path: String) -> Result<VideoTrack, MediaInfoError> {
-    let mut parser = nom_exif::MediaParser::new();
-    let source = MediaSource::open(path).map_err(map_error)?;
-    parser
-        .parse_track(source)
-        .map(|track| to_video_track(&track))
-        .map_err(map_error)
+    crate::embedded_video::parse_embedded_video_from_file(path).map(|track| to_video_track(&track))
 }
 
 #[flutter_rust_bridge::frb(sync)]
 pub fn read_embedded_video_from_bytes(data: Vec<u8>) -> Result<VideoTrack, MediaInfoError> {
-    let mut parser = nom_exif::MediaParser::new();
-    let source = MediaSource::from_memory(data).map_err(map_error)?;
-    parser
-        .parse_track(source)
-        .map(|track| to_video_track(&track))
-        .map_err(map_error)
+    crate::embedded_video::parse_embedded_video_from_bytes(data).map(|track| to_video_track(&track))
 }

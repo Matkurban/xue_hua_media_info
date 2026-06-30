@@ -42,13 +42,15 @@ extension MetadataEntryExtension on MetadataEntry {
   String? get asString {
     final raw = rawValue;
     if (raw != null) {
-      return raw.maybeWhen(
+      final fromRaw = raw.maybeWhen(
         text: (value) => value,
         dateTime: (value) => value,
         naiveDateTime: (value) => value,
-        bytes: (value) => value,
         orElse: () => null,
       );
+      if (fromRaw != null) {
+        return fromRaw;
+      }
     }
     return displayValue.isEmpty ? null : displayValue;
   }
@@ -62,6 +64,8 @@ extension MetadataEntryExtension on MetadataEntry {
       final fromRaw = raw.maybeWhen(
         integer: (value) => value.toInt(),
         float: (value) => value.round(),
+        rational: (value) => _rationalToDouble(value)?.round(),
+        signedRational: (value) => _rationalToDouble(value)?.round(),
         orElse: () => null,
       );
       if (fromRaw != null) {
@@ -80,6 +84,8 @@ extension MetadataEntryExtension on MetadataEntry {
       final fromRaw = raw.maybeWhen(
         float: (value) => value,
         integer: (value) => value.toDouble(),
+        rational: (value) => _rationalToDouble(value),
+        signedRational: (value) => _rationalToDouble(value),
         orElse: () => null,
       );
       if (fromRaw != null) {
@@ -88,6 +94,13 @@ extension MetadataEntryExtension on MetadataEntry {
     }
     return double.tryParse(displayValue);
   }
+}
+
+double? _rationalToDouble(Rational value) {
+  if (value.denominator == 0) {
+    return null;
+  }
+  return value.numerator / value.denominator;
 }
 
 /// Convenience getters for video / audio track metadata.

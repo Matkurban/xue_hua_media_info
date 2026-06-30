@@ -71,6 +71,7 @@ flutter:
     - assets/testdata/exif.jpg
     - assets/testdata/exif.png
     - assets/testdata/meta.mov
+    - assets/testdata/motion_photo_pixel_synth.jpg
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images

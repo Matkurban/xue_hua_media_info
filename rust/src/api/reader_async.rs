@@ -1,5 +1,5 @@
 use nom_exif::{
-    read_exif_async, read_exif_iter_async, read_metadata_async, read_track_async, AsyncMediaSource,
+    AsyncMediaSource, read_exif_async, read_exif_iter_async, read_metadata_async, read_track_async,
 };
 
 use super::types::*;
@@ -148,24 +148,16 @@ pub async fn detect_media_kind_from_bytes_async(
 pub async fn read_embedded_video_from_file_async(
     path: String,
 ) -> Result<VideoTrack, MediaInfoError> {
-    let mut parser = nom_exif::MediaParser::new();
-    let source = AsyncMediaSource::open(path).await.map_err(map_error)?;
-    parser
-        .parse_track_async(source)
+    crate::embedded_video::parse_embedded_video_from_file_async(path)
         .await
         .map(|track| to_video_track(&track))
-        .map_err(map_error)
 }
 
 #[flutter_rust_bridge::frb]
 pub async fn read_embedded_video_from_bytes_async(
     data: Vec<u8>,
 ) -> Result<VideoTrack, MediaInfoError> {
-    let mut parser = nom_exif::MediaParser::new();
-    let source = AsyncMediaSource::from_memory(data).map_err(map_error)?;
-    parser
-        .parse_track_async(source)
+    crate::embedded_video::parse_embedded_video_from_bytes_async(data)
         .await
         .map(|track| to_video_track(&track))
-        .map_err(map_error)
 }

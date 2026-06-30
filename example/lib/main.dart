@@ -53,6 +53,10 @@ class _MetadataPreviewState extends State<_MetadataPreview> {
         data: movBytes.buffer.asUint8List(),
       );
 
+      if (!mounted) {
+        return;
+      }
+
       setState(() {
         _output =
             '''
@@ -73,6 +77,9 @@ Video metadata
 ''';
       });
     } catch (error) {
+      if (!mounted) {
+        return;
+      }
       setState(() {
         _output = 'Failed to read metadata: $error';
       });

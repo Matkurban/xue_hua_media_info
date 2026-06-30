@@ -93,13 +93,10 @@ pub async fn parse_embedded_video_from_file_async(
     parser: &mut MediaMetadataParser,
     path: String,
 ) -> Result<VideoTrack, MediaInfoError> {
-    let source = AsyncMediaSource::open(path).await.map_err(map_error)?;
-    parser
-        .inner
-        .parse_track_async(source)
+    let _ = parser;
+    crate::embedded_video::parse_embedded_video_from_file_async(path)
         .await
         .map(|track| to_video_track(&track))
-        .map_err(map_error)
 }
 
 #[flutter_rust_bridge::frb]
@@ -107,11 +104,8 @@ pub async fn parse_embedded_video_from_bytes_async(
     parser: &mut MediaMetadataParser,
     data: Vec<u8>,
 ) -> Result<VideoTrack, MediaInfoError> {
-    let source = AsyncMediaSource::from_memory(data).map_err(map_error)?;
-    parser
-        .inner
-        .parse_track_async(source)
+    let _ = parser;
+    crate::embedded_video::parse_embedded_video_from_bytes_async(data)
         .await
         .map(|track| to_video_track(&track))
-        .map_err(map_error)
 }

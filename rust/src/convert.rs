@@ -53,15 +53,23 @@ pub fn to_image_exif(exif: &Exif) -> ImageExif {
 
 pub fn from_exif_iter(iter: ExifIter) -> ImageExif {
     let has_embedded_video = iter.has_embedded_track();
-    let gps = iter
-        .parse_gps()
-        .ok()
-        .flatten()
-        .as_ref()
-        .map(to_gps_location);
 
     let mut entries = Vec::new();
     let mut parse_errors = Vec::new();
+
+    let gps = match iter.parse_gps() {
+        Ok(Some(gps_info)) => Some(to_gps_location(&gps_info)),
+        Ok(None) => None,
+        Err(err) => {
+            parse_errors.push(ParseError {
+                ifd_index: 0,
+                tag_name: "GPS".to_string(),
+                tag_code: 0,
+                message: err.to_string(),
+            });
+            None
+        }
+    };
 
     for entry in iter {
         let ifd = entry.ifd();
@@ -197,7 +205,7 @@ fn to_metadata_value(value: &EntryValue) -> MetadataValue {
         EntryValue::U8(v) => MetadataValue::Integer(*v as i64),
         EntryValue::U16(v) => MetadataValue::Integer(*v as i64),
         EntryValue::U32(v) => MetadataValue::Integer(*v as i64),
-        EntryValue::U64(v) => MetadataValue::Integer(*v as i64),
+        EntryValue::U64(v) => u64_to_metadata_integer(*v),
         EntryValue::I8(v) => MetadataValue::Integer(*v as i64),
         EntryValue::I16(v) => MetadataValue::Integer(*v as i64),
         EntryValue::I32(v) => MetadataValue::Integer(*v as i64),
@@ -242,6 +250,14 @@ fn to_signed_rational(rational: nom_exif::IRational) -> Rational {
     }
 }
 
+fn u64_to_metadata_integer(value: u64) -> MetadataValue {
+    if value <= i64::MAX as u64 {
+        MetadataValue::Integer(value as i64)
+    } else {
+        MetadataValue::Text(value.to_string())
+    }
+}
+
 fn to_gps_location(gps: &GPSInfo) -> GpsLocation {
     GpsLocation {
         latitude: gps.latitude_decimal(),
@@ -279,10 +295,12 @@ mod tests {
         let exif = read_exif(fixture_path("exif.jpg")).expect("sample jpeg should parse");
         let result = to_image_exif(&exif);
         assert!(!result.entries.is_empty());
-        assert!(result
-            .entries
-            .iter()
-            .any(|entry| entry.tag_name == "Make" || entry.display_value.contains("vivo")));
+        assert!(
+            result
+                .entries
+                .iter()
+                .any(|entry| entry.tag_name == "Make" || entry.display_value.contains("vivo"))
+        );
     }
 
     #[test]
@@ -290,5 +308,20 @@ mod tests {
         let track = read_track(fixture_path("meta.mov")).expect("sample mov should parse");
         let result = to_video_track(&track);
         assert!(!result.entries.is_empty());
+    }
+
+    #[test]
+    fn u64_above_i64_max_is_serialized_as_text() {
+        let value = u64_to_metadata_integer(u64::MAX);
+        assert!(matches!(value, MetadataValue::Text(_)));
+        if let MetadataValue::Text(text) = value {
+            assert_eq!(text, u64::MAX.to_string());
+        }
+    }
+
+    #[test]
+    fn u64_within_i64_max_stays_integer() {
+        let value = u64_to_metadata_integer(i64::MAX as u64);
+        assert!(matches!(value, MetadataValue::Integer(i64::MAX)));
     }
 }

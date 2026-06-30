@@ -15,21 +15,29 @@ void main() {
     return data.buffer.asUint8List();
   }
 
-  test('readImageExifFromBytes parses sample JPEG', () async {
-    final bytes = await loadAsset('assets/testdata/exif.jpg');
-    final exif = XueHuaMediaInfo.readImageExifFromBytes(data: bytes);
+  test(
+    'readImageExifFromBytes parses sample JPEG and extension getters',
+    () async {
+      final bytes = await loadAsset('assets/testdata/exif.jpg');
+      final exif = XueHuaMediaInfo.readImageExifFromBytes(data: bytes);
 
-    expect(exif.entries, isNotEmpty);
-    expect(exif.entries.any((entry) => entry.tagName == 'Make'), isTrue);
-  });
+      expect(exif.entries, isNotEmpty);
+      expect(exif.make, isNotNull);
+      expect(exif.entries.any((entry) => entry.tagName == 'Make'), isTrue);
+    },
+  );
 
-  test('readVideoMetadataFromBytes parses sample MOV', () async {
-    final bytes = await loadAsset('assets/testdata/meta.mov');
-    final track = XueHuaMediaInfo.readVideoMetadataFromBytes(data: bytes);
+  test(
+    'readVideoMetadataFromBytes parses sample MOV and extension getters',
+    () async {
+      final bytes = await loadAsset('assets/testdata/meta.mov');
+      final track = XueHuaMediaInfo.readVideoMetadataFromBytes(data: bytes);
 
-    expect(track.entries, isNotEmpty);
-    expect(track.entries.any((entry) => entry.tagName == 'Width'), isTrue);
-  });
+      expect(track.entries, isNotEmpty);
+      expect(track.width, isNotNull);
+      expect(track.entries.any((entry) => entry.tagName == 'Width'), isTrue);
+    },
+  );
 
   test('detectMediaKindFromBytes distinguishes image and video', () async {
     final jpeg = await loadAsset('assets/testdata/exif.jpg');
@@ -48,8 +56,41 @@ void main() {
   test('readMediaMetadataFromBytes returns error for empty bytes', () async {
     expect(
       () => XueHuaMediaInfo.readMediaMetadataFromBytes(data: const []),
-      throwsA(isA<MediaInfoError>()),
+      throwsA(
+        isA<MediaInfoError>().having((error) => error.code, 'code', isNotNull),
+      ),
     );
+  });
+
+  test('readEmbeddedVideoFromBytes extracts Motion Photo trailer', () async {
+    final bytes = await loadAsset(
+      'assets/testdata/motion_photo_pixel_synth.jpg',
+    );
+    final track = XueHuaMediaInfo.readEmbeddedVideoFromBytes(data: bytes);
+
+    expect(track.entries, isNotEmpty);
+  });
+
+  test(
+    'readEmbeddedVideoFromBytesAsync extracts Motion Photo trailer',
+    () async {
+      final bytes = await loadAsset(
+        'assets/testdata/motion_photo_pixel_synth.jpg',
+      );
+      final track = await XueHuaMediaInfo.readEmbeddedVideoFromBytesAsync(
+        data: bytes,
+      );
+
+      expect(track.entries, isNotEmpty);
+    },
+  );
+
+  test('readImageExifLazyFromBytes preserves per-tag errors shape', () async {
+    final bytes = await loadAsset('assets/testdata/exif.jpg');
+    final exif = XueHuaMediaInfo.readImageExifLazyFromBytes(data: bytes);
+
+    expect(exif.entries, isNotEmpty);
+    expect(exif.parseErrors, isA<List<ParseError>>());
   });
 
   test('readImageExifFromBytesAsync parses sample JPEG', () async {
