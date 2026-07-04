@@ -93,10 +93,7 @@ mod tests {
         let data = std::fs::read(fixture_path("exif.jpg")).expect("exif.jpg fixture should exist");
         let err = parse_embedded_video_from_bytes(data).unwrap_err();
         assert!(
-            matches!(
-                err.code,
-                crate::api::types::MediaInfoErrorCode::TrackNotFound
-            ),
+            matches!(err.code, MediaInfoErrorCode::TrackNotFound),
             "expected TrackNotFound, got {:?}",
             err
         );

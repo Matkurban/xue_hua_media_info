@@ -1,8 +1,13 @@
+## 1.1.1
+
+- Optimized initialization
+
 ## 1.1.0
 
 ### Bug fixes
 
-* Fix Motion Photo embedded video extraction from **bytes** and **async** paths (`readEmbeddedVideoFromBytes*`, `parseEmbeddedVideoFrom*`) — previously only sync file path worked
+* Fix Motion Photo embedded video extraction from **bytes** and **async** paths (`readEmbeddedVideoFromBytes*`,
+  `parseEmbeddedVideoFrom*`) — previously only sync file path worked
 * Fix Dart convenience getters (`make`, `width`, `durationMs`, etc.) returning null when Rust populates `rawValue`
 * Lazy EXIF now records GPS parse failures in `parseErrors` instead of silently dropping them
 * Serialize `u64` EXIF values above `i64::MAX` as text to avoid integer overflow on the Dart side
@@ -17,7 +22,8 @@ First public release.
 
 ### Core
 
-* Flutter FFI plugin backed by [nom-exif](https://github.com/mindeng/nom-exif) 3.6.1 and [flutter_rust_bridge](https://cjycode.com/flutter_rust_bridge/) 2.12 — pure Rust, no FFmpeg or libexif
+* Flutter FFI plugin backed by [nom-exif](https://github.com/mindeng/nom-exif) 3.6.1
+  and [flutter_rust_bridge](https://cjycode.com/flutter_rust_bridge/) 2.12 — pure Rust, no FFmpeg or libexif
 * Unified entry point [`XueHuaMediaInfo`](lib/src/xue_hua_media_info.dart) with `initialize()` for one-time native setup
 * Supports **Android, iOS, macOS, Linux, Windows**
 
@@ -44,7 +50,8 @@ First public release.
 
 ### Batch parsing
 
-* Reusable [`MediaMetadataParser`](lib/src/xue_hua_media_info.dart) via `XueHuaMediaInfo.createParser()` with internal buffer reuse
+* Reusable [`MediaMetadataParser`](lib/src/xue_hua_media_info.dart) via `XueHuaMediaInfo.createParser()` with internal
+  buffer reuse
 * **8 sync** + **8 async** parser methods for EXIF, video, full image, and embedded video
 
 ### Convenience extensions

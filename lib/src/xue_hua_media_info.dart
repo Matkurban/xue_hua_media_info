@@ -4,6 +4,7 @@ import 'rust/api/reader.dart' as frb;
 import 'rust/api/reader_async.dart' as frb_async;
 import 'rust/api/types.dart';
 import 'rust/frb_generated.dart' show RustLib;
+import 'dart:developer';
 
 /// Entry point for reading image and video metadata.
 ///
@@ -14,7 +15,20 @@ class XueHuaMediaInfo {
   /// Initializes the native Rust library. Call once before any other API.
   ///
   /// 初始化原生 Rust 库。在使用任何其他 API 之前调用一次。
-  static Future<void> initialize() => RustLib.init();
+  static Future<void> initialize() async {
+    try {
+      if (!RustLib.instance.initialized) {
+        await RustLib.init();
+      }
+    } catch (e, s) {
+      log(
+        e.toString(),
+        error: e,
+        stackTrace: s,
+        name: 'XueHuaMediaInfo.initialize',
+      );
+    }
+  }
 
   /// Auto-detects media type and reads image EXIF or video track metadata from a file path.
   ///
