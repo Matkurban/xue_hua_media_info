@@ -1,3 +1,4 @@
+pub mod frb_handler;
 pub mod parser;
 pub mod parser_async;
 pub mod reader;
