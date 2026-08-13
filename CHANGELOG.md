@@ -1,3 +1,8 @@
+## 1.1.3
+
+- 修复 Gradle 9 下 Android 构建失败：Cargokit 改用 `ExecOperations` 替代已移除的 `Project.exec()`。
+- Android `compileSdk` 升至 36，`minSdk` 升至 21。
+
 ## 1.1.2
 
 - Android 使用 current_thread FRB handler，避免多插件并存时 pthread_key 耗尽。
