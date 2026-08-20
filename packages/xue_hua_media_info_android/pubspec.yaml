@@ -1,0 +1,28 @@
+name: xue_hua_media_info_android
+description: "Android implementation of the xue_hua_media_info plugin, using ExifInterface and MediaMetadataRetriever. / xue_hua_media_info 插件的 Android 实现，基于 ExifInterface 与 MediaMetadataRetriever。"
+version: 2.0.0
+repository: https://github.com/Matkurban/xue_hua_media_info
+issue_tracker: https://github.com/Matkurban/xue_hua_media_info/issues
+resolution: workspace
+
+environment:
+  sdk: ^3.12.0
+  flutter: ">=3.44.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  xue_hua_media_info_platform_interface: ^2.0.0
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^6.0.0
+
+flutter:
+  plugin:
+    implements: xue_hua_media_info
+    platforms:
+      android:
+        package: com.xuehua.xue_hua_media_info_android
+        pluginClass: XueHuaMediaInfoAndroidPlugin

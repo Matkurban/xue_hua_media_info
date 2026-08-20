@@ -1,0 +1,31 @@
+name: xue_hua_media_info_darwin
+description: "iOS and macOS implementation of the xue_hua_media_info plugin, using ImageIO and AVFoundation. / xue_hua_media_info 插件的 iOS 与 macOS 实现，基于 ImageIO 与 AVFoundation。"
+version: 2.0.0
+repository: https://github.com/Matkurban/xue_hua_media_info
+issue_tracker: https://github.com/Matkurban/xue_hua_media_info/issues
+resolution: workspace
+
+environment:
+  sdk: ^3.12.0
+  flutter: ">=3.44.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  xue_hua_media_info_platform_interface: ^2.0.0
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^6.0.0
+
+flutter:
+  plugin:
+    implements: xue_hua_media_info
+    platforms:
+      ios:
+        pluginClass: XueHuaMediaInfoDarwinPlugin
+        sharedDarwinSource: true
+      macos:
+        pluginClass: XueHuaMediaInfoDarwinPlugin
+        sharedDarwinSource: true
