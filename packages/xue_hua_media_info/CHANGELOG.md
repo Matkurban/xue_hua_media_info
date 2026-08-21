@@ -1,5 +1,10 @@
 # Changelog
 
+## 2.0.1
+
+- Align the example Android build with Gradle 8.14.5 and Android Gradle Plugin 8.13.2.
+  示例 Android 工程对齐 Gradle 8.14.5 与 Android Gradle Plugin 8.13.2。
+
 ## 2.0.0
 
 Complete rewrite as a federated plugin with fully native implementations.
