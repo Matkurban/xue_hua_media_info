@@ -50,7 +50,7 @@ class XueHuaMediaInfoWeb extends XueHuaMediaInfoPlatform {
 
   @override
   Future<MediaKind> probe(MediaSource source) async {
-    final data = await _load(source, prefix: 64);
+    final data = await _load(source, prefix: 256);
     return sniffMediaKind(data, uri: _uri(source));
   }
 

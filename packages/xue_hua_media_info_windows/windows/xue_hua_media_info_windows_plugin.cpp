@@ -3,12 +3,15 @@
 #include <mfapi.h>
 #include <mfidl.h>
 #include <mfreadwrite.h>
+#include <objidl.h>
 #include <shlwapi.h>
 #include <wincodec.h>
 #include <windows.h>
 #include <wrl/client.h>
 
+#include <algorithm>
 #include <cctype>
+#include <cmath>
 #include <cstdio>
 #include <cstring>
 #include <fstream>
@@ -17,6 +20,7 @@
 #include <optional>
 #include <sstream>
 #include <stdexcept>
+#include <string>
 #include <vector>
 
 #pragma comment(lib, "windowscodecs.lib")
@@ -107,31 +111,69 @@ int32_t FindAscii(const std::vector<uint8_t>& data, const char* needle,
   return -1;
 }
 
-std::optional<int64_t> MotionPhotoOffset(const std::vector<uint8_t>& data) {
-  std::string latin(data.begin(), data.end());
-  const std::string key = "GCamera:MicroVideoOffset";
-  const auto pos = latin.find(key);
-  if (pos != std::string::npos) {
-    const auto quote = latin.find('"', pos);
-    if (quote != std::string::npos) {
-      const auto end = latin.find('"', quote + 1);
-      if (end != std::string::npos) {
-        try {
-          const int from_end = std::stoi(latin.substr(quote + 1, end - quote - 1));
-          const int64_t start = static_cast<int64_t>(data.size()) - from_end;
-          if (start > 0 && start < static_cast<int64_t>(data.size())) {
-            return start;
-          }
-        } catch (...) {
-        }
-      }
-    }
+std::optional<int64_t> OffsetFromXmpLength(const std::string& xmp, size_t data_size,
+                                           const char* pattern) {
+  const auto pos = xmp.find(pattern);
+  if (pos == std::string::npos) {
+    return std::nullopt;
   }
-  const int32_t ftyp = FindAscii(data, "ftyp", 2);
-  if (ftyp >= 4) {
-    return ftyp - 4;
+  size_t i = pos + strlen(pattern);
+  while (i < xmp.size() && (xmp[i] == '"' || xmp[i] == '>' || xmp[i] == '=' ||
+                            xmp[i] == ' ' || xmp[i] == '\t')) {
+    ++i;
+  }
+  size_t start = i;
+  while (i < xmp.size() && xmp[i] >= '0' && xmp[i] <= '9') {
+    ++i;
+  }
+  if (i == start) {
+    return std::nullopt;
+  }
+  try {
+    const int from_end = std::stoi(xmp.substr(start, i - start));
+    const int64_t off = static_cast<int64_t>(data_size) - from_end;
+    if (off > 0 && off < static_cast<int64_t>(data_size)) {
+      return off;
+    }
+  } catch (...) {
   }
   return std::nullopt;
+}
+
+std::optional<int64_t> MotionPhotoOffset(const std::vector<uint8_t>& data) {
+  const int32_t xmp_start = FindAscii(data, "<x:xmpmeta", 0);
+  if (xmp_start < 0) {
+    return std::nullopt;
+  }
+  const int32_t xmp_end = FindAscii(data, "</x:xmpmeta>", static_cast<size_t>(xmp_start));
+  if (xmp_end < 0) {
+    return std::nullopt;
+  }
+  const std::string xmp(data.begin() + xmp_start,
+                        data.begin() + xmp_end + static_cast<int32_t>(strlen("</x:xmpmeta>")));
+  if (auto off = OffsetFromXmpLength(xmp, data.size(), "GCamera:MicroVideoOffset")) {
+    return off;
+  }
+  if (auto off = OffsetFromXmpLength(xmp, data.size(), "MicroVideoOffset")) {
+    return off;
+  }
+  const bool is_motion =
+      xmp.find("MotionPhoto") != std::string::npos ||
+      xmp.find("MicroVideo") != std::string::npos;
+  if (!is_motion) {
+    return std::nullopt;
+  }
+  std::optional<int64_t> last;
+  size_t search = 0;
+  while (true) {
+    const auto pos = xmp.find("Item:Length", search);
+    if (pos == std::string::npos) {
+      break;
+    }
+    last = OffsetFromXmpLength(xmp.substr(pos), data.size(), "Item:Length");
+    search = pos + 11;
+  }
+  return last;
 }
 
 void ParsePng(const std::vector<uint8_t>& data, ImageFields* out) {
@@ -330,6 +372,33 @@ void ParseJpegExif(const std::vector<uint8_t>& data, ImageFields* out) {
           }
           out->lat = lat;
           out->lng = lng;
+          auto rational1 = [&](uint16_t tag) -> std::optional<double> {
+            const auto it = gps.find(tag);
+            if (it == gps.end()) {
+              return std::nullopt;
+            }
+            size_t n = 0;
+            const uint8_t* p = EntryPayload(tiff, tiff_size, it->second, little, &n);
+            if (!p || n < 8) {
+              return std::nullopt;
+            }
+            const uint32_t num = U32(p, little);
+            const uint32_t den = U32(p + 4, little);
+            return den == 0 ? 0.0 : double(num) / double(den);
+          };
+          auto alt = rational1(0x0006);
+          if (alt) {
+            const auto ref = gps.find(0x0005);
+            if (ref != gps.end()) {
+              size_t n = 0;
+              const uint8_t* p =
+                  EntryPayload(tiff, tiff_size, ref->second, little, &n);
+              if (p && n >= 1 && p[0] == 1) {
+                *alt = -*alt;
+              }
+            }
+            out->alt = alt;
+          }
         }
       }
     }
@@ -365,6 +434,10 @@ MediaKindMessage Sniff(const std::vector<uint8_t>& prefix, const std::string* ur
   if (prefix.size() >= 4 &&
       ((prefix[0] == 0x49 && prefix[1] == 0x49) ||
        (prefix[0] == 0x4D && prefix[1] == 0x4D))) {
+    if (FindAscii(prefix, "IIQ", 0) >= 0 ||
+        FindAscii(prefix, "Phase One", 0) >= 0) {
+      Fail("unsupportedFormat", "Phase One IIQ is not supported.");
+    }
     return MediaKindMessage::kImage;
   }
   if (prefix.size() >= 12 && memcmp(prefix.data() + 4, "ftyp", 4) == 0) {
@@ -390,6 +463,18 @@ MediaKindMessage Sniff(const std::vector<uint8_t>& prefix, const std::string* ur
   return MediaKindMessage::kVideo;
 }
 
+constexpr size_t kHeaderBytes = 256;
+
+std::wstring AssetFullPath(const std::wstring& assets_dir, const std::string& uri) {
+  std::wstring path = assets_dir + L"\\" + Utf8ToWide(uri);
+  for (auto& c : path) {
+    if (c == L'/') {
+      c = L'\\';
+    }
+  }
+  return path;
+}
+
 std::vector<uint8_t> ReadFileBytes(const std::wstring& path) {
   std::ifstream in(path, std::ios::binary);
   if (!in) {
@@ -397,6 +482,18 @@ std::vector<uint8_t> ReadFileBytes(const std::wstring& path) {
   }
   return std::vector<uint8_t>(std::istreambuf_iterator<char>(in),
                               std::istreambuf_iterator<char>());
+}
+
+std::vector<uint8_t> ReadFilePrefix(const std::wstring& path, size_t count) {
+  std::ifstream in(path, std::ios::binary);
+  if (!in) {
+    Fail("notFound", "File not found.");
+  }
+  std::vector<uint8_t> buffer(count);
+  in.read(reinterpret_cast<char*>(buffer.data()),
+          static_cast<std::streamsize>(count));
+  buffer.resize(static_cast<size_t>(std::max<std::streamsize>(0, in.gcount())));
+  return buffer;
 }
 
 std::vector<uint8_t> LoadBytes(const MediaSourceMessage& source,
@@ -418,13 +515,34 @@ std::vector<uint8_t> LoadBytes(const MediaSourceMessage& source,
       if (!source.uri()) {
         Fail("notFound", "Missing asset key.");
       }
-      std::wstring path = assets_dir + L"\\" + Utf8ToWide(*source.uri());
-      for (auto& c : path) {
-        if (c == L'/') {
-          c = L'\\';
-        }
+      return ReadFileBytes(AssetFullPath(assets_dir, *source.uri()));
+    }
+  }
+  Fail("unsupported", "Unknown source kind.");
+}
+
+std::vector<uint8_t> LoadPrefix(const MediaSourceMessage& source,
+                                const std::wstring& assets_dir, size_t count) {
+  switch (source.kind()) {
+    case SourceKindMessage::kFile: {
+      if (!source.uri()) {
+        Fail("notFound", "Missing path.");
       }
-      return ReadFileBytes(path);
+      return ReadFilePrefix(Utf8ToWide(*source.uri()), count);
+    }
+    case SourceKindMessage::kBytes: {
+      if (!source.bytes()) {
+        Fail("notFound", "Missing byte payload.");
+      }
+      const auto& data = *source.bytes();
+      const size_t n = std::min(count, data.size());
+      return std::vector<uint8_t>(data.begin(), data.begin() + static_cast<std::ptrdiff_t>(n));
+    }
+    case SourceKindMessage::kAsset: {
+      if (!source.uri()) {
+        Fail("notFound", "Missing asset key.");
+      }
+      return ReadFilePrefix(AssetFullPath(assets_dir, *source.uri()), count);
     }
   }
   Fail("unsupported", "Unknown source kind.");
@@ -458,10 +576,9 @@ ImageMetadataMessage ReadImage(const std::vector<uint8_t>& data) {
   ComPtr<IWICImagingFactory> factory;
   if (SUCCEEDED(CoCreateInstance(CLSID_WICImagingFactory, nullptr, CLSCTX_INPROC_SERVER,
                                  IID_PPV_ARGS(&factory)))) {
-    ComPtr<IWICStream> stream;
-    if (SUCCEEDED(factory->CreateStream(&stream)) &&
-        SUCCEEDED(stream->InitializeFromMemory(
-            const_cast<BYTE*>(data.data()), static_cast<DWORD>(data.size())))) {
+    ComPtr<IStream> stream;
+    stream.Attach(SHCreateMemStream(data.data(), static_cast<UINT>(data.size())));
+    if (stream) {
       ComPtr<IWICBitmapDecoder> decoder;
       if (SUCCEEDED(factory->CreateDecoderFromStream(
               stream.Get(), nullptr, WICDecodeMetadataCacheOnDemand, &decoder))) {
@@ -521,13 +638,245 @@ ImageMetadataMessage ReadImage(const std::vector<uint8_t>& data) {
   return image;
 }
 
-MediaMetadataMessage ReadAvFromFile(const std::wstring& path) {
-  ComPtr<IMFSourceReader> reader;
-  HRESULT hr = MFCreateSourceReaderFromURL(path.c_str(), nullptr, &reader);
-  if (FAILED(hr)) {
-    Fail("unsupportedFormat", "Media Foundation could not open the container.");
-  }
+constexpr uint32_t FourCC(char a, char b, char c, char d) {
+  return (uint32_t(uint8_t(a)) << 24) | (uint32_t(uint8_t(b)) << 16) |
+         (uint32_t(uint8_t(c)) << 8) | uint32_t(uint8_t(d));
+}
 
+struct AvExtras {
+  std::optional<std::string> make;
+  std::optional<std::string> model;
+  std::optional<double> lat;
+  std::optional<double> lng;
+  std::optional<double> alt;
+  std::optional<int64_t> rotation;
+};
+
+void ParseIso6709Into(const std::string& raw, AvExtras* extras) {
+  size_t i = 0;
+  auto parse_num = [&](double* out) -> bool {
+    if (i >= raw.size() || (raw[i] != '+' && raw[i] != '-')) {
+      return false;
+    }
+    const size_t start = i++;
+    while (i < raw.size() && (std::isdigit(static_cast<unsigned char>(raw[i])) ||
+                              raw[i] == '.')) {
+      ++i;
+    }
+    if (i == start + 1) {
+      return false;
+    }
+    try {
+      *out = std::stod(raw.substr(start, i - start));
+    } catch (...) {
+      return false;
+    }
+    return true;
+  };
+  double lat = 0, lng = 0, alt = 0;
+  if (!parse_num(&lat) || !parse_num(&lng)) {
+    return;
+  }
+  extras->lat = lat;
+  extras->lng = lng;
+  if (parse_num(&alt)) {
+    extras->alt = alt;
+  }
+}
+
+void AssignUserData(uint32_t key, std::string text, AvExtras* extras) {
+  while (!text.empty() && (text.back() == 0 || text.back() == ' ')) {
+    text.pop_back();
+  }
+  if (text.empty()) {
+    return;
+  }
+  if (key == 0xA96D616B) {  // ©mak
+    extras->make = text;
+  } else if (key == 0xA96D6F64) {  // ©mod
+    extras->model = text;
+  } else if (key == 0xA978797A) {  // ©xyz
+    ParseIso6709Into(text, extras);
+  }
+}
+
+void ParseTkhd(const uint8_t* p, size_t n, AvExtras* extras) {
+  if (n < 84) {
+    return;
+  }
+  const uint8_t version = p[0];
+  const size_t matrix_off = version == 1 ? 52 : 40;
+  if (matrix_off + 44 > n) {
+    return;
+  }
+  const uint32_t width = Be32(p + matrix_off + 36) >> 16;
+  const uint32_t height = Be32(p + matrix_off + 40) >> 16;
+  if (width == 0 || height == 0) {
+    return;
+  }
+  const int32_t a = static_cast<int32_t>(Be32(p + matrix_off));
+  const int32_t b = static_cast<int32_t>(Be32(p + matrix_off + 4));
+  const double angle =
+      std::atan2(b / 65536.0, a / 65536.0) * 180.0 / 3.14159265358979323846;
+  int deg = static_cast<int>(std::lround(angle));
+  deg = ((deg % 360) + 360) % 360;
+  int snapped = 0;
+  if (deg >= 45 && deg < 135) {
+    snapped = 90;
+  } else if (deg >= 135 && deg < 225) {
+    snapped = 180;
+  } else if (deg >= 225 && deg < 315) {
+    snapped = 270;
+  }
+  extras->rotation = snapped;
+}
+
+bool IsBoxContainer(uint32_t type) {
+  return type == FourCC('m', 'o', 'o', 'v') || type == FourCC('t', 'r', 'a', 'k') ||
+         type == FourCC('m', 'd', 'i', 'a') || type == FourCC('m', 'i', 'n', 'f') ||
+         type == FourCC('s', 't', 'b', 'l') || type == FourCC('u', 'd', 't', 'a') ||
+         type == FourCC('m', 'e', 't', 'a') || type == FourCC('i', 'l', 's', 't');
+}
+
+void WalkMp4Boxes(const uint8_t* data, size_t start, size_t end, uint32_t parent,
+                  AvExtras* extras) {
+  size_t offset = start;
+  while (offset + 8 <= end) {
+    uint64_t size = Be32(data + offset);
+    const uint32_t type = Be32(data + offset + 4);
+    size_t header = 8;
+    if (size == 1 && offset + 16 <= end) {
+      size = (uint64_t(Be32(data + offset + 8)) << 32) | Be32(data + offset + 12);
+      header = 16;
+    } else if (size == 0) {
+      size = end - offset;
+    }
+    if (size < header || offset + size > end) {
+      break;
+    }
+    const size_t payload = offset + header;
+    const size_t box_end = offset + static_cast<size_t>(size);
+    size_t child_start = payload;
+    if (type == FourCC('m', 'e', 't', 'a') && payload + 4 <= box_end) {
+      child_start = payload + 4;
+    }
+    if (parent == FourCC('i', 'l', 's', 't')) {
+      WalkMp4Boxes(data, payload, box_end, type, extras);
+    } else if (IsBoxContainer(type)) {
+      WalkMp4Boxes(data, child_start, box_end, type, extras);
+    } else if (type == FourCC('t', 'k', 'h', 'd')) {
+      ParseTkhd(data + payload, box_end - payload, extras);
+    } else if (type == FourCC('d', 'a', 't', 'a') && box_end > payload + 8) {
+      const uint8_t format = data[payload + 3];
+      if (format == 1 || format == 0) {
+        std::string text(reinterpret_cast<const char*>(data + payload + 8),
+                         box_end - payload - 8);
+        AssignUserData(parent, std::move(text), extras);
+      }
+    } else if ((type & 0xFF000000) == 0xA9000000 &&
+               parent == FourCC('u', 'd', 't', 'a')) {
+      size_t i = (box_end - payload >= 4) ? 4 : 0;
+      std::string text(reinterpret_cast<const char*>(data + payload + i),
+                       box_end > payload + i ? box_end - payload - i : 0);
+      AssignUserData(type, std::move(text), extras);
+    }
+    offset = box_end;
+  }
+}
+
+AvExtras ParseMp4Extras(const uint8_t* data, size_t size) {
+  AvExtras extras;
+  size_t offset = 0;
+  while (offset + 8 <= size) {
+    uint64_t box = Be32(data + offset);
+    const uint32_t type = Be32(data + offset + 4);
+    size_t header = 8;
+    if (box == 1 && offset + 16 <= size) {
+      box = (uint64_t(Be32(data + offset + 8)) << 32) | Be32(data + offset + 12);
+      header = 16;
+    } else if (box == 0) {
+      box = size - offset;
+    }
+    if (box < header || offset + box > size) {
+      break;
+    }
+    if (type == FourCC('m', 'o', 'o', 'v')) {
+      WalkMp4Boxes(data, offset + header, offset + static_cast<size_t>(box),
+                   type, &extras);
+      break;
+    }
+    offset += static_cast<size_t>(box);
+  }
+  return extras;
+}
+
+AvExtras ParseMp4ExtrasFromPath(const std::wstring& path) {
+  std::ifstream in(path, std::ios::binary);
+  if (!in) {
+    return {};
+  }
+  in.seekg(0, std::ios::end);
+  const int64_t file_end = in.tellg();
+  in.seekg(0);
+  int64_t offset = 0;
+  while (offset + 8 <= file_end) {
+    in.seekg(offset);
+    uint8_t hdr[16] = {};
+    in.read(reinterpret_cast<char*>(hdr), 8);
+    if (in.gcount() < 8) {
+      break;
+    }
+    uint64_t size = Be32(hdr);
+    const uint32_t type = Be32(hdr + 4);
+    int header = 8;
+    if (size == 1) {
+      in.read(reinterpret_cast<char*>(hdr), 8);
+      size = (uint64_t(Be32(hdr)) << 32) | Be32(hdr + 4);
+      header = 16;
+    } else if (size == 0) {
+      size = static_cast<uint64_t>(file_end - offset);
+    }
+    if (type == FourCC('m', 'o', 'o', 'v')) {
+      if (size > 64ull * 1024ull * 1024ull) {
+        break;
+      }
+      std::vector<uint8_t> moov(static_cast<size_t>(size));
+      in.seekg(offset);
+      in.read(reinterpret_cast<char*>(moov.data()),
+              static_cast<std::streamsize>(size));
+      moov.resize(static_cast<size_t>(std::max<std::streamsize>(0, in.gcount())));
+      AvExtras extras;
+      if (moov.size() > static_cast<size_t>(header)) {
+        WalkMp4Boxes(moov.data(), static_cast<size_t>(header), moov.size(), type,
+                     &extras);
+      }
+      return extras;
+    }
+    offset += static_cast<int64_t>(size);
+  }
+  return {};
+}
+
+template <typename T>
+void ApplyAvExtras(T& message, const AvExtras& extras) {
+  if (extras.make) {
+    message.set_make(*extras.make);
+  }
+  if (extras.model) {
+    message.set_model(*extras.model);
+  }
+  if (extras.lat && extras.lng) {
+    if (extras.alt) {
+      const double alt = *extras.alt;
+      message.set_gps(GpsLocationMessage(*extras.lat, *extras.lng, &alt));
+    } else {
+      message.set_gps(GpsLocationMessage(*extras.lat, *extras.lng));
+    }
+  }
+}
+
+MediaMetadataMessage ReadAvFromReader(IMFSourceReader* reader,
+                                      const AvExtras& extras) {
   std::optional<int64_t> duration_ms;
   PROPVARIANT dur;
   PropVariantInit(&dur);
@@ -549,74 +898,93 @@ MediaMetadataMessage ReadAvFromFile(const std::wstring& path) {
     MFGetAttributeSize(video_type.Get(), MF_MT_FRAME_SIZE, &w, &h);
     UINT32 bitrate = 0;
     video_type->GetUINT32(MF_MT_AVG_BITRATE, &bitrate);
+    UINT32 mf_rot = 0;
+    int64_t rotation = extras.rotation.value_or(0);
+    if (SUCCEEDED(video_type->GetUINT32(MF_MT_VIDEO_ROTATION, &mf_rot))) {
+      rotation = mf_rot;
+    }
+    if (rotation % 180 == 90) {
+      std::swap(w, h);
+    }
     VideoMetadataMessage video(flutter::EncodableList{});
     if (duration_ms) video.set_duration_ms(*duration_ms);
     if (w > 0 && h > 0) {
       video.set_size(PixelSizeMessage(w, h));
     }
     if (bitrate > 0) video.set_bitrate(bitrate);
+    video.set_rotation_degrees(rotation);
+    ApplyAvExtras(video, extras);
     MediaMetadataMessage message(MediaKindMessage::kVideo);
     message.set_video(video);
     return message;
   }
 
+  if (!audio_type) {
+    Fail("trackNotFound", "No video or audio track.");
+  }
   AudioMetadataMessage audio(flutter::EncodableList{});
   if (duration_ms) audio.set_duration_ms(*duration_ms);
-  if (audio_type) {
-    UINT32 rate = 0, channels = 0, bitrate = 0;
-    audio_type->GetUINT32(MF_MT_AUDIO_SAMPLES_PER_SECOND, &rate);
-    audio_type->GetUINT32(MF_MT_AUDIO_NUM_CHANNELS, &channels);
-    audio_type->GetUINT32(MF_MT_AUDIO_AVG_BYTES_PER_SECOND, &bitrate);
-    if (rate > 0) audio.set_sample_rate(rate);
-    if (channels > 0) audio.set_channel_count(channels);
-    if (bitrate > 0) audio.set_bitrate(bitrate * 8);
-  }
+  UINT32 rate = 0, channels = 0, bitrate = 0;
+  audio_type->GetUINT32(MF_MT_AUDIO_SAMPLES_PER_SECOND, &rate);
+  audio_type->GetUINT32(MF_MT_AUDIO_NUM_CHANNELS, &channels);
+  audio_type->GetUINT32(MF_MT_AUDIO_AVG_BYTES_PER_SECOND, &bitrate);
+  if (rate > 0) audio.set_sample_rate(rate);
+  if (channels > 0) audio.set_channel_count(channels);
+  if (bitrate > 0) audio.set_bitrate(bitrate * 8);
+  ApplyAvExtras(audio, extras);
   MediaMetadataMessage message(MediaKindMessage::kAudio);
   message.set_audio(audio);
   return message;
 }
 
-std::wstring WriteTemp(const std::vector<uint8_t>& data) {
-  wchar_t dir[MAX_PATH];
-  GetTempPathW(MAX_PATH, dir);
-  wchar_t path[MAX_PATH];
-  GetTempFileNameW(dir, L"xhmi", 0, path);
-  FILE* file = nullptr;
-  _wfopen_s(&file, path, L"wb");
-  if (!file) {
-    Fail("io", "Unable to create a temporary file.");
+MediaMetadataMessage ReadAvFromFile(const std::wstring& path) {
+  ComPtr<IMFSourceReader> reader;
+  const HRESULT hr = MFCreateSourceReaderFromURL(path.c_str(), nullptr, &reader);
+  if (FAILED(hr)) {
+    Fail("unsupportedFormat", "Media Foundation could not open the container.");
   }
-  fwrite(data.data(), 1, data.size(), file);
-  fclose(file);
-  return path;
+  return ReadAvFromReader(reader.Get(), ParseMp4ExtrasFromPath(path));
 }
 
-MediaMetadataMessage ReadAv(const MediaSourceMessage& source,
-                            const std::vector<uint8_t>& data,
-                            const std::wstring& assets_dir) {
-  std::wstring path;
-  bool temp = false;
+MediaMetadataMessage ReadAvFromMemory(const std::vector<uint8_t>& data) {
+  ComPtr<IStream> stream;
+  stream.Attach(SHCreateMemStream(data.data(), static_cast<UINT>(data.size())));
+  if (!stream) {
+    Fail("io", "Unable to wrap bytes as IStream.");
+  }
+  ComPtr<IMFByteStream> byte_stream;
+  if (FAILED(MFCreateMFByteStreamOnStream(stream.Get(), &byte_stream))) {
+    Fail("unsupportedFormat", "Unable to create IMFByteStream from IStream.");
+  }
+  ComPtr<IMFSourceReader> reader;
+  if (FAILED(MFCreateSourceReaderFromByteStream(byte_stream.Get(), nullptr,
+                                                &reader))) {
+    Fail("unsupportedFormat", "Media Foundation could not open the container.");
+  }
+  return ReadAvFromReader(reader.Get(), ParseMp4Extras(data.data(), data.size()));
+}
+
+MediaMetadataMessage ReadAvInternal(const MediaSourceMessage& source,
+                                    const std::wstring& assets_dir) {
   switch (source.kind()) {
     case SourceKindMessage::kFile:
-      path = Utf8ToWide(*source.uri());
-      break;
-    case SourceKindMessage::kAsset: {
-      path = assets_dir + L"\\" + Utf8ToWide(*source.uri());
-      for (auto& c : path) {
-        if (c == L'/') c = L'\\';
+      if (!source.uri()) {
+        Fail("notFound", "Missing path.");
       }
-      break;
+      return ReadAvFromFile(Utf8ToWide(*source.uri()));
+    case SourceKindMessage::kAsset: {
+      if (!source.uri()) {
+        Fail("notFound", "Missing asset key.");
+      }
+      return ReadAvFromFile(AssetFullPath(assets_dir, *source.uri()));
     }
     case SourceKindMessage::kBytes:
-      path = WriteTemp(data);
-      temp = true;
-      break;
+      if (!source.bytes()) {
+        Fail("notFound", "Missing byte payload.");
+      }
+      return ReadAvFromMemory(*source.bytes());
   }
-  MediaMetadataMessage result = ReadAvFromFile(path);
-  if (temp) {
-    DeleteFileW(path.c_str());
-  }
-  return result;
+  Fail("unsupported", "Unknown source kind.");
 }
 
 template <typename T>
@@ -656,14 +1024,15 @@ void XueHuaMediaInfoWindowsPlugin::Read(
     const MediaSourceMessage& source,
     std::function<void(ErrorOr<MediaMetadataMessage> reply)> result) {
   Reply<MediaMetadataMessage>(result, [&] {
-    const auto data = LoadBytes(source, assets_dir_);
-    const auto kind = Sniff(data, source.uri());
+    const auto prefix = LoadPrefix(source, assets_dir_, kHeaderBytes);
+    const auto kind = Sniff(prefix, source.uri());
     if (kind == MediaKindMessage::kImage) {
+      const auto data = LoadBytes(source, assets_dir_);
       MediaMetadataMessage message(MediaKindMessage::kImage);
       message.set_image(ReadImage(data));
       return message;
     }
-    return ReadAv(source, data, assets_dir_);
+    return ReadAvInternal(source, assets_dir_);
   });
 }
 
@@ -671,11 +1040,11 @@ void XueHuaMediaInfoWindowsPlugin::ReadImage(
     const MediaSourceMessage& source,
     std::function<void(ErrorOr<ImageMetadataMessage> reply)> result) {
   Reply<ImageMetadataMessage>(result, [&] {
-    const auto data = LoadBytes(source, assets_dir_);
-    if (Sniff(data, source.uri()) != MediaKindMessage::kImage) {
+    const auto prefix = LoadPrefix(source, assets_dir_, kHeaderBytes);
+    if (Sniff(prefix, source.uri()) != MediaKindMessage::kImage) {
       Fail("wrongKind", "Source is not an image.");
     }
-    return ReadImage(data);
+    return ReadImage(LoadBytes(source, assets_dir_));
   });
 }
 
@@ -683,11 +1052,11 @@ void XueHuaMediaInfoWindowsPlugin::ReadAv(
     const MediaSourceMessage& source,
     std::function<void(ErrorOr<MediaMetadataMessage> reply)> result) {
   Reply<MediaMetadataMessage>(result, [&] {
-    const auto data = LoadBytes(source, assets_dir_);
-    if (Sniff(data, source.uri()) == MediaKindMessage::kImage) {
+    const auto prefix = LoadPrefix(source, assets_dir_, kHeaderBytes);
+    if (Sniff(prefix, source.uri()) == MediaKindMessage::kImage) {
       Fail("wrongKind", "Source is an image, not an AV container.");
     }
-    return ReadAv(source, data, assets_dir_);
+    return ReadAvInternal(source, assets_dir_);
   });
 }
 
@@ -695,11 +1064,7 @@ void XueHuaMediaInfoWindowsPlugin::Probe(
     const MediaSourceMessage& source,
     std::function<void(ErrorOr<MediaKindMessage> reply)> result) {
   Reply<MediaKindMessage>(result, [&] {
-    auto data = LoadBytes(source, assets_dir_);
-    if (data.size() > 64) {
-      data.resize(64);
-    }
-    return Sniff(data, source.uri());
+    return Sniff(LoadPrefix(source, assets_dir_, kHeaderBytes), source.uri());
   });
 }
 
@@ -713,9 +1078,7 @@ void XueHuaMediaInfoWindowsPlugin::ReadMotionPhoto(
       Fail("trackNotFound", "No embedded Motion Photo video.");
     }
     std::vector<uint8_t> embedded(data.begin() + *offset, data.end());
-    const auto temp = WriteTemp(embedded);
-    MediaMetadataMessage parsed = ReadAvFromFile(temp);
-    DeleteFileW(temp.c_str());
+    MediaMetadataMessage parsed = ReadAvFromMemory(embedded);
     if (!parsed.video()) {
       Fail("trackNotFound", "Embedded trailer is not a video.");
     }

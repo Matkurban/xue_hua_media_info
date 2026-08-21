@@ -143,7 +143,7 @@ class XueHuaMediaInfoAndroidPlugin :
     }
 
     private fun readAvInternal(source: MediaSourceMessage): MediaMetadataMessage {
-        val kind = sniffKind(loadPrefix(source, 64), source)
+        val kind = sniffKind(loadPrefix(source, HEADER_BYTES), source)
         if (kind == MediaKindMessage.IMAGE) {
             throw FlutterError("wrongKind", "Source is an image, not an AV container.", null)
         }
@@ -172,46 +172,52 @@ class XueHuaMediaInfoAndroidPlugin :
 
     private fun metadataFromRetriever(retriever: MediaMetadataRetriever): MediaMetadataMessage {
         val durationMs = retriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION)?.toLongOrNull()
-        val width = retriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_VIDEO_WIDTH)?.toLongOrNull()
-        val height = retriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_VIDEO_HEIGHT)?.toLongOrNull()
+        val encodedWidth = retriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_VIDEO_WIDTH)?.toLongOrNull()
+        val encodedHeight = retriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_VIDEO_HEIGHT)?.toLongOrNull()
         val bitrate = retriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_BITRATE)?.toLongOrNull()
         val rotation = retriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_VIDEO_ROTATION)?.toLongOrNull()
-        val make = retriever.extractMetadata("Make")
-        val model = retriever.extractMetadata("Model")
-        val hasVideo = width != null && height != null && width > 0 && height > 0
+        val mime = retriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_MIMETYPE)
+        val hasVideo = encodedWidth != null && encodedHeight != null && encodedWidth > 0 && encodedHeight > 0
         val gps = parseIso6709(retriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_LOCATION))
-        return if (hasVideo) {
+        val sampleRate =
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+                retriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_SAMPLERATE)
+                    ?.toLongOrNull()
+            } else {
+                null
+            }
+        if (hasVideo) {
+            val display = displaySize(encodedWidth, encodedHeight, rotation)
             val video = VideoMetadataMessage(
                 durationMs = durationMs,
-                size = PixelSizeMessage(width = width, height = height),
+                size = display,
                 bitrate = bitrate,
                 rotationDegrees = rotation,
-                make = make,
-                model = model,
+                make = null,
+                model = null,
                 gps = gps,
                 extraTags = emptyList(),
             )
-            MediaMetadataMessage(kind = MediaKindMessage.VIDEO, video = video)
-        } else {
-            val sampleRate =
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-                    retriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_SAMPLERATE)
-                        ?.toLongOrNull()
-                } else {
-                    null
-                }
-            val audio = AudioMetadataMessage(
-                durationMs = durationMs,
-                bitrate = bitrate,
-                sampleRate = sampleRate,
-                channelCount = null,
-                make = make,
-                model = model,
-                gps = gps,
-                extraTags = emptyList(),
-            )
-            MediaMetadataMessage(kind = MediaKindMessage.AUDIO, audio = audio)
+            return MediaMetadataMessage(kind = MediaKindMessage.VIDEO, video = video)
         }
+        val hasAudio =
+            (durationMs != null && durationMs > 0) ||
+                sampleRate != null ||
+                mime?.startsWith("audio") == true
+        if (!hasAudio) {
+            throw FlutterError("trackNotFound", "No video or audio track.", null)
+        }
+        val audio = AudioMetadataMessage(
+            durationMs = durationMs,
+            bitrate = bitrate,
+            sampleRate = sampleRate,
+            channelCount = null,
+            make = null,
+            model = null,
+            gps = gps,
+            extraTags = emptyList(),
+        )
+        return MediaMetadataMessage(kind = MediaKindMessage.AUDIO, audio = audio)
     }
 
     private fun openExif(source: MediaSourceMessage): ExifInterface {
@@ -236,8 +242,13 @@ class XueHuaMediaInfoAndroidPlugin :
                 retriever.setDataSource(ByteArrayMediaDataSource(source.bytes ?: throw missingBytes()))
             SourceKindMessage.ASSET -> {
                 val assetPath = flutterAssets.getAssetFilePathByName(source.uri ?: throw missingPath())
-                context.assets.openFd(assetPath).use { fd ->
-                    retriever.setDataSource(fd.fileDescriptor, fd.startOffset, fd.length)
+                try {
+                    context.assets.openFd(assetPath).use { fd ->
+                        retriever.setDataSource(fd.fileDescriptor, fd.startOffset, fd.length)
+                    }
+                } catch (_: IOException) {
+                    // Compressed APK assets cannot be opened as FDs; stream via bytes.
+                    retriever.setDataSource(ByteArrayMediaDataSource(loadAll(source)))
                 }
             }
         }
@@ -304,6 +315,19 @@ class XueHuaMediaInfoAndroidPlugin :
     private fun missingPath(): FlutterError = FlutterError("notFound", "Missing path or asset key.", null)
 
     private fun missingBytes(): FlutterError = FlutterError("notFound", "Missing byte payload.", null)
+
+    companion object {
+        internal const val HEADER_BYTES = 256
+    }
+}
+
+internal fun displaySize(width: Long, height: Long, rotation: Long?): PixelSizeMessage {
+    val quarterTurns = ((rotation ?: 0) % 360 + 360) % 360
+    return if (quarterTurns == 90L || quarterTurns == 270L) {
+        PixelSizeMessage(width = height, height = width)
+    } else {
+        PixelSizeMessage(width = width, height = height)
+    }
 }
 
 private inline fun <T> runMedia(block: () -> T): Result<T> {
@@ -362,6 +386,10 @@ internal fun sniffKind(prefix: ByteArray, source: MediaSourceMessage): MediaKind
                 (prefix[0] == 0x4D.toByte() && prefix[1] == 0x4D.toByte())
         )
     ) {
+        val ascii = String(prefix, Charsets.ISO_8859_1)
+        if (ascii.contains("IIQ") || ascii.contains("Phase One")) {
+            throw FlutterError("unsupportedFormat", "Phase One IIQ is not supported.", null)
+        }
         return MediaKindMessage.IMAGE
     }
     if (prefix.size >= 12 &&
@@ -372,7 +400,13 @@ internal fun sniffKind(prefix: ByteArray, source: MediaSourceMessage): MediaKind
             throw FlutterError("unsupportedFormat", "Canon CR3 is not supported.", null)
         }
         val imageBrands = setOf("heic", "heif", "mif1", "msf1", "avif", "avis")
-        return if (imageBrands.contains(brand)) MediaKindMessage.IMAGE else MediaKindMessage.VIDEO
+        if (imageBrands.contains(brand)) {
+            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.P) {
+                throw FlutterError("unsupportedFormat", "HEIC/HEIF requires Android API 28+.", null)
+            }
+            return MediaKindMessage.IMAGE
+        }
+        return MediaKindMessage.VIDEO
     }
     if (prefix.size >= 4 &&
         prefix[0] == 0x1A.toByte() &&
@@ -382,7 +416,6 @@ internal fun sniffKind(prefix: ByteArray, source: MediaSourceMessage): MediaKind
     ) {
         return MediaKindMessage.VIDEO
     }
-    val name = source.uri?.lowercase() ?: ""
     if (name.endsWith(".m4a") || name.endsWith(".aac") || name.endsWith(".mp3") || name.endsWith(".wav")) {
         return MediaKindMessage.AUDIO
     }
@@ -430,7 +463,7 @@ internal fun parsePngText(data: ByteArray): List<PngTextChunkMessage> {
 }
 
 internal fun motionPhotoOffset(data: ByteArray): Int? {
-    val xmp = extractXmp(data) ?: String(data, Charset.forName("ISO-8859-1"))
+    val xmp = extractXmp(data) ?: return null
     val micro = Regex("""GCamera:MicroVideoOffset\s*=\s*"(\d+)"""").find(xmp)
         ?: Regex("""MicroVideoOffset>\s*(\d+)""").find(xmp)
     if (micro != null) {
@@ -438,8 +471,16 @@ internal fun motionPhotoOffset(data: ByteArray): Int? {
         val start = data.size - fromEnd
         return if (start in 1 until data.size) start else null
     }
-    val ftyp = indexOfAscii(data, "ftyp", 2)
-    return if (ftyp != null && ftyp >= 4) ftyp - 4 else null
+    if (!xmp.contains("MotionPhoto") && !xmp.contains("MicroVideo")) {
+        return null
+    }
+    val itemLength = Regex("""Item:Length(?:="|>)\s*(\d+)""").findAll(xmp).lastOrNull()
+    if (itemLength != null) {
+        val fromEnd = itemLength.groupValues[1].toIntOrNull() ?: return null
+        val start = data.size - fromEnd
+        return if (start in 1 until data.size) start else null
+    }
+    return null
 }
 
 private fun extractXmp(data: ByteArray): String? {

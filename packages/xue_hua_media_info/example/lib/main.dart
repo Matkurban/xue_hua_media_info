@@ -56,29 +56,17 @@ class _MetadataPreviewPageState extends State<MetadataPreviewPage> {
         return;
       }
 
-      final avLine = switch (container) {
-        VideoMetadata(:final duration, :final size, :final make) =>
-          'Video  make=${make ?? '-'}  size=$size  duration=$duration',
-        AudioMetadata(:final duration, :final sampleRate) =>
-          'Audio  duration=$duration  sampleRate=$sampleRate',
-      };
-
       setState(() {
         _output =
             '''
 JPEG
-  Make: ${image.make ?? '-'}
-  Model: ${image.model ?? '-'}
-  Size: ${image.size ?? '-'}
-  GPS: ${image.gps ?? '-'}
-  Motion Photo: ${image.hasMotionPhoto}
+${_imageFields(image)}
 
 PNG
-  Size: ${pngMeta.size ?? '-'}
-  tEXt: ${pngMeta.pngText.length}
+${_imageFields(pngMeta)}
 
 MOV
-  $avLine
+${_avFields(container)}
 ''';
       });
     } on MediaInfoError catch (error) {
@@ -104,11 +92,74 @@ MOV
       appBar: AppBar(title: const Text('xue_hua_media_info 2.0')),
       body: Padding(
         padding: const EdgeInsets.all(16),
-        child: SelectableText(
-          _output,
-          style: const TextStyle(fontFamily: 'monospace'),
+        child: SingleChildScrollView(
+          child: SelectableText(
+            _output,
+            style: const TextStyle(fontFamily: 'monospace'),
+          ),
         ),
       ),
     );
   }
+}
+
+String _fmt(Object? value) => value?.toString() ?? '-';
+
+String _imageFields(ImageMetadata meta) {
+  final pngText = meta.pngText.isEmpty
+      ? '-'
+      : meta.pngText.map((chunk) => '${chunk.key}=${chunk.value}').join(', ');
+  final extra = meta.extraTags.isEmpty
+      ? '-'
+      : meta.extraTags
+            .map((tag) => '${tag.name}=${tag.displayValue}')
+            .join(', ');
+  return '''
+  make: ${_fmt(meta.make)}
+  model: ${_fmt(meta.model)}
+  software: ${_fmt(meta.software)}
+  size: ${_fmt(meta.size)}
+  orientation: ${_fmt(meta.orientation)}
+  dateTimeOriginal: ${_fmt(meta.dateTimeOriginal)}
+  dateTimeDigitized: ${_fmt(meta.dateTimeDigitized)}
+  dateTimeModified: ${_fmt(meta.dateTimeModified)}
+  gps: ${_fmt(meta.gps)}
+  hasMotionPhoto: ${meta.hasMotionPhoto}
+  pngText: $pngText
+  extraTags: $extra''';
+}
+
+String _avFields(AvMetadata meta) {
+  final extra = switch (meta) {
+    VideoMetadata(:final extraTags) || AudioMetadata(:final extraTags) =>
+      extraTags.isEmpty
+          ? '-'
+          : extraTags
+                .map((tag) => '${tag.name}=${tag.displayValue}')
+                .join(', '),
+  };
+  return switch (meta) {
+    VideoMetadata() =>
+      '''
+  kind: video
+  duration: ${_fmt(meta.duration)}
+  size: ${_fmt(meta.size)}
+  bitrate: ${_fmt(meta.bitrate)}
+  rotationDegrees: ${_fmt(meta.rotationDegrees)}
+  make: ${_fmt(meta.make)}
+  model: ${_fmt(meta.model)}
+  gps: ${_fmt(meta.gps)}
+  extraTags: $extra''',
+    AudioMetadata() =>
+      '''
+  kind: audio
+  duration: ${_fmt(meta.duration)}
+  bitrate: ${_fmt(meta.bitrate)}
+  sampleRate: ${_fmt(meta.sampleRate)}
+  channelCount: ${_fmt(meta.channelCount)}
+  make: ${_fmt(meta.make)}
+  model: ${_fmt(meta.model)}
+  gps: ${_fmt(meta.gps)}
+  extraTags: $extra''',
+  };
 }

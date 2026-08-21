@@ -10,9 +10,9 @@ import 'package:flutter/services.dart';
 import 'package:meta/meta.dart' show immutable, protected, visibleForTesting;
 
 Object? _extractReplyValueOrThrow(
-    List<Object?>? replyList,
-    String channelName, {
-    required bool isNullValid,
+  List<Object?>? replyList,
+  String channelName, {
+  required bool isNullValid,
 }) {
   if (replyList == null) {
     throw PlatformException(
@@ -46,8 +46,9 @@ bool _deepEquals(Object? a, Object? b) {
   }
   if (a is List && b is List) {
     return a.length == b.length &&
-        a.indexed
-            .every(((int, dynamic) item) => _deepEquals(item.$2, b[item.$1]));
+        a.indexed.every(
+          ((int, dynamic) item) => _deepEquals(item.$2, b[item.$1]),
+        );
   }
   if (a is Map && b is Map) {
     if (a.length != b.length) {
@@ -96,13 +97,14 @@ int _deepHash(Object? value) {
   return value.hashCode;
 }
 
-
 /// Kind of a [MediaSourceMessage]. / [MediaSourceMessage] 的种类。
 enum SourceKindMessage {
   /// Local filesystem path. / 本地文件路径。
   file,
+
   /// In-memory bytes. / 内存字节。
   bytes,
+
   /// Flutter asset key (already resolved). / 已解析的 Flutter Asset 键。
   asset,
 }
@@ -111,19 +113,17 @@ enum SourceKindMessage {
 enum MediaKindMessage {
   /// Still image. / 静态图片。
   image,
+
   /// Container with a video track. / 含视频轨的容器。
   video,
+
   /// Audio-only container. / 纯音频容器。
   audio,
 }
 
 /// Wire representation of a media source. / 媒体源的跨端传输结构。
 class MediaSourceMessage {
-  MediaSourceMessage({
-    required this.kind,
-    this.uri,
-    this.bytes,
-  });
+  MediaSourceMessage({required this.kind, this.uri, this.bytes});
 
   /// Discriminator. / 种类。
   SourceKindMessage kind;
@@ -135,15 +135,12 @@ class MediaSourceMessage {
   Uint8List? bytes;
 
   List<Object?> _toList() {
-    return <Object?>[
-      kind,
-      uri,
-      bytes,
-    ];
+    return <Object?>[kind, uri, bytes];
   }
 
   Object encode() {
-    return _toList();  }
+    return _toList();
+  }
 
   static MediaSourceMessage decode(Object result) {
     result as List<Object?>;
@@ -163,7 +160,9 @@ class MediaSourceMessage {
     if (identical(this, other)) {
       return true;
     }
-    return _deepEquals(kind, other.kind) && _deepEquals(uri, other.uri) && _deepEquals(bytes, other.bytes);
+    return _deepEquals(kind, other.kind) &&
+        _deepEquals(uri, other.uri) &&
+        _deepEquals(bytes, other.bytes);
   }
 
   @override
@@ -178,24 +177,19 @@ class MediaSourceMessage {
 
 /// Wire pixel size. / 像素尺寸传输结构。
 class PixelSizeMessage {
-  PixelSizeMessage({
-    required this.width,
-    required this.height,
-  });
+  PixelSizeMessage({required this.width, required this.height});
 
   int width;
 
   int height;
 
   List<Object?> _toList() {
-    return <Object?>[
-      width,
-      height,
-    ];
+    return <Object?>[width, height];
   }
 
   Object encode() {
-    return _toList();  }
+    return _toList();
+  }
 
   static PixelSizeMessage decode(Object result) {
     result as List<Object?>;
@@ -242,15 +236,12 @@ class GpsLocationMessage {
   double? altitudeMeters;
 
   List<Object?> _toList() {
-    return <Object?>[
-      latitude,
-      longitude,
-      altitudeMeters,
-    ];
+    return <Object?>[latitude, longitude, altitudeMeters];
   }
 
   Object encode() {
-    return _toList();  }
+    return _toList();
+  }
 
   static GpsLocationMessage decode(Object result) {
     result as List<Object?>;
@@ -270,7 +261,9 @@ class GpsLocationMessage {
     if (identical(this, other)) {
       return true;
     }
-    return _deepEquals(latitude, other.latitude) && _deepEquals(longitude, other.longitude) && _deepEquals(altitudeMeters, other.altitudeMeters);
+    return _deepEquals(latitude, other.latitude) &&
+        _deepEquals(longitude, other.longitude) &&
+        _deepEquals(altitudeMeters, other.altitudeMeters);
   }
 
   @override
@@ -304,17 +297,12 @@ class MetadataTagMessage {
   double? doubleValue;
 
   List<Object?> _toList() {
-    return <Object?>[
-      name,
-      displayValue,
-      stringValue,
-      intValue,
-      doubleValue,
-    ];
+    return <Object?>[name, displayValue, stringValue, intValue, doubleValue];
   }
 
   Object encode() {
-    return _toList();  }
+    return _toList();
+  }
 
   static MetadataTagMessage decode(Object result) {
     result as List<Object?>;
@@ -336,7 +324,11 @@ class MetadataTagMessage {
     if (identical(this, other)) {
       return true;
     }
-    return _deepEquals(name, other.name) && _deepEquals(displayValue, other.displayValue) && _deepEquals(stringValue, other.stringValue) && _deepEquals(intValue, other.intValue) && _deepEquals(doubleValue, other.doubleValue);
+    return _deepEquals(name, other.name) &&
+        _deepEquals(displayValue, other.displayValue) &&
+        _deepEquals(stringValue, other.stringValue) &&
+        _deepEquals(intValue, other.intValue) &&
+        _deepEquals(doubleValue, other.doubleValue);
   }
 
   @override
@@ -351,24 +343,19 @@ class MetadataTagMessage {
 
 /// Wire PNG text chunk. / PNG 文本块传输结构。
 class PngTextChunkMessage {
-  PngTextChunkMessage({
-    required this.key,
-    required this.value,
-  });
+  PngTextChunkMessage({required this.key, required this.value});
 
   String key;
 
   String value;
 
   List<Object?> _toList() {
-    return <Object?>[
-      key,
-      value,
-    ];
+    return <Object?>[key, value];
   }
 
   Object encode() {
-    return _toList();  }
+    return _toList();
+  }
 
   static PngTextChunkMessage decode(Object result) {
     result as List<Object?>;
@@ -460,7 +447,8 @@ class ImageMetadataMessage {
   }
 
   Object encode() {
-    return _toList();  }
+    return _toList();
+  }
 
   static ImageMetadataMessage decode(Object result) {
     result as List<Object?>;
@@ -489,7 +477,18 @@ class ImageMetadataMessage {
     if (identical(this, other)) {
       return true;
     }
-    return _deepEquals(make, other.make) && _deepEquals(model, other.model) && _deepEquals(software, other.software) && _deepEquals(size, other.size) && _deepEquals(orientation, other.orientation) && _deepEquals(dateTimeOriginal, other.dateTimeOriginal) && _deepEquals(dateTimeDigitized, other.dateTimeDigitized) && _deepEquals(dateTimeModified, other.dateTimeModified) && _deepEquals(gps, other.gps) && _deepEquals(hasMotionPhoto, other.hasMotionPhoto) && _deepEquals(pngText, other.pngText) && _deepEquals(extraTags, other.extraTags);
+    return _deepEquals(make, other.make) &&
+        _deepEquals(model, other.model) &&
+        _deepEquals(software, other.software) &&
+        _deepEquals(size, other.size) &&
+        _deepEquals(orientation, other.orientation) &&
+        _deepEquals(dateTimeOriginal, other.dateTimeOriginal) &&
+        _deepEquals(dateTimeDigitized, other.dateTimeDigitized) &&
+        _deepEquals(dateTimeModified, other.dateTimeModified) &&
+        _deepEquals(gps, other.gps) &&
+        _deepEquals(hasMotionPhoto, other.hasMotionPhoto) &&
+        _deepEquals(pngText, other.pngText) &&
+        _deepEquals(extraTags, other.extraTags);
   }
 
   @override
@@ -545,7 +544,8 @@ class VideoMetadataMessage {
   }
 
   Object encode() {
-    return _toList();  }
+    return _toList();
+  }
 
   static VideoMetadataMessage decode(Object result) {
     result as List<Object?>;
@@ -570,7 +570,14 @@ class VideoMetadataMessage {
     if (identical(this, other)) {
       return true;
     }
-    return _deepEquals(durationMs, other.durationMs) && _deepEquals(size, other.size) && _deepEquals(bitrate, other.bitrate) && _deepEquals(rotationDegrees, other.rotationDegrees) && _deepEquals(make, other.make) && _deepEquals(model, other.model) && _deepEquals(gps, other.gps) && _deepEquals(extraTags, other.extraTags);
+    return _deepEquals(durationMs, other.durationMs) &&
+        _deepEquals(size, other.size) &&
+        _deepEquals(bitrate, other.bitrate) &&
+        _deepEquals(rotationDegrees, other.rotationDegrees) &&
+        _deepEquals(make, other.make) &&
+        _deepEquals(model, other.model) &&
+        _deepEquals(gps, other.gps) &&
+        _deepEquals(extraTags, other.extraTags);
   }
 
   @override
@@ -626,7 +633,8 @@ class AudioMetadataMessage {
   }
 
   Object encode() {
-    return _toList();  }
+    return _toList();
+  }
 
   static AudioMetadataMessage decode(Object result) {
     result as List<Object?>;
@@ -651,7 +659,14 @@ class AudioMetadataMessage {
     if (identical(this, other)) {
       return true;
     }
-    return _deepEquals(durationMs, other.durationMs) && _deepEquals(bitrate, other.bitrate) && _deepEquals(sampleRate, other.sampleRate) && _deepEquals(channelCount, other.channelCount) && _deepEquals(make, other.make) && _deepEquals(model, other.model) && _deepEquals(gps, other.gps) && _deepEquals(extraTags, other.extraTags);
+    return _deepEquals(durationMs, other.durationMs) &&
+        _deepEquals(bitrate, other.bitrate) &&
+        _deepEquals(sampleRate, other.sampleRate) &&
+        _deepEquals(channelCount, other.channelCount) &&
+        _deepEquals(make, other.make) &&
+        _deepEquals(model, other.model) &&
+        _deepEquals(gps, other.gps) &&
+        _deepEquals(extraTags, other.extraTags);
   }
 
   @override
@@ -682,16 +697,12 @@ class MediaMetadataMessage {
   AudioMetadataMessage? audio;
 
   List<Object?> _toList() {
-    return <Object?>[
-      kind,
-      image,
-      video,
-      audio,
-    ];
+    return <Object?>[kind, image, video, audio];
   }
 
   Object encode() {
-    return _toList();  }
+    return _toList();
+  }
 
   static MediaMetadataMessage decode(Object result) {
     result as List<Object?>;
@@ -712,7 +723,10 @@ class MediaMetadataMessage {
     if (identical(this, other)) {
       return true;
     }
-    return _deepEquals(kind, other.kind) && _deepEquals(image, other.image) && _deepEquals(video, other.video) && _deepEquals(audio, other.audio);
+    return _deepEquals(kind, other.kind) &&
+        _deepEquals(image, other.image) &&
+        _deepEquals(video, other.video) &&
+        _deepEquals(audio, other.audio);
   }
 
   @override
@@ -725,7 +739,6 @@ class MediaMetadataMessage {
   }
 }
 
-
 class _PigeonCodec extends StandardMessageCodec {
   const _PigeonCodec();
   @override
@@ -733,37 +746,37 @@ class _PigeonCodec extends StandardMessageCodec {
     if (value is int) {
       buffer.putUint8(4);
       buffer.putInt64(value);
-    }    else if (value is SourceKindMessage) {
+    } else if (value is SourceKindMessage) {
       buffer.putUint8(129);
       writeValue(buffer, value.index);
-    }    else if (value is MediaKindMessage) {
+    } else if (value is MediaKindMessage) {
       buffer.putUint8(130);
       writeValue(buffer, value.index);
-    }    else if (value is MediaSourceMessage) {
+    } else if (value is MediaSourceMessage) {
       buffer.putUint8(131);
       writeValue(buffer, value.encode());
-    }    else if (value is PixelSizeMessage) {
+    } else if (value is PixelSizeMessage) {
       buffer.putUint8(132);
       writeValue(buffer, value.encode());
-    }    else if (value is GpsLocationMessage) {
+    } else if (value is GpsLocationMessage) {
       buffer.putUint8(133);
       writeValue(buffer, value.encode());
-    }    else if (value is MetadataTagMessage) {
+    } else if (value is MetadataTagMessage) {
       buffer.putUint8(134);
       writeValue(buffer, value.encode());
-    }    else if (value is PngTextChunkMessage) {
+    } else if (value is PngTextChunkMessage) {
       buffer.putUint8(135);
       writeValue(buffer, value.encode());
-    }    else if (value is ImageMetadataMessage) {
+    } else if (value is ImageMetadataMessage) {
       buffer.putUint8(136);
       writeValue(buffer, value.encode());
-    }    else if (value is VideoMetadataMessage) {
+    } else if (value is VideoMetadataMessage) {
       buffer.putUint8(137);
       writeValue(buffer, value.encode());
-    }    else if (value is AudioMetadataMessage) {
+    } else if (value is AudioMetadataMessage) {
       buffer.putUint8(138);
       writeValue(buffer, value.encode());
-    }    else if (value is MediaMetadataMessage) {
+    } else if (value is MediaMetadataMessage) {
       buffer.putUint8(139);
       writeValue(buffer, value.encode());
     } else {
@@ -810,9 +823,13 @@ class MediaInfoHostApi {
   /// Constructor for [MediaInfoHostApi]. The [binaryMessenger] named argument is
   /// available for dependency injection. If it is left null, the default
   /// BinaryMessenger will be used which routes to the host platform.
-  MediaInfoHostApi({BinaryMessenger? binaryMessenger, String messageChannelSuffix = ''})
-      : pigeonVar_binaryMessenger = binaryMessenger,
-        pigeonVar_messageChannelSuffix = messageChannelSuffix.isNotEmpty ? '.$messageChannelSuffix' : '';
+  MediaInfoHostApi({
+    BinaryMessenger? binaryMessenger,
+    String messageChannelSuffix = '',
+  }) : pigeonVar_binaryMessenger = binaryMessenger,
+       pigeonVar_messageChannelSuffix = messageChannelSuffix.isNotEmpty
+           ? '.$messageChannelSuffix'
+           : '';
   final BinaryMessenger? pigeonVar_binaryMessenger;
 
   static const MessageCodec<Object?> pigeonChannelCodec = _PigeonCodec();
@@ -821,101 +838,113 @@ class MediaInfoHostApi {
 
   /// Auto-detect and read in one I/O. / 一次 I/O 自动识别并读取。
   Future<MediaMetadataMessage> read(MediaSourceMessage source) async {
-    final pigeonVar_channelName = 'dev.flutter.pigeon.xue_hua_media_info_platform_interface.MediaInfoHostApi.read$pigeonVar_messageChannelSuffix';
+    final pigeonVar_channelName =
+        'dev.flutter.pigeon.xue_hua_media_info_platform_interface.MediaInfoHostApi.read$pigeonVar_messageChannelSuffix';
     final pigeonVar_channel = BasicMessageChannel<Object?>(
       pigeonVar_channelName,
       pigeonChannelCodec,
       binaryMessenger: pigeonVar_binaryMessenger,
     );
-    final Future<Object?> pigeonVar_sendFuture = pigeonVar_channel.send(<Object?>[source]);
+    final Future<Object?> pigeonVar_sendFuture = pigeonVar_channel.send(
+      <Object?>[source],
+    );
     final pigeonVar_replyList = await pigeonVar_sendFuture as List<Object?>?;
 
     final Object? pigeonVar_replyValue = _extractReplyValueOrThrow(
-        pigeonVar_replyList,
-        pigeonVar_channelName,
-        isNullValid: false,
-    )
-    ;
+      pigeonVar_replyList,
+      pigeonVar_channelName,
+      isNullValid: false,
+    );
     return pigeonVar_replyValue! as MediaMetadataMessage;
   }
 
   /// Read still-image metadata. / 读取静态图片元数据。
   Future<ImageMetadataMessage> readImage(MediaSourceMessage source) async {
-    final pigeonVar_channelName = 'dev.flutter.pigeon.xue_hua_media_info_platform_interface.MediaInfoHostApi.readImage$pigeonVar_messageChannelSuffix';
+    final pigeonVar_channelName =
+        'dev.flutter.pigeon.xue_hua_media_info_platform_interface.MediaInfoHostApi.readImage$pigeonVar_messageChannelSuffix';
     final pigeonVar_channel = BasicMessageChannel<Object?>(
       pigeonVar_channelName,
       pigeonChannelCodec,
       binaryMessenger: pigeonVar_binaryMessenger,
     );
-    final Future<Object?> pigeonVar_sendFuture = pigeonVar_channel.send(<Object?>[source]);
+    final Future<Object?> pigeonVar_sendFuture = pigeonVar_channel.send(
+      <Object?>[source],
+    );
     final pigeonVar_replyList = await pigeonVar_sendFuture as List<Object?>?;
 
     final Object? pigeonVar_replyValue = _extractReplyValueOrThrow(
-        pigeonVar_replyList,
-        pigeonVar_channelName,
-        isNullValid: false,
-    )
-    ;
+      pigeonVar_replyList,
+      pigeonVar_channelName,
+      isNullValid: false,
+    );
     return pigeonVar_replyValue! as ImageMetadataMessage;
   }
 
   /// Read a video or audio-only container. / 读取视频或纯音频容器。
   Future<MediaMetadataMessage> readAv(MediaSourceMessage source) async {
-    final pigeonVar_channelName = 'dev.flutter.pigeon.xue_hua_media_info_platform_interface.MediaInfoHostApi.readAv$pigeonVar_messageChannelSuffix';
+    final pigeonVar_channelName =
+        'dev.flutter.pigeon.xue_hua_media_info_platform_interface.MediaInfoHostApi.readAv$pigeonVar_messageChannelSuffix';
     final pigeonVar_channel = BasicMessageChannel<Object?>(
       pigeonVar_channelName,
       pigeonChannelCodec,
       binaryMessenger: pigeonVar_binaryMessenger,
     );
-    final Future<Object?> pigeonVar_sendFuture = pigeonVar_channel.send(<Object?>[source]);
+    final Future<Object?> pigeonVar_sendFuture = pigeonVar_channel.send(
+      <Object?>[source],
+    );
     final pigeonVar_replyList = await pigeonVar_sendFuture as List<Object?>?;
 
     final Object? pigeonVar_replyValue = _extractReplyValueOrThrow(
-        pigeonVar_replyList,
-        pigeonVar_channelName,
-        isNullValid: false,
-    )
-    ;
+      pigeonVar_replyList,
+      pigeonVar_channelName,
+      isNullValid: false,
+    );
     return pigeonVar_replyValue! as MediaMetadataMessage;
   }
 
   /// Header-only kind detection. / 仅检查文件头。
   Future<MediaKindMessage> probe(MediaSourceMessage source) async {
-    final pigeonVar_channelName = 'dev.flutter.pigeon.xue_hua_media_info_platform_interface.MediaInfoHostApi.probe$pigeonVar_messageChannelSuffix';
+    final pigeonVar_channelName =
+        'dev.flutter.pigeon.xue_hua_media_info_platform_interface.MediaInfoHostApi.probe$pigeonVar_messageChannelSuffix';
     final pigeonVar_channel = BasicMessageChannel<Object?>(
       pigeonVar_channelName,
       pigeonChannelCodec,
       binaryMessenger: pigeonVar_binaryMessenger,
     );
-    final Future<Object?> pigeonVar_sendFuture = pigeonVar_channel.send(<Object?>[source]);
+    final Future<Object?> pigeonVar_sendFuture = pigeonVar_channel.send(
+      <Object?>[source],
+    );
     final pigeonVar_replyList = await pigeonVar_sendFuture as List<Object?>?;
 
     final Object? pigeonVar_replyValue = _extractReplyValueOrThrow(
-        pigeonVar_replyList,
-        pigeonVar_channelName,
-        isNullValid: false,
-    )
-    ;
+      pigeonVar_replyList,
+      pigeonVar_channelName,
+      isNullValid: false,
+    );
     return pigeonVar_replyValue! as MediaKindMessage;
   }
 
   /// Extract Motion Photo embedded MP4 metadata. / 提取动态照片内嵌 MP4。
-  Future<VideoMetadataMessage> readMotionPhoto(MediaSourceMessage source) async {
-    final pigeonVar_channelName = 'dev.flutter.pigeon.xue_hua_media_info_platform_interface.MediaInfoHostApi.readMotionPhoto$pigeonVar_messageChannelSuffix';
+  Future<VideoMetadataMessage> readMotionPhoto(
+    MediaSourceMessage source,
+  ) async {
+    final pigeonVar_channelName =
+        'dev.flutter.pigeon.xue_hua_media_info_platform_interface.MediaInfoHostApi.readMotionPhoto$pigeonVar_messageChannelSuffix';
     final pigeonVar_channel = BasicMessageChannel<Object?>(
       pigeonVar_channelName,
       pigeonChannelCodec,
       binaryMessenger: pigeonVar_binaryMessenger,
     );
-    final Future<Object?> pigeonVar_sendFuture = pigeonVar_channel.send(<Object?>[source]);
+    final Future<Object?> pigeonVar_sendFuture = pigeonVar_channel.send(
+      <Object?>[source],
+    );
     final pigeonVar_replyList = await pigeonVar_sendFuture as List<Object?>?;
 
     final Object? pigeonVar_replyValue = _extractReplyValueOrThrow(
-        pigeonVar_replyList,
-        pigeonVar_channelName,
-        isNullValid: false,
-    )
-    ;
+      pigeonVar_replyList,
+      pigeonVar_channelName,
+      isNullValid: false,
+    );
     return pigeonVar_replyValue! as VideoMetadataMessage;
   }
 }

@@ -33,6 +33,13 @@ MediaKind sniffMediaKind(Uint8List prefix, {String? uri}) {
   if (prefix.length >= 4 &&
       ((prefix[0] == 0x49 && prefix[1] == 0x49) ||
           (prefix[0] == 0x4D && prefix[1] == 0x4D))) {
+    final ascii = String.fromCharCodes(prefix);
+    if (ascii.contains('IIQ') || ascii.contains('Phase One')) {
+      throw const MediaInfoError(
+        code: MediaInfoError.codeUnsupportedFormat,
+        message: 'Phase One IIQ is not supported.',
+      );
+    }
     throw const MediaInfoError(
       code: MediaInfoError.codeUnsupportedFormat,
       message: 'TIFF is not supported on this platform.',
@@ -115,25 +122,61 @@ AvMetadata parseAvBytes(Uint8List data) {
 /// Offset of an embedded Motion Photo MP4, if present.
 /// 动态照片内嵌 MP4 的起始偏移（若有）。
 int? motionPhotoOffset(Uint8List data) {
-  final latin = String.fromCharCodes(data);
-  final micro =
-      RegExp(r'GCamera:MicroVideoOffset\s*=\s*"(\d+)"').firstMatch(latin) ??
-      RegExp(r'MicroVideoOffset>\s*(\d+)').firstMatch(latin);
-  if (micro != null) {
-    final fromEnd = int.tryParse(micro.group(1)!);
-    if (fromEnd == null) {
-      return null;
-    }
-    final start = data.length - fromEnd;
-    if (start > 0 && start < data.length) {
-      return start;
-    }
+  final xmp = _extractXmp(data);
+  if (xmp == null) {
+    return null;
   }
-  final ftyp = latin.lastIndexOf('ftyp');
-  if (ftyp >= 4) {
-    return ftyp - 4;
+  final micro =
+      RegExp(r'GCamera:MicroVideoOffset\s*=\s*"(\d+)"').firstMatch(xmp) ??
+      RegExp(r'MicroVideoOffset>\s*(\d+)').firstMatch(xmp);
+  if (micro != null) {
+    return _offsetFromEnd(data.length, int.tryParse(micro.group(1)!));
+  }
+  if (!xmp.contains('MotionPhoto') && !xmp.contains('MicroVideo')) {
+    return null;
+  }
+  final matches = RegExp(r'Item:Length(?:="|>)\s*(\d+)').allMatches(xmp);
+  if (matches.isNotEmpty) {
+    return _offsetFromEnd(data.length, int.tryParse(matches.last.group(1)!));
   }
   return null;
+}
+
+String? _extractXmp(Uint8List data) {
+  final start = _indexOfAscii(data, '<x:xmpmeta', 0);
+  if (start < 0) {
+    return null;
+  }
+  final end = _indexOfAscii(data, '</x:xmpmeta>', start);
+  if (end < 0) {
+    return null;
+  }
+  return String.fromCharCodes(data.sublist(start, end + 12));
+}
+
+int? _offsetFromEnd(int length, int? fromEnd) {
+  if (fromEnd == null) {
+    return null;
+  }
+  final start = length - fromEnd;
+  if (start > 0 && start < length) {
+    return start;
+  }
+  return null;
+}
+
+int _indexOfAscii(Uint8List data, String needle, int from) {
+  final bytes = needle.codeUnits;
+  outer:
+  for (var i = from; i + bytes.length <= data.length; i++) {
+    for (var j = 0; j < bytes.length; j++) {
+      if (data[i + j] != bytes[j]) {
+        continue outer;
+      }
+    }
+    return i;
+  }
+  return -1;
 }
 
 ImageMetadata _parsePng(Uint8List data) {
@@ -426,11 +469,16 @@ class _TiffEntry {
 AvMetadata? _parseMp4(Uint8List data) {
   var hasVideo = false;
   var hasAudio = false;
+  var sawMoov = false;
   int? durationMs;
   PixelSize? size;
   int? timescale;
+  int? rotation;
+  String? make;
+  String? model;
+  GpsLocation? gps;
 
-  void walk(int start, int end) {
+  void walk(int start, int end, {int? parentFourcc}) {
     var offset = start;
     while (offset + 8 <= end) {
       var boxSize = _be32(data, offset);
@@ -444,12 +492,22 @@ AvMetadata? _parseMp4(Uint8List data) {
       final header = boxSize == 1 ? 16 : 8;
       final payloadStart = offset + header;
       final payloadEnd = offset + boxSize;
-      if (type == 'moov' ||
-          type == 'trak' ||
+      final typeCode = _be32(data, offset + 4);
+      if (parentFourcc == 0x696C7374) {
+        // ilst children are keyed boxes; pass the key to nested `data` boxes.
+        walk(payloadStart, payloadEnd, parentFourcc: typeCode);
+      } else if (type == 'moov') {
+        sawMoov = true;
+        walk(payloadStart, payloadEnd);
+      } else if (type == 'trak' ||
           type == 'mdia' ||
           type == 'minf' ||
-          type == 'stbl') {
-        walk(payloadStart, payloadEnd);
+          type == 'stbl' ||
+          type == 'udta' ||
+          type == 'ilst') {
+        walk(payloadStart, payloadEnd, parentFourcc: typeCode);
+      } else if (type == 'meta') {
+        walk(payloadStart + 4, payloadEnd);
       } else if (type == 'mvhd' && payloadEnd - payloadStart >= 20) {
         final version = data[payloadStart];
         if (version == 1 && payloadEnd - payloadStart >= 32) {
@@ -469,12 +527,22 @@ AvMetadata? _parseMp4(Uint8List data) {
         }
       } else if (type == 'tkhd' && payloadEnd - payloadStart >= 84) {
         final version = data[payloadStart];
+        final matrixOff = version == 1 ? 52 : 40;
         final dimOffset = version == 1 ? 88 : 76;
         if (payloadStart + dimOffset + 8 <= payloadEnd) {
           final width = _be32(data, payloadStart + dimOffset) >> 16;
           final height = _be32(data, payloadStart + dimOffset + 4) >> 16;
           if (width > 0 && height > 0) {
-            size = PixelSize(width: width, height: height);
+            final a = _be32Signed(data, payloadStart + matrixOff);
+            final b = _be32Signed(data, payloadStart + matrixOff + 4);
+            rotation = _rotationFromMatrix(a, b);
+            var displayWidth = width;
+            var displayHeight = height;
+            if (rotation == 90 || rotation == 270) {
+              displayWidth = height;
+              displayHeight = width;
+            }
+            size = PixelSize(width: displayWidth, height: displayHeight);
           }
         }
       } else if (type == 'hdlr' && payloadEnd - payloadStart >= 12) {
@@ -486,24 +554,121 @@ AvMetadata? _parseMp4(Uint8List data) {
         } else if (component == 'soun') {
           hasAudio = true;
         }
+      } else if (type == 'data' &&
+          payloadEnd - payloadStart >= 8 &&
+          parentFourcc != null &&
+          (parentFourcc == 0xA96D616B ||
+              parentFourcc == 0xA96D6F64 ||
+              parentFourcc == 0xA978797A)) {
+        final format = data[payloadStart + 3];
+        if (format == 1 || format == 0) {
+          final text = String.fromCharCodes(
+            data.sublist(payloadStart + 8, payloadEnd),
+          ).replaceAll('\x00', '');
+          final key = parentFourcc;
+          _assignQuickTimeKey(key, text, (m, mo, g) {
+            make ??= m;
+            model ??= mo;
+            gps ??= g;
+          });
+        }
+      } else if (type.codeUnits.isNotEmpty &&
+          type.codeUnits.first == 0xA9 &&
+          payloadEnd > payloadStart) {
+        final skip = payloadEnd - payloadStart >= 4 ? 4 : 0;
+        final text = String.fromCharCodes(
+          data.sublist(payloadStart + skip, payloadEnd),
+        ).replaceAll('\x00', '');
+        _assignQuickTimeKey(_be32(data, offset + 4), text, (m, mo, g) {
+          make ??= m;
+          model ??= mo;
+          gps ??= g;
+        });
       }
       offset += boxSize;
     }
   }
 
   walk(0, data.length);
-  if (!hasVideo && !hasAudio && durationMs == null) {
+  if (!sawMoov) {
     return null;
+  }
+  if (!hasVideo && !hasAudio) {
+    throw const MediaInfoError(
+      code: MediaInfoError.codeTrackNotFound,
+      message: 'No video or audio track.',
+    );
   }
   if (hasVideo) {
     return VideoMetadata(
       duration: durationMs == null ? null : Duration(milliseconds: durationMs!),
       size: size,
+      rotationDegrees: rotation,
+      make: make,
+      model: model,
+      gps: gps,
     );
   }
   return AudioMetadata(
     duration: durationMs == null ? null : Duration(milliseconds: durationMs!),
+    make: make,
+    model: model,
+    gps: gps,
   );
+}
+
+void _assignQuickTimeKey(
+  int fourcc,
+  String text,
+  void Function(String? make, String? model, GpsLocation? gps) assign,
+) {
+  const mak = 0xA96D616B;
+  const mod = 0xA96D6F64;
+  const xyz = 0xA978797A;
+  switch (fourcc) {
+    case mak:
+      assign(text, null, null);
+    case mod:
+      assign(null, text, null);
+    case xyz:
+      assign(null, null, _parseIso6709(text));
+  }
+}
+
+GpsLocation? _parseIso6709(String raw) {
+  final match = RegExp(
+    r'([+-]\d+\.?\d*)([+-]\d+\.?\d*)([+-]\d+\.?\d*)?/?',
+  ).firstMatch(raw);
+  if (match == null) {
+    return null;
+  }
+  final lat = double.tryParse(match.group(1)!);
+  final lng = double.tryParse(match.group(2)!);
+  if (lat == null || lng == null) {
+    return null;
+  }
+  final alt = match.group(3) == null ? null : double.tryParse(match.group(3)!);
+  return GpsLocation(latitude: lat, longitude: lng, altitudeMeters: alt);
+}
+
+int _rotationFromMatrix(int a, int b) {
+  final angle = atan2(b / 65536.0, a / 65536.0) * 180 / pi;
+  final deg = ((angle.round() % 360) + 360) % 360;
+  if (deg >= 45 && deg < 135) {
+    return 90;
+  }
+  if (deg >= 135 && deg < 225) {
+    return 180;
+  }
+  if (deg >= 225 && deg < 315) {
+    return 270;
+  }
+  return 0;
+}
+
+int _be32Signed(Uint8List data, int offset) {
+  final value = _be32(data, offset);
+  return value > 0x7FFFFFFF ? value - 0x100000000 : value;
 }
 
 int _be32(Uint8List data, int offset) {

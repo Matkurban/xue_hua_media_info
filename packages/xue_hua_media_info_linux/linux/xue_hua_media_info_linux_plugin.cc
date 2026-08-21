@@ -4,7 +4,9 @@
 #include <gst/gst.h>
 #include <gst/pbutils/pbutils.h>
 
+#include <algorithm>
 #include <cctype>
+#include <cstdlib>
 #include <cstring>
 #include <fstream>
 #include <iterator>
@@ -87,30 +89,69 @@ int32_t FindAscii(const std::vector<uint8_t>& data, const char* needle,
   return -1;
 }
 
-std::optional<int64_t> MotionPhotoOffset(const std::vector<uint8_t>& data) {
-  std::string latin(data.begin(), data.end());
-  const auto pos = latin.find("GCamera:MicroVideoOffset");
-  if (pos != std::string::npos) {
-    const auto quote = latin.find('"', pos);
-    if (quote != std::string::npos) {
-      const auto end = latin.find('"', quote + 1);
-      if (end != std::string::npos) {
-        try {
-          const int from_end = std::stoi(latin.substr(quote + 1, end - quote - 1));
-          const int64_t start = static_cast<int64_t>(data.size()) - from_end;
-          if (start > 0 && start < static_cast<int64_t>(data.size())) {
-            return start;
-          }
-        } catch (...) {
-        }
-      }
-    }
+std::optional<int64_t> OffsetFromXmpLength(const std::string& xmp, size_t data_size,
+                                           const char* pattern) {
+  const auto pos = xmp.find(pattern);
+  if (pos == std::string::npos) {
+    return std::nullopt;
   }
-  const int32_t ftyp = FindAscii(data, "ftyp", 2);
-  if (ftyp >= 4) {
-    return ftyp - 4;
+  size_t i = pos + strlen(pattern);
+  while (i < xmp.size() && (xmp[i] == '"' || xmp[i] == '>' || xmp[i] == '=' ||
+                            xmp[i] == ' ' || xmp[i] == '\t')) {
+    ++i;
+  }
+  size_t start = i;
+  while (i < xmp.size() && xmp[i] >= '0' && xmp[i] <= '9') {
+    ++i;
+  }
+  if (i == start) {
+    return std::nullopt;
+  }
+  try {
+    const int from_end = std::stoi(xmp.substr(start, i - start));
+    const int64_t off = static_cast<int64_t>(data_size) - from_end;
+    if (off > 0 && off < static_cast<int64_t>(data_size)) {
+      return off;
+    }
+  } catch (...) {
   }
   return std::nullopt;
+}
+
+std::optional<int64_t> MotionPhotoOffset(const std::vector<uint8_t>& data) {
+  const int32_t xmp_start = FindAscii(data, "<x:xmpmeta", 0);
+  if (xmp_start < 0) {
+    return std::nullopt;
+  }
+  const int32_t xmp_end = FindAscii(data, "</x:xmpmeta>", static_cast<size_t>(xmp_start));
+  if (xmp_end < 0) {
+    return std::nullopt;
+  }
+  const std::string xmp(data.begin() + xmp_start,
+                        data.begin() + xmp_end + static_cast<int32_t>(strlen("</x:xmpmeta>")));
+  if (auto off = OffsetFromXmpLength(xmp, data.size(), "GCamera:MicroVideoOffset")) {
+    return off;
+  }
+  if (auto off = OffsetFromXmpLength(xmp, data.size(), "MicroVideoOffset")) {
+    return off;
+  }
+  const bool is_motion =
+      xmp.find("MotionPhoto") != std::string::npos ||
+      xmp.find("MicroVideo") != std::string::npos;
+  if (!is_motion) {
+    return std::nullopt;
+  }
+  std::optional<int64_t> last;
+  size_t search = 0;
+  while (true) {
+    const auto pos = xmp.find("Item:Length", search);
+    if (pos == std::string::npos) {
+      break;
+    }
+    last = OffsetFromXmpLength(xmp.substr(pos), data.size(), "Item:Length");
+    search = pos + 11;
+  }
+  return last;
 }
 
 void ParsePng(const std::vector<uint8_t>& data, ImageFields* out) {
@@ -303,6 +344,34 @@ void ParseJpegExif(const std::vector<uint8_t>& data, ImageFields* out) {
           if (lng_ref && *lng_ref == "W") *lng = -*lng;
           out->lat = lat;
           out->lng = lng;
+          auto rational1 = [&](uint16_t tag) -> std::optional<double> {
+            const auto it = gps.find(tag);
+            if (it == gps.end()) {
+              return std::nullopt;
+            }
+            size_t n = 0;
+            const uint8_t* p =
+                EntryPayload(tiff, tiff_size, it->second, little, &n);
+            if (!p || n < 8) {
+              return std::nullopt;
+            }
+            const uint32_t num = U32(p, little);
+            const uint32_t den = U32(p + 4, little);
+            return den == 0 ? 0.0 : double(num) / double(den);
+          };
+          auto alt = rational1(0x0006);
+          if (alt) {
+            const auto ref = gps.find(0x0005);
+            if (ref != gps.end()) {
+              size_t n = 0;
+              const uint8_t* p =
+                  EntryPayload(tiff, tiff_size, ref->second, little, &n);
+              if (p && n >= 1 && p[0] == 1) {
+                *alt = -*alt;
+              }
+            }
+            out->alt = alt;
+          }
         }
       }
     }
@@ -332,6 +401,9 @@ XhmiMessagesMediaKindMessage Sniff(const std::vector<uint8_t>& prefix,
   if (prefix.size() >= 4 &&
       ((prefix[0] == 0x49 && prefix[1] == 0x49) ||
        (prefix[0] == 0x4D && prefix[1] == 0x4D))) {
+    if (FindAscii(prefix, "IIQ", 0) >= 0) {
+      Fail("unsupportedFormat", "Phase One IIQ is not supported.");
+    }
     Fail("unsupportedFormat", "TIFF is not supported on Linux.");
   }
   if (prefix.size() >= 12 && memcmp(prefix.data() + 4, "ftyp", 4) == 0) {
@@ -357,6 +429,8 @@ XhmiMessagesMediaKindMessage Sniff(const std::vector<uint8_t>& prefix,
   return XUE_HUA_MEDIA_INFO_PLATFORM_INTERFACE_MEDIA_KIND_MESSAGE_VIDEO;
 }
 
+constexpr size_t kHeaderBytes = 256;
+
 std::vector<uint8_t> ReadPath(const std::string& path) {
   std::ifstream in(path, std::ios::binary);
   if (!in) {
@@ -366,12 +440,56 @@ std::vector<uint8_t> ReadPath(const std::string& path) {
                               std::istreambuf_iterator<char>());
 }
 
+std::vector<uint8_t> ReadPathPrefix(const std::string& path, size_t count) {
+  std::ifstream in(path, std::ios::binary);
+  if (!in) {
+    Fail("notFound", "File not found: " + path);
+  }
+  std::vector<uint8_t> buffer(count);
+  in.read(reinterpret_cast<char*>(buffer.data()),
+          static_cast<std::streamsize>(count));
+  buffer.resize(static_cast<size_t>(std::max<std::streamsize>(0, in.gcount())));
+  return buffer;
+}
+
 std::string AssetPath(const char* key) {
   g_autofree gchar* exe_path = g_file_read_link("/proc/self/exe", nullptr);
   g_autofree gchar* dir = g_path_get_dirname(exe_path != nullptr ? exe_path : ".");
   g_autofree gchar* asset =
       g_build_filename(dir, "data", "flutter_assets", key, nullptr);
   return asset;
+}
+
+std::vector<uint8_t> LoadPrefix(XhmiMessagesMediaSourceMessage* source,
+                                size_t count) {
+  switch (xhmi_messages_media_source_message_get_kind(source)) {
+    case XUE_HUA_MEDIA_INFO_PLATFORM_INTERFACE_SOURCE_KIND_MESSAGE_FILE: {
+      const gchar* uri = xhmi_messages_media_source_message_get_uri(source);
+      if (uri == nullptr) {
+        Fail("notFound", "Missing path.");
+      }
+      return ReadPathPrefix(uri, count);
+    }
+    case XUE_HUA_MEDIA_INFO_PLATFORM_INTERFACE_SOURCE_KIND_MESSAGE_BYTES: {
+      size_t length = 0;
+      const uint8_t* bytes =
+          xhmi_messages_media_source_message_get_bytes(source, &length);
+      if (bytes == nullptr) {
+        Fail("notFound", "Missing byte payload.");
+      }
+      const size_t n = std::min(count, length);
+      return std::vector<uint8_t>(bytes, bytes + n);
+    }
+    case XUE_HUA_MEDIA_INFO_PLATFORM_INTERFACE_SOURCE_KIND_MESSAGE_ASSET: {
+      const gchar* uri = xhmi_messages_media_source_message_get_uri(source);
+      if (uri == nullptr) {
+        Fail("notFound", "Missing asset key.");
+      }
+      return ReadPathPrefix(AssetPath(uri), count);
+    }
+  }
+  Fail("unsupported", "Unknown source kind.");
+  return {};
 }
 
 std::vector<uint8_t> LoadBytes(XhmiMessagesMediaSourceMessage* source) {
@@ -540,12 +658,36 @@ XhmiMessagesMediaMetadataMessage* DiscoverAv(const std::string& path) {
 
   GList* videos = gst_discoverer_info_get_video_streams(info);
   GList* audios = gst_discoverer_info_get_audio_streams(info);
+  if (videos == nullptr && audios == nullptr) {
+    g_free(make);
+    g_free(model);
+    Fail("trackNotFound", "No video or audio track.");
+  }
   g_autoptr(FlValue) extra = fl_value_new_list();
   XhmiMessagesMediaMetadataMessage* message = nullptr;
   if (videos != nullptr) {
     auto* video_info = GST_DISCOVERER_VIDEO_INFO(videos->data);
-    const int64_t width = gst_discoverer_video_info_get_width(video_info);
-    const int64_t height = gst_discoverer_video_info_get_height(video_info);
+    int64_t width = gst_discoverer_video_info_get_width(video_info);
+    int64_t height = gst_discoverer_video_info_get_height(video_info);
+    int64_t rotation = 0;
+    int64_t* rotation_ptr = nullptr;
+    if (tags != nullptr) {
+      gchar* orientation = nullptr;
+      if (gst_tag_list_get_string(tags, GST_TAG_IMAGE_ORIENTATION, &orientation) &&
+          orientation != nullptr) {
+        if (g_str_has_prefix(orientation, "rotate-")) {
+          rotation = atoi(orientation + 7);
+          rotation = ((rotation % 360) + 360) % 360;
+          rotation_ptr = &rotation;
+          if (rotation == 90 || rotation == 270) {
+            const int64_t tmp = width;
+            width = height;
+            height = tmp;
+          }
+        }
+        g_free(orientation);
+      }
+    }
     g_autoptr(XhmiMessagesPixelSizeMessage) size = nullptr;
     if (width > 0 && height > 0) {
       size = xhmi_messages_pixel_size_message_new(width, height);
@@ -555,7 +697,7 @@ XhmiMessagesMediaMetadataMessage* DiscoverAv(const std::string& path) {
     int64_t* bitrate_ptr = bitrate > 0 ? &bitrate64 : nullptr;
     g_autoptr(XhmiMessagesVideoMetadataMessage) video =
         xhmi_messages_video_metadata_message_new(
-            duration_ptr, size, bitrate_ptr, nullptr, make, model, gps, extra);
+            duration_ptr, size, bitrate_ptr, rotation_ptr, make, model, gps, extra);
     message = xhmi_messages_media_metadata_message_new(
         XUE_HUA_MEDIA_INFO_PLATFORM_INTERFACE_MEDIA_KIND_MESSAGE_VIDEO, nullptr,
         video, nullptr);
@@ -610,11 +752,12 @@ void HandleRead(XhmiMessagesMediaSourceMessage* source,
   Guard(
       handle,
       [&] {
-        const auto data = LoadBytes(source);
+        const auto prefix = LoadPrefix(source, kHeaderBytes);
         const auto kind =
-            Sniff(data, xhmi_messages_media_source_message_get_uri(source));
+            Sniff(prefix, xhmi_messages_media_source_message_get_uri(source));
         if (kind ==
             XUE_HUA_MEDIA_INFO_PLATFORM_INTERFACE_MEDIA_KIND_MESSAGE_IMAGE) {
+          const auto data = LoadBytes(source);
           g_autoptr(XhmiMessagesImageMetadataMessage) image = BuildImage(data);
           g_autoptr(XhmiMessagesMediaMetadataMessage) message =
               xhmi_messages_media_metadata_message_new(kind, image, nullptr,
@@ -623,7 +766,12 @@ void HandleRead(XhmiMessagesMediaSourceMessage* source,
           return;
         }
         bool temp = false;
-        const std::string path = SourceFilePath(source, data, &temp);
+        std::vector<uint8_t> payload;
+        if (xhmi_messages_media_source_message_get_kind(source) ==
+            XUE_HUA_MEDIA_INFO_PLATFORM_INTERFACE_SOURCE_KIND_MESSAGE_BYTES) {
+          payload = LoadBytes(source);
+        }
+        const std::string path = SourceFilePath(source, payload, &temp);
         g_autoptr(XhmiMessagesMediaMetadataMessage) message = DiscoverAv(path);
         if (temp) {
           g_unlink(path.c_str());
@@ -640,13 +788,14 @@ void HandleReadImage(XhmiMessagesMediaSourceMessage* source,
   Guard(
       handle,
       [&] {
-        const auto data = LoadBytes(source);
+        const auto prefix = LoadPrefix(source, kHeaderBytes);
         const auto kind =
-            Sniff(data, xhmi_messages_media_source_message_get_uri(source));
+            Sniff(prefix, xhmi_messages_media_source_message_get_uri(source));
         if (kind !=
             XUE_HUA_MEDIA_INFO_PLATFORM_INTERFACE_MEDIA_KIND_MESSAGE_IMAGE) {
           Fail("wrongKind", "Source is not an image.");
         }
+        const auto data = LoadBytes(source);
         g_autoptr(XhmiMessagesImageMetadataMessage) image = BuildImage(data);
         xhmi_messages_media_info_host_api_respond_read_image(handle, image);
       },
@@ -660,15 +809,20 @@ void HandleReadAv(XhmiMessagesMediaSourceMessage* source,
   Guard(
       handle,
       [&] {
-        const auto data = LoadBytes(source);
+        const auto prefix = LoadPrefix(source, kHeaderBytes);
         const auto kind =
-            Sniff(data, xhmi_messages_media_source_message_get_uri(source));
+            Sniff(prefix, xhmi_messages_media_source_message_get_uri(source));
         if (kind ==
             XUE_HUA_MEDIA_INFO_PLATFORM_INTERFACE_MEDIA_KIND_MESSAGE_IMAGE) {
           Fail("wrongKind", "Source is an image, not an AV container.");
         }
         bool temp = false;
-        const std::string path = SourceFilePath(source, data, &temp);
+        std::vector<uint8_t> payload;
+        if (xhmi_messages_media_source_message_get_kind(source) ==
+            XUE_HUA_MEDIA_INFO_PLATFORM_INTERFACE_SOURCE_KIND_MESSAGE_BYTES) {
+          payload = LoadBytes(source);
+        }
+        const std::string path = SourceFilePath(source, payload, &temp);
         g_autoptr(XhmiMessagesMediaMetadataMessage) message = DiscoverAv(path);
         if (temp) {
           g_unlink(path.c_str());
@@ -685,10 +839,7 @@ void HandleProbe(XhmiMessagesMediaSourceMessage* source,
   Guard(
       handle,
       [&] {
-        auto data = LoadBytes(source);
-        if (data.size() > 64) {
-          data.resize(64);
-        }
+        auto data = LoadPrefix(source, kHeaderBytes);
         const auto kind =
             Sniff(data, xhmi_messages_media_source_message_get_uri(source));
         xhmi_messages_media_info_host_api_respond_probe(handle, kind);

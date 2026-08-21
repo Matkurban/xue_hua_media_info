@@ -34,12 +34,14 @@ public class XueHuaMediaInfoDarwinPlugin: NSObject, FlutterPlugin, MediaInfoHost
   ) {
     completion(
       Result {
-        let data = try loadData(source)
-        switch try sniffKind(data, uri: source.uri) {
+        let prefix = try loadPrefix(source, count: headerBytes)
+        switch try sniffKind(prefix, uri: source.uri) {
         case .image:
+          let data = try loadData(source)
           let image = try readImage(from: data)
           return MediaMetadataMessage(kind: .image, image: image, video: nil, audio: nil)
         case .video, .audio:
+          let data = source.kind == .bytes ? try loadData(source) : Data()
           return try readAv(source: source, data: data)
         }
       })
@@ -50,12 +52,12 @@ public class XueHuaMediaInfoDarwinPlugin: NSObject, FlutterPlugin, MediaInfoHost
   ) {
     completion(
       Result {
-        let data = try loadData(source)
-        let kind = try sniffKind(data, uri: source.uri)
+        let prefix = try loadPrefix(source, count: headerBytes)
+        let kind = try sniffKind(prefix, uri: source.uri)
         guard kind == .image else {
           throw fail("wrongKind", "Source is not an image.")
         }
-        return try readImage(from: data)
+        return try readImage(from: try loadData(source))
       })
   }
 
@@ -64,11 +66,12 @@ public class XueHuaMediaInfoDarwinPlugin: NSObject, FlutterPlugin, MediaInfoHost
   ) {
     completion(
       Result {
-        let data = try loadData(source)
-        let kind = try sniffKind(data, uri: source.uri)
+        let prefix = try loadPrefix(source, count: headerBytes)
+        let kind = try sniffKind(prefix, uri: source.uri)
         guard kind != .image else {
           throw fail("wrongKind", "Source is an image, not an AV container.")
         }
+        let data = source.kind == .bytes ? try loadData(source) : Data()
         return try readAv(source: source, data: data)
       })
   }
@@ -78,7 +81,7 @@ public class XueHuaMediaInfoDarwinPlugin: NSObject, FlutterPlugin, MediaInfoHost
   ) {
     completion(
       Result {
-        let data = try loadPrefix(source, count: 64)
+        let data = try loadPrefix(source, count: headerBytes)
         return try sniffKind(data, uri: source.uri)
       })
   }
@@ -199,14 +202,17 @@ public class XueHuaMediaInfoDarwinPlugin: NSObject, FlutterPlugin, MediaInfoHost
       return MediaMetadataMessage(kind: .video, image: nil, video: message, audio: nil)
     }
 
-    let audioTrack = asset.tracks(withMediaType: .audio).first
-    let sampleRate = audioTrack.flatMap { track -> Int64? in
-      let rate = track.naturalTimeScale
-      return rate > 0 ? Int64(rate) : nil
+    guard let audioTrack = asset.tracks(withMediaType: .audio).first else {
+      throw fail("trackNotFound", "No video or audio track.")
     }
+    let sampleRate: Int64? = {
+      let rate = audioTrack.naturalTimeScale
+      return rate > 0 ? Int64(rate) : nil
+    }()
+    let bitrate = Int64(audioTrack.estimatedDataRate.rounded())
     let message = AudioMetadataMessage(
       durationMs: durationMs,
-      bitrate: audioTrack.map { Int64($0.estimatedDataRate.rounded()) },
+      bitrate: bitrate > 0 ? bitrate : nil,
       sampleRate: sampleRate,
       channelCount: nil,
       make: make,
@@ -249,11 +255,23 @@ public class XueHuaMediaInfoDarwinPlugin: NSObject, FlutterPlugin, MediaInfoHost
   }
 
   private func loadPrefix(_ source: MediaSourceMessage, count: Int) throws -> Data {
-    let data = try loadData(source)
-    if data.count <= count {
-      return data
+    switch source.kind {
+    case .file:
+      guard let uri = source.uri else { throw fail("notFound", "Missing path.") }
+      return try readPrefix(from: URL(fileURLWithPath: uri), count: count)
+    case .bytes:
+      guard let bytes = source.bytes else { throw fail("notFound", "Missing byte payload.") }
+      let data = bytes.data
+      return data.count <= count ? data : Data(data.prefix(count))
+    case .asset:
+      return try readPrefix(from: resolveAsset(source), count: count)
     }
-    return data.prefix(count)
+  }
+
+  private func readPrefix(from url: URL, count: Int) throws -> Data {
+    let handle = try FileHandle(forReadingFrom: url)
+    defer { try? handle.close() }
+    return handle.readData(ofLength: count)
   }
 
   private func resolveAsset(_ source: MediaSourceMessage) throws -> URL {
@@ -284,6 +302,8 @@ public class XueHuaMediaInfoDarwinPlugin: NSObject, FlutterPlugin, MediaInfoHost
   }
 }
 
+private let headerBytes = 256
+
 private func fail(_ code: String, _ message: String) -> PigeonError {
   PigeonError(code: code, message: message, details: nil)
 }
@@ -293,7 +313,7 @@ private func sniffKind(_ data: Data, uri: String?) throws -> MediaKindMessage {
   if name.hasSuffix(".raf") || name.hasSuffix(".cr3") || name.hasSuffix(".iiq") {
     throw fail("unsupportedFormat", "RAW formats are not supported.")
   }
-  let bytes = [UInt8](data.prefix(16))
+  let bytes = [UInt8](data.prefix(headerBytes))
   if bytes.count >= 15 {
     let sig = String(bytes[0..<15].map { Character(UnicodeScalar($0)) })
     if sig == "FUJIFILMCCD-RAW" {
@@ -309,6 +329,10 @@ private func sniffKind(_ data: Data, uri: String?) throws -> MediaKindMessage {
   }
   if bytes.count >= 4 && ((bytes[0] == 0x49 && bytes[1] == 0x49) || (bytes[0] == 0x4D && bytes[1] == 0x4D))
   {
+    let ascii = String(bytes.map { Character(UnicodeScalar($0)) })
+    if ascii.contains("IIQ") || ascii.contains("Phase One") {
+      throw fail("unsupportedFormat", "Phase One IIQ is not supported.")
+    }
     return .image
   }
   if bytes.count >= 12 {
@@ -360,11 +384,11 @@ private func parsePngText(_ data: Data) -> [PngTextChunkMessage] {
 }
 
 private func motionPhotoOffset(_ data: Data) -> Int? {
-  guard let asString = String(data: data, encoding: .isoLatin1) else { return nil }
-  if let match = asString.range(
+  guard let xmp = extractXmp(data) else { return nil }
+  if let match = xmp.range(
     of: #"GCamera:MicroVideoOffset\s*=\s*"(\d+)""#, options: .regularExpression)
   {
-    let raw = String(asString[match])
+    let raw = String(xmp[match])
     if let digits = raw.split(whereSeparator: { !$0.isNumber }).last,
       let fromEnd = Int(digits)
     {
@@ -372,11 +396,47 @@ private func motionPhotoOffset(_ data: Data) -> Int? {
       if start > 0 && start < data.count { return start }
     }
   }
-  if let range = asString.range(of: "ftyp") {
-    let index = asString.distance(from: asString.startIndex, to: range.lowerBound)
-    if index >= 4 { return index - 4 }
+  if let match = xmp.range(of: #"MicroVideoOffset>\s*(\d+)"#, options: .regularExpression) {
+    let raw = String(xmp[match])
+    if let digits = raw.split(whereSeparator: { !$0.isNumber }).last,
+      let fromEnd = Int(digits)
+    {
+      let start = data.count - fromEnd
+      if start > 0 && start < data.count { return start }
+    }
+  }
+  let isMotion = xmp.contains("MotionPhoto") || xmp.contains("MicroVideo")
+  if isMotion,
+    let match = xmp.range(of: #"Item:Length(?:="|>)\s*(\d+)"#, options: .regularExpression)
+  {
+    // Use the last Item:Length — typically the embedded MP4.
+    var last = match
+    var search = match.upperBound..<xmp.endIndex
+    while let next = xmp.range(of: #"Item:Length(?:="|>)\s*(\d+)"#, options: .regularExpression, range: search)
+    {
+      last = next
+      search = next.upperBound..<xmp.endIndex
+    }
+    let raw = String(xmp[last])
+    if let digits = raw.split(whereSeparator: { !$0.isNumber }).last,
+      let fromEnd = Int(digits)
+    {
+      let start = data.count - fromEnd
+      if start > 0 && start < data.count { return start }
+    }
   }
   return nil
+}
+
+private func extractXmp(_ data: Data) -> String? {
+  guard let start = data.range(of: Data("<x:xmpmeta".utf8)),
+    let end = data.range(
+      of: Data("</x:xmpmeta>".utf8), options: [], in: start.lowerBound..<data.endIndex)
+  else {
+    return nil
+  }
+  let xmp = data[start.lowerBound..<end.upperBound]
+  return String(data: xmp, encoding: .utf8) ?? String(data: xmp, encoding: .isoLatin1)
 }
 
 private func parseIso6709(_ raw: String?) -> GpsLocationMessage? {
