@@ -42,7 +42,7 @@ apply_standard_settings(${PLUGIN_NAME})
 # exported should be explicitly exported with the FLUTTER_PLUGIN_EXPORT macro.
 set_target_properties(${PLUGIN_NAME} PROPERTIES
   CXX_VISIBILITY_PRESET hidden)
-target_compile_definitions(${PLUGIN_NAME} PRIVATE FLUTTER_PLUGIN_IMPL)
+target_compile_definitions(${PLUGIN_NAME} PRIVATE FLUTTER_PLUGIN_IMPL NOMINMAX)
 
 # Source include directories and library dependencies. Add any plugin-specific
 # dependencies here.
@@ -93,6 +93,7 @@ target_include_directories(${TEST_RUNNER} PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}")
 target_link_libraries(${TEST_RUNNER} PRIVATE flutter_wrapper_plugin)
 target_link_libraries(${TEST_RUNNER} PRIVATE gtest_main gmock)
 target_link_libraries(${TEST_RUNNER} PRIVATE windowscodecs mfplat mfreadwrite mfuuid ole32 shlwapi)
+target_compile_definitions(${TEST_RUNNER} PRIVATE NOMINMAX)
 target_compile_options(${TEST_RUNNER} PRIVATE /utf-8)
 # flutter_wrapper_plugin has link dependencies on the Flutter DLL.
 add_custom_command(TARGET ${TEST_RUNNER} POST_BUILD

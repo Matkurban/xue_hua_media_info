@@ -1,5 +1,10 @@
 # Changelog
 
+## 2.0.2
+
+- Depend on `xue_hua_media_info_windows` 2.0.1, which fixes MSVC compile errors on Windows.
+  依赖 `xue_hua_media_info_windows` 2.0.1，修复 Windows 上的 MSVC 编译错误。
+
 ## 2.0.1
 
 - Align the example Android build with Gradle 8.14.5 and Android Gradle Plugin 8.13.2.

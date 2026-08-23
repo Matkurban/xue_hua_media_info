@@ -535,7 +535,7 @@ std::vector<uint8_t> LoadPrefix(const MediaSourceMessage& source,
         Fail("notFound", "Missing byte payload.");
       }
       const auto& data = *source.bytes();
-      const size_t n = std::min(count, data.size());
+      const size_t n = (std::min)(count, data.size());
       return std::vector<uint8_t>(data.begin(), data.begin() + static_cast<std::ptrdiff_t>(n));
     }
     case SourceKindMessage::kAsset: {
@@ -565,7 +565,7 @@ std::optional<std::string> QueryString(IWICMetadataQueryReader* reader,
   return result;
 }
 
-ImageMetadataMessage ReadImage(const std::vector<uint8_t>& data) {
+ImageMetadataMessage ReadImageInternal(const std::vector<uint8_t>& data) {
   ImageFields fields;
   if (data.size() >= 3 && data[0] == 0xFF && data[1] == 0xD8) {
     ParseJpegExif(data, &fields);
@@ -880,8 +880,9 @@ MediaMetadataMessage ReadAvFromReader(IMFSourceReader* reader,
   std::optional<int64_t> duration_ms;
   PROPVARIANT dur;
   PropVariantInit(&dur);
-  if (SUCCEEDED(reader->GetPresentationAttribute(MF_SOURCE_READER_MEDIASOURCE,
-                                                 MF_PD_DURATION, &dur)) &&
+  if (SUCCEEDED(reader->GetPresentationAttribute(
+          static_cast<DWORD>(MF_SOURCE_READER_MEDIASOURCE), MF_PD_DURATION,
+          &dur)) &&
       dur.vt == VT_UI8) {
     duration_ms = static_cast<int64_t>(dur.uhVal.QuadPart / 10000);
   }
@@ -889,9 +890,10 @@ MediaMetadataMessage ReadAvFromReader(IMFSourceReader* reader,
 
   ComPtr<IMFMediaType> video_type;
   const bool has_video = SUCCEEDED(reader->GetCurrentMediaType(
-      MF_SOURCE_READER_FIRST_VIDEO_STREAM, &video_type));
+      static_cast<DWORD>(MF_SOURCE_READER_FIRST_VIDEO_STREAM), &video_type));
   ComPtr<IMFMediaType> audio_type;
-  reader->GetCurrentMediaType(MF_SOURCE_READER_FIRST_AUDIO_STREAM, &audio_type);
+  reader->GetCurrentMediaType(
+      static_cast<DWORD>(MF_SOURCE_READER_FIRST_AUDIO_STREAM), &audio_type);
 
   if (has_video) {
     UINT32 w = 0, h = 0;
@@ -1029,7 +1031,7 @@ void XueHuaMediaInfoWindowsPlugin::Read(
     if (kind == MediaKindMessage::kImage) {
       const auto data = LoadBytes(source, assets_dir_);
       MediaMetadataMessage message(MediaKindMessage::kImage);
-      message.set_image(ReadImage(data));
+      message.set_image(ReadImageInternal(data));
       return message;
     }
     return ReadAvInternal(source, assets_dir_);
@@ -1044,7 +1046,7 @@ void XueHuaMediaInfoWindowsPlugin::ReadImage(
     if (Sniff(prefix, source.uri()) != MediaKindMessage::kImage) {
       Fail("wrongKind", "Source is not an image.");
     }
-    return ReadImage(LoadBytes(source, assets_dir_));
+    return ReadImageInternal(LoadBytes(source, assets_dir_));
   });
 }
 
