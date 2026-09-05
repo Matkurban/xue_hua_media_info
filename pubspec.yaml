@@ -1,7 +1,7 @@
 # xue_hua_media_info monorepo workspace root.
 # xue_hua_media_info 联合插件（Federated Plugin）单仓工作区根配置。
 name: xue_hua_media_info_workspace
-description: "Workspace for the xue_hua_media_info federated media metadata plugin. / xue_hua_media_info 联合媒体元数据插件工作区。"
+description: "Workspace for the xue_hua_media_info federated media metadata plugin"
 publish_to: none
 
 environment:

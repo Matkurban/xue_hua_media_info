@@ -1,5 +1,5 @@
 name: xue_hua_media_info
-description: "Cross-platform native Flutter plugin for reading image EXIF and video/audio metadata on Android/iOS/macOS/Windows/Linux/Web. / 跨平台原生 Flutter 插件——读取图片 EXIF 与视频/音频元数据，覆盖六大平台。"
+description: "Cross-platform native Flutter plugin for reading image EXIF and video/audio metadata on Android/iOS/macOS/Windows/Linux/Web"
 version: 2.0.1
 repository: https://github.com/Matkurban/xue_hua_media_info
 issue_tracker: https://github.com/Matkurban/xue_hua_media_info/issues
