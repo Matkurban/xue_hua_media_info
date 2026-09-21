@@ -16,6 +16,12 @@ dependencies:
   xue_hua_media_info: ^2.0.0
 ```
 
+After adding the dependency, AI coding agents can install this package's skill
+with `dart run skills@ get` (`xue_hua_media_info-read`).
+
+加入依赖后，AI 编程助手可用 `dart run skills@ get` 安装本包 skill
+（`xue_hua_media_info-read`）。
+
 ```dart
 import 'package:xue_hua_media_info/xue_hua_media_info.dart';
 

@@ -30,6 +30,18 @@ dependencies:
 
 Requires **Flutter 3.44+** (Dart 3.12). There is no initialization call.
 
+## Package skills
+
+This package ships an agent skill that teaches AI coding assistants the
+`MediaInfo` API. After adding the dependency, install it:
+
+```
+dart run skills@ get
+```
+
+The skill is `xue_hua_media_info-read` (guidelines plus full API and error-code
+reference).
+
 ## Usage
 
 ```dart
