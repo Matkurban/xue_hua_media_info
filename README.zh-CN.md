@@ -27,6 +27,16 @@ dependencies:
 
 需要 **Flutter 3.44+**（Dart 3.12）。无需任何初始化调用。
 
+## Package skills
+
+本包装有教 AI 编程助手使用 `MediaInfo` API 的 skill。加入依赖后安装：
+
+```
+dart run skills@ get
+```
+
+skill 名为 `xue_hua_media_info-read`（用法约定，以及完整 API 与错误码参考）。
+
 ## 用法
 
 ```dart
