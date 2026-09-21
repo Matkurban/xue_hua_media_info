@@ -1,5 +1,13 @@
 # Changelog
 
+## 2.0.4
+
+- Depend on `xue_hua_media_info_windows` 2.0.1 (MSVC compile fix). 2.0.3
+  still resolved `^2.0.0` because the Windows 2.0.2 commit had not been
+  merged when 2.0.3 was published.
+  依赖 `xue_hua_media_info_windows` 2.0.1（MSVC 编译修复）。2.0.3 发布时尚未
+  合并 Windows 2.0.2 提交，因此仍解析到 `^2.0.0`。
+
 ## 2.0.3
 
 - Ship the `xue_hua_media_info-read` package skill (`skills/`) so agents can
