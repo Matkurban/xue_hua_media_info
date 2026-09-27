@@ -1,6 +1,6 @@
 name: xue_hua_media_info_web
 description: "Web implementation of the xue_hua_media_info plugin. / xue_hua_media_info 插件的 Web 实现。"
-version: 2.0.0
+version: 2.0.1
 repository: https://github.com/Matkurban/xue_hua_media_info
 issue_tracker: https://github.com/Matkurban/xue_hua_media_info/issues
 resolution: workspace
@@ -14,7 +14,7 @@ dependencies:
     sdk: flutter
   flutter_web_plugins:
     sdk: flutter
-  xue_hua_media_info_platform_interface: ^2.0.0
+  xue_hua_media_info_platform_interface: ^2.0.1
 
 dev_dependencies:
   flutter_test:
