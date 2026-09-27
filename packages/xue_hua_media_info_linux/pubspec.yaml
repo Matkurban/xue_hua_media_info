@@ -1,6 +1,6 @@
 name: xue_hua_media_info_linux
-description: "Linux implementation of the xue_hua_media_info plugin, using GStreamer and in-tree JPEG/PNG parsers. / xue_hua_media_info 插件的 Linux 实现，基于 GStreamer 与仓内 JPEG/PNG 解析。"
-version: 2.0.0
+description: "Linux implementation of the xue_hua_media_info plugin"
+version: 2.0.1
 repository: https://github.com/Matkurban/xue_hua_media_info
 issue_tracker: https://github.com/Matkurban/xue_hua_media_info/issues
 resolution: workspace
@@ -12,7 +12,7 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  xue_hua_media_info_platform_interface: ^2.0.0
+  xue_hua_media_info_platform_interface: ^2.0.1
 
 dev_dependencies:
   flutter_test:
