@@ -1,4 +1,6 @@
-# Changelog
+## 2.0.5
+
+- update `xue_hua_media_info_platform_interface` version
 
 ## 2.0.4
 
