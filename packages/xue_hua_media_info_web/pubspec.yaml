@@ -1,5 +1,5 @@
 name: xue_hua_media_info_web
-description: "Web implementation of the xue_hua_media_info plugin. / xue_hua_media_info 插件的 Web 实现。"
+description: "Web implementation of the xue_hua_media_info plugin"
 version: 2.0.1
 repository: https://github.com/Matkurban/xue_hua_media_info
 issue_tracker: https://github.com/Matkurban/xue_hua_media_info/issues
