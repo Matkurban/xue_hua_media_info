@@ -10,8 +10,9 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  cupertino_icons: ^1.0.8
-  xue_hua_media_info: ^2.0.0
+  cupertino_icons: ^1.0.9
+  xue_hua_media_info:
+    path: ../xue_hua_media_info
 
 dev_dependencies:
   flutter_test:

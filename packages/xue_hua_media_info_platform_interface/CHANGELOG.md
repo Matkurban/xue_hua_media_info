@@ -1,3 +1,7 @@
+## 2.0.1
+
+- update `pigeon` version to `29.0.4`
+
 # Changelog
 
 ## 2.0.0
