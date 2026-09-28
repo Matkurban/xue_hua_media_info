@@ -1,3 +1,8 @@
+## 2.0.6
+
+- Depend on `xue_hua_media_info_android` 2.0.3 and `xue_hua_media_info_darwin` 2.0.2 so Android, iOS, and macOS implement the Pigeon 29 suspend/async Host APIs.
+  依赖 `xue_hua_media_info_android` 2.0.3 与 `xue_hua_media_info_darwin` 2.0.2，使 Android、iOS、macOS 实现 Pigeon 29 的 suspend/async Host API。
+
 ## 2.0.5
 
 - update `xue_hua_media_info_platform_interface` version

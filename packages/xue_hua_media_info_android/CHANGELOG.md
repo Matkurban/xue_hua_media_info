@@ -1,3 +1,8 @@
+## 2.0.3
+
+- Implement the Pigeon 29 `suspend` Host API and read media on `Dispatchers.IO`.
+  实现 Pigeon 29 的 `suspend` Host API，并在 `Dispatchers.IO` 上读取媒体。
+
 ## 2.0.2
 
 - update `xue_hua_media_info_platform_interface` version

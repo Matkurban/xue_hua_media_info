@@ -1,6 +1,6 @@
 name: xue_hua_media_info_darwin
 description: "iOS and macOS implementation of the xue_hua_media_info plugin, using ImageIO and AVFoundation."
-version: 2.0.1
+version: 2.0.2
 repository: https://github.com/Matkurban/xue_hua_media_info
 issue_tracker: https://github.com/Matkurban/xue_hua_media_info/issues
 resolution: workspace

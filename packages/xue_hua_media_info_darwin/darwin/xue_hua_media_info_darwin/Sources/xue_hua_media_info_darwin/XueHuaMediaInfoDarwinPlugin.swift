@@ -29,79 +29,76 @@ public class XueHuaMediaInfoDarwinPlugin: NSObject, FlutterPlugin, MediaInfoHost
     self.registrar = registrar
   }
 
-  func read(
-    source: MediaSourceMessage, completion: @escaping (Result<MediaMetadataMessage, Error>) -> Void
-  ) {
-    completion(
-      Result {
-        let prefix = try loadPrefix(source, count: headerBytes)
-        switch try sniffKind(prefix, uri: source.uri) {
-        case .image:
-          let data = try loadData(source)
-          let image = try readImage(from: data)
-          return MediaMetadataMessage(kind: .image, image: image, video: nil, audio: nil)
-        case .video, .audio:
-          let data = source.kind == .bytes ? try loadData(source) : Data()
-          return try readAv(source: source, data: data)
-        }
-      })
+  func read(source: MediaSourceMessage) async throws -> MediaMetadataMessage {
+    try await readOffMain {
+      let prefix = try self.loadPrefix(source, count: headerBytes)
+      switch try sniffKind(prefix, uri: source.uri) {
+      case .image:
+        let data = try self.loadData(source)
+        let image = try self.readImage(from: data)
+        return MediaMetadataMessage(kind: .image, image: image, video: nil, audio: nil)
+      case .video, .audio:
+        let data = source.kind == .bytes ? try self.loadData(source) : Data()
+        return try self.readAv(source: source, data: data)
+      }
+    }
   }
 
-  func readImage(
-    source: MediaSourceMessage, completion: @escaping (Result<ImageMetadataMessage, Error>) -> Void
-  ) {
-    completion(
-      Result {
-        let prefix = try loadPrefix(source, count: headerBytes)
-        let kind = try sniffKind(prefix, uri: source.uri)
-        guard kind == .image else {
-          throw fail("wrongKind", "Source is not an image.")
-        }
-        return try readImage(from: try loadData(source))
-      })
+  func readImage(source: MediaSourceMessage) async throws -> ImageMetadataMessage {
+    try await readOffMain {
+      let prefix = try self.loadPrefix(source, count: headerBytes)
+      let kind = try sniffKind(prefix, uri: source.uri)
+      guard kind == .image else {
+        throw fail("wrongKind", "Source is not an image.")
+      }
+      return try self.readImage(from: try self.loadData(source))
+    }
   }
 
-  func readAv(
-    source: MediaSourceMessage, completion: @escaping (Result<MediaMetadataMessage, Error>) -> Void
-  ) {
-    completion(
-      Result {
-        let prefix = try loadPrefix(source, count: headerBytes)
-        let kind = try sniffKind(prefix, uri: source.uri)
-        guard kind != .image else {
-          throw fail("wrongKind", "Source is an image, not an AV container.")
-        }
-        let data = source.kind == .bytes ? try loadData(source) : Data()
-        return try readAv(source: source, data: data)
-      })
+  func readAv(source: MediaSourceMessage) async throws -> MediaMetadataMessage {
+    try await readOffMain {
+      let prefix = try self.loadPrefix(source, count: headerBytes)
+      let kind = try sniffKind(prefix, uri: source.uri)
+      guard kind != .image else {
+        throw fail("wrongKind", "Source is an image, not an AV container.")
+      }
+      let data = source.kind == .bytes ? try self.loadData(source) : Data()
+      return try self.readAv(source: source, data: data)
+    }
   }
 
-  func probe(
-    source: MediaSourceMessage, completion: @escaping (Result<MediaKindMessage, Error>) -> Void
-  ) {
-    completion(
-      Result {
-        let data = try loadPrefix(source, count: headerBytes)
-        return try sniffKind(data, uri: source.uri)
-      })
+  func probe(source: MediaSourceMessage) async throws -> MediaKindMessage {
+    try await readOffMain {
+      let data = try self.loadPrefix(source, count: headerBytes)
+      return try sniffKind(data, uri: source.uri)
+    }
   }
 
-  func readMotionPhoto(
-    source: MediaSourceMessage, completion: @escaping (Result<VideoMetadataMessage, Error>) -> Void
-  ) {
-    completion(
-      Result {
-        let data = try loadData(source)
-        guard let offset = motionPhotoOffset(data), offset < data.count else {
-          throw fail("trackNotFound", "No embedded Motion Photo video.")
-        }
-        let embedded = data.subdata(in: offset..<data.count)
-        let result = try readAv(source: MediaSourceMessage(kind: .bytes, uri: nil, bytes: FlutterStandardTypedData(bytes: embedded)), data: embedded)
-        guard let video = result.video else {
-          throw fail("trackNotFound", "Embedded trailer is not a video.")
-        }
-        return video
-      })
+  func readMotionPhoto(source: MediaSourceMessage) async throws -> VideoMetadataMessage {
+    try await readOffMain {
+      let data = try self.loadData(source)
+      guard let offset = motionPhotoOffset(data), offset < data.count else {
+        throw fail("trackNotFound", "No embedded Motion Photo video.")
+      }
+      let embedded = data.subdata(in: offset..<data.count)
+      let result = try self.readAv(
+        source: MediaSourceMessage(kind: .bytes, uri: nil, bytes: FlutterStandardTypedData(bytes: embedded)),
+        data: embedded)
+      guard let video = result.video else {
+        throw fail("trackNotFound", "Embedded trailer is not a video.")
+      }
+      return video
+    }
+  }
+
+  /// Runs synchronous media reads off the main actor. Pigeon awaits these methods on `@MainActor`.
+  /// 把同步媒体读取放到主线程之外。Pigeon 在 `@MainActor` 上等待这些方法。
+  private func readOffMain<T>(_ body: @escaping () throws -> T) async throws -> T {
+    try await withCheckedThrowingContinuation { continuation in
+      DispatchQueue.global(qos: .userInitiated).async {
+        continuation.resume(with: Result(catching: body))
+      }
+    }
   }
 
   // MARK: - ImageIO

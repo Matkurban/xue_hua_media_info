@@ -7,6 +7,8 @@ import android.media.MediaMetadataRetriever
 import android.os.Build
 import androidx.exifinterface.media.ExifInterface
 import io.flutter.embedding.engine.plugins.FlutterPlugin
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import java.io.ByteArrayInputStream
 import java.io.File
 import java.io.FileInputStream
@@ -38,62 +40,57 @@ class XueHuaMediaInfoAndroidPlugin :
         MediaInfoHostApi.setUp(binding.binaryMessenger, null)
     }
 
-    override fun read(
-        source: MediaSourceMessage,
-        callback: (Result<MediaMetadataMessage>) -> Unit,
-    ) {
-        callback(runMedia {
-            val bytes = loadPrefix(source, HEADER_BYTES)
-            when (sniffKind(bytes, source)) {
-                MediaKindMessage.IMAGE -> {
-                    val image = readImageInternal(source)
-                    MediaMetadataMessage(
-                        kind = MediaKindMessage.IMAGE,
-                        image = image,
-                    )
+    override suspend fun read(source: MediaSourceMessage): MediaMetadataMessage {
+        return withContext(Dispatchers.IO) {
+            runMedia {
+                val bytes = loadPrefix(source, HEADER_BYTES)
+                when (sniffKind(bytes, source)) {
+                    MediaKindMessage.IMAGE -> {
+                        val image = readImageInternal(source)
+                        MediaMetadataMessage(
+                            kind = MediaKindMessage.IMAGE,
+                            image = image,
+                        )
+                    }
+                    MediaKindMessage.VIDEO,
+                    MediaKindMessage.AUDIO,
+                    -> readAvInternal(source)
                 }
-                MediaKindMessage.VIDEO,
-                MediaKindMessage.AUDIO,
-                -> readAvInternal(source)
             }
-        })
+        }
     }
 
-    override fun readImage(
-        source: MediaSourceMessage,
-        callback: (Result<ImageMetadataMessage>) -> Unit,
-    ) {
-        callback(runMedia { readImageInternal(source) })
+    override suspend fun readImage(source: MediaSourceMessage): ImageMetadataMessage {
+        return withContext(Dispatchers.IO) {
+            runMedia { readImageInternal(source) }
+        }
     }
 
-    override fun readAv(
-        source: MediaSourceMessage,
-        callback: (Result<MediaMetadataMessage>) -> Unit,
-    ) {
-        callback(runMedia { readAvInternal(source) })
+    override suspend fun readAv(source: MediaSourceMessage): MediaMetadataMessage {
+        return withContext(Dispatchers.IO) {
+            runMedia { readAvInternal(source) }
+        }
     }
 
-    override fun probe(
-        source: MediaSourceMessage,
-        callback: (Result<MediaKindMessage>) -> Unit,
-    ) {
-        callback(runMedia {
-            sniffKind(loadPrefix(source, HEADER_BYTES), source)
-        })
+    override suspend fun probe(source: MediaSourceMessage): MediaKindMessage {
+        return withContext(Dispatchers.IO) {
+            runMedia {
+                sniffKind(loadPrefix(source, HEADER_BYTES), source)
+            }
+        }
     }
 
-    override fun readMotionPhoto(
-        source: MediaSourceMessage,
-        callback: (Result<VideoMetadataMessage>) -> Unit,
-    ) {
-        callback(runMedia {
-            val data = loadAll(source)
-            val offset = motionPhotoOffset(data)
-                ?: throw FlutterError("trackNotFound", "No embedded Motion Photo video.", null)
-            val embedded = data.copyOfRange(offset, data.size)
-            readAvFromBytes(embedded).video
-                ?: throw FlutterError("trackNotFound", "Embedded trailer is not a video.", null)
-        })
+    override suspend fun readMotionPhoto(source: MediaSourceMessage): VideoMetadataMessage {
+        return withContext(Dispatchers.IO) {
+            runMedia {
+                val data = loadAll(source)
+                val offset = motionPhotoOffset(data)
+                    ?: throw FlutterError("trackNotFound", "No embedded Motion Photo video.", null)
+                val embedded = data.copyOfRange(offset, data.size)
+                readAvFromBytes(embedded).video
+                    ?: throw FlutterError("trackNotFound", "Embedded trailer is not a video.", null)
+            }
+        }
     }
 
     private fun readImageInternal(source: MediaSourceMessage): ImageMetadataMessage {
@@ -330,17 +327,17 @@ internal fun displaySize(width: Long, height: Long, rotation: Long?): PixelSizeM
     }
 }
 
-private inline fun <T> runMedia(block: () -> T): Result<T> {
-    return try {
-        Result.success(block())
+private inline fun <T> runMedia(block: () -> T): T {
+    try {
+        return block()
     } catch (error: FlutterError) {
-        Result.failure(error)
+        throw error
     } catch (error: FileNotFoundException) {
-        Result.failure(FlutterError("notFound", error.message ?: "File not found.", null))
+        throw FlutterError("notFound", error.message ?: "File not found.", null)
     } catch (error: IOException) {
-        Result.failure(FlutterError("io", error.message ?: "I/O failed.", null))
+        throw FlutterError("io", error.message ?: "I/O failed.", null)
     } catch (error: Exception) {
-        Result.failure(FlutterError("malformed", error.message ?: "Unable to read media.", null))
+        throw FlutterError("malformed", error.message ?: "Unable to read media.", null)
     }
 }
 
