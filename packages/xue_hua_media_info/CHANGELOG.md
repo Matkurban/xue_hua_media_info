@@ -1,3 +1,8 @@
+## 2.0.7
+
+- Depend on `xue_hua_media_info_android` 2.0.4. The Android implementation and the example use Android Gradle Plugin 9.1.0, Gradle 9.3.1, and Kotlin 2.4.0.
+  依赖 `xue_hua_media_info_android` 2.0.4。Android 实现与示例使用 Android Gradle Plugin 9.1.0、Gradle 9.3.1 与 Kotlin 2.4.0。
+
 ## 2.0.6
 
 - Depend on `xue_hua_media_info_android` 2.0.3 and `xue_hua_media_info_darwin` 2.0.2 so Android, iOS, and macOS implement the Pigeon 29 suspend/async Host APIs.
