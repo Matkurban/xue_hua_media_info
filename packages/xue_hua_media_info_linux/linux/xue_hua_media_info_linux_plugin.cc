@@ -312,11 +312,11 @@ void ParseJpegExif(const std::vector<uint8_t>& data, ImageFields* out) {
           ReadIfd(tiff, tiff_size, U32(it->second.value, little), little, dest);
         };
         std::map<uint16_t, TiffEntry> exif;
-        read_sub(0x8769, exif);
+        read_sub(0x8769, &exif);
         out->date_original = EntryAscii(tiff, tiff_size, exif, 0x9003, little);
         out->date_digitized = EntryAscii(tiff, tiff_size, exif, 0x9004, little);
         std::map<uint16_t, TiffEntry> gps;
-        read_sub(0x8825, gps);
+        read_sub(0x8825, &gps);
         auto rational3 = [&](uint16_t tag) -> std::optional<double> {
           const auto it = gps.find(tag);
           if (it == gps.end()) {
