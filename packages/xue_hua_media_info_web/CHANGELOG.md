@@ -1,8 +1,0 @@
-## 2.0.1
-
-- update `xue_hua_media_info_platform_interface` version
-
-## 2.0.0
-
-Web implementation in pure Dart (JPEG APP1, PNG tEXt, MP4/MOV `moov`).
-Web 纯 Dart 实现（JPEG APP1、PNG tEXt、MP4/MOV `moov`）。

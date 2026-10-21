@@ -2,9 +2,9 @@
 
 **[English](README.md)** | 简体中文
 
-跨平台**原生** Flutter 插件，用于读取**图片 EXIF** 与**视频/音频元数据**。应用只依赖门面包
-[`xue_hua_media_info`](packages/xue_hua_media_info)；各端通过
-[Pigeon](https://pub.dev/packages/pigeon) 接入联合插件实现。无需 Rust 工具链、无需 FFI、无需全局 `initialize()`。
+跨平台**原生** Flutter 插件，用于读取**图片 EXIF** 与**视频/音频元数据**。应用只依赖
+`xue_hua_media_info`。各平台原生代码都在这个包里，通过
+[Pigeon](https://pub.dev/packages/pigeon) 通信。无需 Rust 工具链、无需 FFI、无需全局 `initialize()`。
 
 | 平台 | 静态图片 | 音视频 |
 | --- | --- | --- |
@@ -14,15 +14,13 @@
 | Linux | 仓内 JPEG APP1 / PNG tEXt | GStreamer `GstDiscoverer` |
 | Web | Dart JPEG APP1 / PNG tEXt | Dart `moov`（`mvhd` / `tkhd`） |
 
-从 1.x（Rust/FFI）迁移请见 [MIGRATION.md](MIGRATION.md)。
-
 ---
 
 ## 安装
 
 ```yaml
 dependencies:
-  xue_hua_media_info: ^2.0.0
+  xue_hua_media_info: ^2.1.0
 ```
 
 需要 **Flutter 3.44+**（Dart 3.12）。无需任何初始化调用。
@@ -91,6 +89,17 @@ switch (meta) {
 
 ## 架构
 
+一个插件包。应用依赖 `xue_hua_media_info`，各平台原生代码都在这个包里：
+
+```text
+xue_hua_media_info
+├── lib/          Dart API、平台接口、method channel、Web
+├── android/      Kotlin  · ExifInterface + MediaMetadataRetriever
+├── darwin/       Swift   · ImageIO + AVFoundation（iOS 与 macOS）
+├── windows/      C++     · WIC + Media Foundation
+└── linux/        C++     · JPEG/PNG + GStreamer
+```
+
 ```text
 应用  →  MediaInfo（门面）
      →  XueHuaMediaInfoPlatform
@@ -98,7 +107,13 @@ switch (meta) {
      →  Web（纯 Dart，替换 instance，不走 channel）
 ```
 
-本仓库是 Melos 8 工作区（配置写在根 `pubspec.yaml` 的 `melos:`，没有独立的 `melos.yaml`）。包位于 `packages/`。
+在包根目录：
+
+```bash
+flutter analyze
+flutter test
+dart run pigeon --input pigeons/messages.dart
+```
 
 ## 许可证
 

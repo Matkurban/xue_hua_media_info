@@ -3,9 +3,8 @@
 **English** | [简体中文](README.zh-CN.md)
 
 Cross-platform **native** Flutter plugin for reading **image EXIF** and
-**video/audio metadata**. Apps depend on the façade package
-[`xue_hua_media_info`](packages/xue_hua_media_info); each platform is a
-federated implementation wired through
+**video/audio metadata**. Apps depend on `xue_hua_media_info`. Each
+platform's native code lives in this package and is wired through
 [Pigeon](https://pub.dev/packages/pigeon). No Rust toolchain, no FFI, no
 global `initialize()`.
 
@@ -17,15 +16,13 @@ global `initialize()`.
 | Linux | in-tree JPEG APP1 / PNG tEXt | GStreamer `GstDiscoverer` |
 | Web | Dart JPEG APP1 / PNG tEXt | Dart `moov` (`mvhd` / `tkhd`) |
 
-Migrating from 1.x (the Rust/FFI version)? See [MIGRATION.md](MIGRATION.md).
-
 ---
 
 ## Installation
 
 ```yaml
 dependencies:
-  xue_hua_media_info: ^2.0.0
+  xue_hua_media_info: ^2.1.0
 ```
 
 Requires **Flutter 3.44+** (Dart 3.12). There is no initialization call.
@@ -104,6 +101,18 @@ platform’s usual convention.
 
 ## Architecture
 
+One plugin package. Apps depend on `xue_hua_media_info`; each platform's
+native code lives in this package:
+
+```text
+xue_hua_media_info
+├── lib/          Dart API, platform interface, method channel, Web
+├── android/      Kotlin  · ExifInterface + MediaMetadataRetriever
+├── darwin/       Swift   · ImageIO + AVFoundation (iOS and macOS)
+├── windows/      C++     · WIC + Media Foundation
+└── linux/        C++     · JPEG/PNG + GStreamer
+```
+
 ```text
 App  →  MediaInfo (façade)
      →  XueHuaMediaInfoPlatform
@@ -111,8 +120,13 @@ App  →  MediaInfo (façade)
      →  Web (pure Dart, replaces instance, no channel)
 ```
 
-This repository is a Melos 8 workspace (`pubspec.yaml` `melos:` key; there is
-no `melos.yaml`). Packages live under `packages/`.
+From the package root:
+
+```bash
+flutter analyze
+flutter test
+dart run pigeon --input pigeons/messages.dart
+```
 
 ## License
 
