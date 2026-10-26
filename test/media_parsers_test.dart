@@ -100,6 +100,37 @@ void main() {
     expect(motionPhotoOffset(data), data.length - 8);
   });
 
+
+  test('motionPhotoOffset reads MotionPhotoOffset from XMP', () {
+    const xmp = '<x:xmpmeta>GCamera:MotionPhotoOffset="8"</x:xmpmeta>';
+    final data = Uint8List.fromList([
+      0xFF,
+      0xD8,
+      ...xmp.codeUnits,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+    ]);
+    expect(motionPhotoOffset(data), data.length - 8);
+  });
+
+  test('sniffKind recognizes RIFF WAVE as audio', () {
+    final wav = Uint8List.fromList([
+      ...'RIFF'.codeUnits,
+      0,
+      0,
+      0,
+      0,
+      ...'WAVE'.codeUnits,
+      ...'fmt '.codeUnits,
+    ]);
+    expect(sniffMediaKind(wav), MediaKind.audio);
+  });
   test('parseAvBytes reports trackNotFound for an empty moov', () {
     final mp4 = Uint8List.fromList([
       0x00,

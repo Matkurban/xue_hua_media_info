@@ -80,10 +80,22 @@ MediaKind sniffMediaKind(Uint8List prefix, {String? uri}) {
       message: 'MKV/WebM is not supported on this platform.',
     );
   }
+  if (prefix.length >= 12 &&
+      String.fromCharCodes(prefix.sublist(0, 4)) == 'RIFF' &&
+      String.fromCharCodes(prefix.sublist(8, 12)) == 'WAVE') {
+    return MediaKind.audio;
+  }
+  if (prefix.length >= 3 &&
+      ((prefix[0] == 0x49 && prefix[1] == 0x44 && prefix[2] == 0x33) ||
+          (prefix[0] == 0xFF && (prefix[1] & 0xE0) == 0xE0))) {
+    return MediaKind.audio;
+  }
   if (name.endsWith('.m4a') ||
       name.endsWith('.aac') ||
       name.endsWith('.mp3') ||
-      name.endsWith('.wav')) {
+      name.endsWith('.wav') ||
+      name.endsWith('.flac') ||
+      name.endsWith('.ogg')) {
     return MediaKind.audio;
   }
   throw const MediaInfoError(
@@ -133,7 +145,10 @@ int? motionPhotoOffset(Uint8List data) {
   }
   final micro =
       RegExp(r'GCamera:MicroVideoOffset\s*=\s*"(\d+)"').firstMatch(xmp) ??
-      RegExp(r'MicroVideoOffset>\s*(\d+)').firstMatch(xmp);
+      RegExp(r'MicroVideoOffset>\s*(\d+)').firstMatch(xmp) ??
+      RegExp(r'GCamera:MotionPhotoOffset\s*=\s*"(\d+)"').firstMatch(xmp) ??
+      RegExp(r'MotionPhotoOffset\s*=\s*"(\d+)"').firstMatch(xmp) ??
+      RegExp(r'MotionPhotoOffset>\s*(\d+)').firstMatch(xmp);
   if (micro != null) {
     return _offsetFromEnd(data.length, int.tryParse(micro.group(1)!));
   }

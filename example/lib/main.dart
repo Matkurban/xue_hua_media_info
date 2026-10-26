@@ -46,7 +46,7 @@ class _MetadataPreviewPageState extends State<MetadataPreviewPage> {
     try {
       const jpeg = MediaSource.asset('assets/testdata/exif.jpg');
       const mov = MediaSource.asset('assets/testdata/meta.mov');
-      const png = MediaSource.asset('assets/testdata/exif.png');
+      const png = MediaSource.asset('assets/testdata/sample_text.png');
 
       final image = await MediaInfo.readImage(jpeg);
       final container = await MediaInfo.readAv(mov);
@@ -89,7 +89,7 @@ ${_avFields(container)}
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('xue_hua_media_info 2.0')),
+      appBar: AppBar(title: const Text('xue_hua_media_info 2.1')),
       body: Padding(
         padding: const EdgeInsets.all(16),
         child: SingleChildScrollView(

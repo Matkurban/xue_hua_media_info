@@ -135,6 +135,13 @@ std::optional<int64_t> MotionPhotoOffset(const std::vector<uint8_t>& data) {
   if (auto off = OffsetFromXmpLength(xmp, data.size(), "MicroVideoOffset")) {
     return off;
   }
+  // Modern Pixel / Samsung XMP uses MotionPhotoOffset (bytes from end).
+  if (auto off = OffsetFromXmpLength(xmp, data.size(), "GCamera:MotionPhotoOffset")) {
+    return off;
+  }
+  if (auto off = OffsetFromXmpLength(xmp, data.size(), "MotionPhotoOffset")) {
+    return off;
+  }
   const bool is_motion =
       xmp.find("MotionPhoto") != std::string::npos ||
       xmp.find("MicroVideo") != std::string::npos;
@@ -392,11 +399,11 @@ XhmiMessagesMediaKindMessage Sniff(const std::vector<uint8_t>& prefix,
     Fail("unsupportedFormat", "Fujifilm RAF is not supported.");
   }
   if (prefix.size() >= 3 && prefix[0] == 0xFF && prefix[1] == 0xD8) {
-    return XUE_HUA_MEDIA_INFO_PLATFORM_INTERFACE_MEDIA_KIND_MESSAGE_IMAGE;
+    return XUE_HUA_MEDIA_INFO_MEDIA_KIND_MESSAGE_IMAGE;
   }
   if (prefix.size() >= 8 && prefix[0] == 0x89 && prefix[1] == 0x50 &&
       prefix[2] == 0x4E && prefix[3] == 0x47) {
-    return XUE_HUA_MEDIA_INFO_PLATFORM_INTERFACE_MEDIA_KIND_MESSAGE_IMAGE;
+    return XUE_HUA_MEDIA_INFO_MEDIA_KIND_MESSAGE_IMAGE;
   }
   if (prefix.size() >= 4 &&
       ((prefix[0] == 0x49 && prefix[1] == 0x49) ||
@@ -415,18 +422,29 @@ XhmiMessagesMediaKindMessage Sniff(const std::vector<uint8_t>& prefix,
         brand == "avif" || brand == "avis") {
       Fail("unsupportedFormat", "HEIC/HEIF is not supported on Linux.");
     }
-    return XUE_HUA_MEDIA_INFO_PLATFORM_INTERFACE_MEDIA_KIND_MESSAGE_VIDEO;
+    return XUE_HUA_MEDIA_INFO_MEDIA_KIND_MESSAGE_VIDEO;
   }
   if (prefix.size() >= 4 && prefix[0] == 0x1A && prefix[1] == 0x45 &&
       prefix[2] == 0xDF && prefix[3] == 0xA3) {
-    return XUE_HUA_MEDIA_INFO_PLATFORM_INTERFACE_MEDIA_KIND_MESSAGE_VIDEO;
+    return XUE_HUA_MEDIA_INFO_MEDIA_KIND_MESSAGE_VIDEO;
+  }
+  // Magic-byte audio detection (BytesSource has no file extension).
+  if (prefix.size() >= 12 && memcmp(prefix.data(), "RIFF", 4) == 0 &&
+      memcmp(prefix.data() + 8, "WAVE", 4) == 0) {
+    return XUE_HUA_MEDIA_INFO_MEDIA_KIND_MESSAGE_AUDIO;
+  }
+  if (prefix.size() >= 3 &&
+      ((prefix[0] == 'I' && prefix[1] == 'D' && prefix[2] == '3') ||
+       (prefix[0] == 0xFF && (prefix[1] & 0xE0) == 0xE0))) {
+    return XUE_HUA_MEDIA_INFO_MEDIA_KIND_MESSAGE_AUDIO;
   }
   if (EndsWith(lower, ".m4a") || EndsWith(lower, ".aac") ||
-      EndsWith(lower, ".mp3") || EndsWith(lower, ".wav")) {
-    return XUE_HUA_MEDIA_INFO_PLATFORM_INTERFACE_MEDIA_KIND_MESSAGE_AUDIO;
+      EndsWith(lower, ".mp3") || EndsWith(lower, ".wav") ||
+      EndsWith(lower, ".flac") || EndsWith(lower, ".ogg")) {
+    return XUE_HUA_MEDIA_INFO_MEDIA_KIND_MESSAGE_AUDIO;
   }
   Fail("unsupportedFormat", "Unrecognized media header.");
-  return XUE_HUA_MEDIA_INFO_PLATFORM_INTERFACE_MEDIA_KIND_MESSAGE_VIDEO;
+  return XUE_HUA_MEDIA_INFO_MEDIA_KIND_MESSAGE_VIDEO;
 }
 
 constexpr size_t kHeaderBytes = 256;
@@ -463,14 +481,14 @@ std::string AssetPath(const char* key) {
 std::vector<uint8_t> LoadPrefix(XhmiMessagesMediaSourceMessage* source,
                                 size_t count) {
   switch (xhmi_messages_media_source_message_get_kind(source)) {
-    case XUE_HUA_MEDIA_INFO_PLATFORM_INTERFACE_SOURCE_KIND_MESSAGE_FILE: {
+    case XUE_HUA_MEDIA_INFO_SOURCE_KIND_MESSAGE_FILE: {
       const gchar* uri = xhmi_messages_media_source_message_get_uri(source);
       if (uri == nullptr) {
         Fail("notFound", "Missing path.");
       }
       return ReadPathPrefix(uri, count);
     }
-    case XUE_HUA_MEDIA_INFO_PLATFORM_INTERFACE_SOURCE_KIND_MESSAGE_BYTES: {
+    case XUE_HUA_MEDIA_INFO_SOURCE_KIND_MESSAGE_BYTES: {
       size_t length = 0;
       const uint8_t* bytes =
           xhmi_messages_media_source_message_get_bytes(source, &length);
@@ -480,7 +498,7 @@ std::vector<uint8_t> LoadPrefix(XhmiMessagesMediaSourceMessage* source,
       const size_t n = std::min(count, length);
       return std::vector<uint8_t>(bytes, bytes + n);
     }
-    case XUE_HUA_MEDIA_INFO_PLATFORM_INTERFACE_SOURCE_KIND_MESSAGE_ASSET: {
+    case XUE_HUA_MEDIA_INFO_SOURCE_KIND_MESSAGE_ASSET: {
       const gchar* uri = xhmi_messages_media_source_message_get_uri(source);
       if (uri == nullptr) {
         Fail("notFound", "Missing asset key.");
@@ -494,14 +512,14 @@ std::vector<uint8_t> LoadPrefix(XhmiMessagesMediaSourceMessage* source,
 
 std::vector<uint8_t> LoadBytes(XhmiMessagesMediaSourceMessage* source) {
   switch (xhmi_messages_media_source_message_get_kind(source)) {
-    case XUE_HUA_MEDIA_INFO_PLATFORM_INTERFACE_SOURCE_KIND_MESSAGE_FILE: {
+    case XUE_HUA_MEDIA_INFO_SOURCE_KIND_MESSAGE_FILE: {
       const gchar* uri = xhmi_messages_media_source_message_get_uri(source);
       if (uri == nullptr) {
         Fail("notFound", "Missing path.");
       }
       return ReadPath(uri);
     }
-    case XUE_HUA_MEDIA_INFO_PLATFORM_INTERFACE_SOURCE_KIND_MESSAGE_BYTES: {
+    case XUE_HUA_MEDIA_INFO_SOURCE_KIND_MESSAGE_BYTES: {
       size_t length = 0;
       const uint8_t* bytes =
           xhmi_messages_media_source_message_get_bytes(source, &length);
@@ -510,7 +528,7 @@ std::vector<uint8_t> LoadBytes(XhmiMessagesMediaSourceMessage* source) {
       }
       return std::vector<uint8_t>(bytes, bytes + length);
     }
-    case XUE_HUA_MEDIA_INFO_PLATFORM_INTERFACE_SOURCE_KIND_MESSAGE_ASSET: {
+    case XUE_HUA_MEDIA_INFO_SOURCE_KIND_MESSAGE_ASSET: {
       const gchar* uri = xhmi_messages_media_source_message_get_uri(source);
       if (uri == nullptr) {
         Fail("notFound", "Missing asset key.");
@@ -526,13 +544,28 @@ std::string SourceFilePath(XhmiMessagesMediaSourceMessage* source,
                            const std::vector<uint8_t>& data, bool* temp) {
   *temp = false;
   switch (xhmi_messages_media_source_message_get_kind(source)) {
-    case XUE_HUA_MEDIA_INFO_PLATFORM_INTERFACE_SOURCE_KIND_MESSAGE_FILE:
+    case XUE_HUA_MEDIA_INFO_SOURCE_KIND_MESSAGE_FILE:
       return xhmi_messages_media_source_message_get_uri(source);
-    case XUE_HUA_MEDIA_INFO_PLATFORM_INTERFACE_SOURCE_KIND_MESSAGE_ASSET:
+    case XUE_HUA_MEDIA_INFO_SOURCE_KIND_MESSAGE_ASSET:
       return AssetPath(xhmi_messages_media_source_message_get_uri(source));
-    case XUE_HUA_MEDIA_INFO_PLATFORM_INTERFACE_SOURCE_KIND_MESSAGE_BYTES: {
+    case XUE_HUA_MEDIA_INFO_SOURCE_KIND_MESSAGE_BYTES: {
+      // GStreamer demuxer selection is more reliable with a real extension.
+      const char* tmpl = "xhmiXXXXXX.mp4";
+      if (data.size() >= 12 && memcmp(data.data(), "RIFF", 4) == 0 &&
+          memcmp(data.data() + 8, "WAVE", 4) == 0) {
+        tmpl = "xhmiXXXXXX.wav";
+      } else if (data.size() >= 3 && data[0] == 0xFF && data[1] == 0xD8) {
+        tmpl = "xhmiXXXXXX.jpg";
+      } else if (data.size() >= 4 && data[0] == 0x1A && data[1] == 0x45) {
+        tmpl = "xhmiXXXXXX.mkv";
+      } else if (data.size() >= 3 &&
+                 data[0] == 'I' && data[1] == 'D' && data[2] == '3') {
+        tmpl = "xhmiXXXXXX.mp3";
+      } else if (data.size() >= 12 && memcmp(data.data() + 4, "ftyp", 4) == 0) {
+        tmpl = "xhmiXXXXXX.mp4";
+      }
       g_autofree gchar* path = nullptr;
-      const gint fd = g_file_open_tmp("xhmiXXXXXX", &path, nullptr);
+      const gint fd = g_file_open_tmp(tmpl, &path, nullptr);
       if (fd < 0) {
         Fail("io", "Unable to create a temporary file.");
       }
@@ -699,7 +732,7 @@ XhmiMessagesMediaMetadataMessage* DiscoverAv(const std::string& path) {
         xhmi_messages_video_metadata_message_new(
             duration_ptr, size, bitrate_ptr, rotation_ptr, make, model, gps, extra);
     message = xhmi_messages_media_metadata_message_new(
-        XUE_HUA_MEDIA_INFO_PLATFORM_INTERFACE_MEDIA_KIND_MESSAGE_VIDEO, nullptr,
+        XUE_HUA_MEDIA_INFO_MEDIA_KIND_MESSAGE_VIDEO, nullptr,
         video, nullptr);
   } else {
     int64_t sample_rate = 0;
@@ -722,7 +755,7 @@ XhmiMessagesMediaMetadataMessage* DiscoverAv(const std::string& path) {
             duration_ptr, bitrate_ptr, sample_ptr, channel_ptr, make, model, gps,
             extra);
     message = xhmi_messages_media_metadata_message_new(
-        XUE_HUA_MEDIA_INFO_PLATFORM_INTERFACE_MEDIA_KIND_MESSAGE_AUDIO, nullptr,
+        XUE_HUA_MEDIA_INFO_MEDIA_KIND_MESSAGE_AUDIO, nullptr,
         nullptr, audio);
   }
   if (videos) gst_discoverer_stream_info_list_free(videos);
@@ -756,7 +789,7 @@ void HandleRead(XhmiMessagesMediaSourceMessage* source,
         const auto kind =
             Sniff(prefix, xhmi_messages_media_source_message_get_uri(source));
         if (kind ==
-            XUE_HUA_MEDIA_INFO_PLATFORM_INTERFACE_MEDIA_KIND_MESSAGE_IMAGE) {
+            XUE_HUA_MEDIA_INFO_MEDIA_KIND_MESSAGE_IMAGE) {
           const auto data = LoadBytes(source);
           g_autoptr(XhmiMessagesImageMetadataMessage) image = BuildImage(data);
           g_autoptr(XhmiMessagesMediaMetadataMessage) message =
@@ -768,7 +801,7 @@ void HandleRead(XhmiMessagesMediaSourceMessage* source,
         bool temp = false;
         std::vector<uint8_t> payload;
         if (xhmi_messages_media_source_message_get_kind(source) ==
-            XUE_HUA_MEDIA_INFO_PLATFORM_INTERFACE_SOURCE_KIND_MESSAGE_BYTES) {
+            XUE_HUA_MEDIA_INFO_SOURCE_KIND_MESSAGE_BYTES) {
           payload = LoadBytes(source);
         }
         const std::string path = SourceFilePath(source, payload, &temp);
@@ -792,7 +825,7 @@ void HandleReadImage(XhmiMessagesMediaSourceMessage* source,
         const auto kind =
             Sniff(prefix, xhmi_messages_media_source_message_get_uri(source));
         if (kind !=
-            XUE_HUA_MEDIA_INFO_PLATFORM_INTERFACE_MEDIA_KIND_MESSAGE_IMAGE) {
+            XUE_HUA_MEDIA_INFO_MEDIA_KIND_MESSAGE_IMAGE) {
           Fail("wrongKind", "Source is not an image.");
         }
         const auto data = LoadBytes(source);
@@ -813,13 +846,13 @@ void HandleReadAv(XhmiMessagesMediaSourceMessage* source,
         const auto kind =
             Sniff(prefix, xhmi_messages_media_source_message_get_uri(source));
         if (kind ==
-            XUE_HUA_MEDIA_INFO_PLATFORM_INTERFACE_MEDIA_KIND_MESSAGE_IMAGE) {
+            XUE_HUA_MEDIA_INFO_MEDIA_KIND_MESSAGE_IMAGE) {
           Fail("wrongKind", "Source is an image, not an AV container.");
         }
         bool temp = false;
         std::vector<uint8_t> payload;
         if (xhmi_messages_media_source_message_get_kind(source) ==
-            XUE_HUA_MEDIA_INFO_PLATFORM_INTERFACE_SOURCE_KIND_MESSAGE_BYTES) {
+            XUE_HUA_MEDIA_INFO_SOURCE_KIND_MESSAGE_BYTES) {
           payload = LoadBytes(source);
         }
         const std::string path = SourceFilePath(source, payload, &temp);
@@ -863,7 +896,7 @@ void HandleReadMotionPhoto(XhmiMessagesMediaSourceMessage* source,
         bool temp = true;
         XhmiMessagesMediaSourceMessage* bytes_source =
             xhmi_messages_media_source_message_new(
-                XUE_HUA_MEDIA_INFO_PLATFORM_INTERFACE_SOURCE_KIND_MESSAGE_BYTES,
+                XUE_HUA_MEDIA_INFO_SOURCE_KIND_MESSAGE_BYTES,
                 nullptr, embedded.data(), embedded.size());
         const std::string path = SourceFilePath(bytes_source, embedded, &temp);
         g_object_unref(bytes_source);

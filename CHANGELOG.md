@@ -1,3 +1,12 @@
+## 2.1.1
+
+- Fix Linux build after the 2.1.0 monolith collapse: Pigeon C enums are now `XUE_HUA_MEDIA_INFO_*` (not `…_PLATFORM_INTERFACE_*`), and bump googletest so CMake ≥ 4 can configure the example.
+  修复 2.1.0 合并为单包后的 Linux 编译：Pigeon C 枚举改为 `XUE_HUA_MEDIA_INFO_*`（不再使用 `…_PLATFORM_INTERFACE_*`），并升级 googletest 以便 CMake ≥ 4 能配置示例工程。
+- Linux/Web: detect RIFF/WAVE (and ID3/MP3 frames) as audio by magic bytes so `BytesSource` works without a file extension; parse `GCamera:MotionPhotoOffset` for modern Pixel motion photos; pick a sensible temp-file suffix for GStreamer.
+  Linux/Web：按魔数识别 RIFF/WAVE（及 ID3/MP3）音频，使无扩展名的 `BytesSource` 可用；解析现代 Pixel 动态照片的 `GCamera:MotionPhotoOffset`；为 GStreamer 选择合适的临时文件后缀。
+- Example: use a real PNG sample with tEXt, expand Linux `integration_test` coverage (image/video/audio/EXIF/GPS/motion photo/error paths).
+  示例：改用带 tEXt 的真实 PNG，并扩充 Linux `integration_test` 覆盖面（图/视/音、EXIF/GPS、动态照片、错误路径）。
+
 ## 2.1.0
 
 - Ship as one Flutter plugin package. Platform implementations, the platform interface, and the Web plugin now live in `xue_hua_media_info` instead of separate endorsed packages.
