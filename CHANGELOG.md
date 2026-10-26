@@ -1,3 +1,8 @@
+## 2.1.4
+
+- Darwin (iOS/macOS): sniff RIFF/WAVE and ID3/MP3 by magic for `BytesSource`; parse `GCamera:MotionPhotoOffset`; map missing-file `NSError` to `notFound`/`io`; load AVAsset keys and WAVE fmt for duration/sampleRate/channelCount; choose temp-file suffix by content.
+  Darwin（iOS/macOS）：按魔数识别 RIFF/WAVE 与 ID3/MP3 以支持 `BytesSource`；解析 `GCamera:MotionPhotoOffset`；将缺失文件的 `NSError` 映射为 `notFound`/`io`；加载 AVAsset 键并用 WAVE fmt 补齐时长/采样率/声道；按内容选择临时文件后缀。
+
 ## 2.1.3
 
 - Windows: re-enable C++ exceptions for the plugin (`_HAS_EXCEPTIONS=1`) and return explicit `FlutterError` details so Pigeon error replies decode as `MediaInfoError` instead of `FormatException`.

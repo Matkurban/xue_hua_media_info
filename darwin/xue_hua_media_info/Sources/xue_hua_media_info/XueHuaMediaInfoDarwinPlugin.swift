@@ -170,10 +170,19 @@ public class XueHuaMediaInfoDarwinPlugin: NSObject, FlutterPlugin, MediaInfoHost
       }
     }
     let asset = AVURLAsset(url: url)
+    // Synchronous property access is often empty until keys are loaded (WAV/m4a).
+    // 同步读属性在加载 key 前经常为空（WAV/m4a）。
+    try loadAssetKeys(asset, keys: ["duration", "tracks", "commonMetadata"])
+
     let durationSeconds = CMTimeGetSeconds(asset.duration)
-    let durationMs: Int64? =
+    var durationMs: Int64? =
       durationSeconds.isFinite && durationSeconds > 0
       ? Int64((durationSeconds * 1000).rounded()) : nil
+    // WAVE fallback when AVFoundation still withholds duration.
+    // AVFoundation 仍拿不到时长时，回退解析 WAVE 头。
+    if durationMs == nil, let wav = parseWavFormat(data.count >= 12 ? data : (try? Data(contentsOf: url)) ?? Data()) {
+      durationMs = wav.durationMs
+    }
 
     let make = firstMetadataString(asset, identifier: .quickTimeMetadataMake)
     let model = firstMetadataString(asset, identifier: .quickTimeMetadataModel)
@@ -202,22 +211,56 @@ public class XueHuaMediaInfoDarwinPlugin: NSObject, FlutterPlugin, MediaInfoHost
     guard let audioTrack = asset.tracks(withMediaType: .audio).first else {
       throw fail("trackNotFound", "No video or audio track.")
     }
-    let sampleRate: Int64? = {
+    var sampleRate: Int64?
+    var channelCount: Int64?
+    if let desc = audioTrack.formatDescriptions.first {
+      let cm = desc as! CMFormatDescription
+      if let asbd = CMAudioFormatDescriptionGetStreamBasicDescription(cm)?.pointee {
+        if asbd.mSampleRate > 0 {
+          sampleRate = Int64(asbd.mSampleRate.rounded())
+        }
+        if asbd.mChannelsPerFrame > 0 {
+          channelCount = Int64(asbd.mChannelsPerFrame)
+        }
+      }
+    }
+    if sampleRate == nil || channelCount == nil,
+      let wav = parseWavFormat(data.count >= 12 ? data : (try? Data(contentsOf: url)) ?? Data())
+    {
+      if sampleRate == nil { sampleRate = wav.sampleRate }
+      if channelCount == nil { channelCount = wav.channelCount }
+      if durationMs == nil { durationMs = wav.durationMs }
+    }
+    if sampleRate == nil {
       let rate = audioTrack.naturalTimeScale
-      return rate > 0 ? Int64(rate) : nil
-    }()
+      if rate > 0 { sampleRate = Int64(rate) }
+    }
     let bitrate = Int64(audioTrack.estimatedDataRate.rounded())
     let message = AudioMetadataMessage(
       durationMs: durationMs,
       bitrate: bitrate > 0 ? bitrate : nil,
       sampleRate: sampleRate,
-      channelCount: nil,
+      channelCount: channelCount,
       make: make,
       model: model,
       gps: gps,
       extraTags: []
     )
     return MediaMetadataMessage(kind: .audio, image: nil, video: nil, audio: message)
+  }
+
+  private func loadAssetKeys(_ asset: AVAsset, keys: [String]) throws {
+    let group = DispatchGroup()
+    group.enter()
+    asset.loadValuesAsynchronously(forKeys: keys) { group.leave() }
+    _ = group.wait(timeout: .now() + 10)
+    for key in keys {
+      var error: NSError?
+      let status = asset.statusOfValue(forKey: key, error: &error)
+      if status == .failed {
+        throw fail("unsupportedFormat", error?.localizedDescription ?? "AVAsset failed to load \(key).")
+      }
+    }
   }
 
   private func firstMetadataString(_ asset: AVAsset, identifier: AVMetadataIdentifier) -> String? {
@@ -242,7 +285,11 @@ public class XueHuaMediaInfoDarwinPlugin: NSObject, FlutterPlugin, MediaInfoHost
     switch source.kind {
     case .file:
       guard let uri = source.uri else { throw fail("notFound", "Missing path.") }
-      return try Data(contentsOf: URL(fileURLWithPath: uri))
+      do {
+        return try Data(contentsOf: URL(fileURLWithPath: uri))
+      } catch {
+        throw mapIOError(error, path: uri)
+      }
     case .bytes:
       guard let bytes = source.bytes else { throw fail("notFound", "Missing byte payload.") }
       return bytes.data
@@ -255,7 +302,13 @@ public class XueHuaMediaInfoDarwinPlugin: NSObject, FlutterPlugin, MediaInfoHost
     switch source.kind {
     case .file:
       guard let uri = source.uri else { throw fail("notFound", "Missing path.") }
-      return try readPrefix(from: URL(fileURLWithPath: uri), count: count)
+      do {
+        return try readPrefix(from: URL(fileURLWithPath: uri), count: count)
+      } catch let error as PigeonError {
+        throw error
+      } catch {
+        throw mapIOError(error, path: uri)
+      }
     case .bytes:
       guard let bytes = source.bytes else { throw fail("notFound", "Missing byte payload.") }
       let data = bytes.data
@@ -292,7 +345,7 @@ public class XueHuaMediaInfoDarwinPlugin: NSObject, FlutterPlugin, MediaInfoHost
       return try resolveAsset(source)
     case .bytes:
       let url = FileManager.default.temporaryDirectory.appendingPathComponent(
-        UUID().uuidString + ".media")
+        UUID().uuidString + tempSuffix(for: data))
       try data.write(to: url)
       return url
     }
@@ -347,8 +400,23 @@ private func sniffKind(_ data: Data, uri: String?) throws -> MediaKindMessage {
   {
     return .video
   }
+  // Magic-byte audio (BytesSource has no extension) — parity with Linux/Windows/Web.
+  // 按魔数识别音频（BytesSource 无扩展名）— 与 Linux/Windows/Web 对齐。
+  if bytes.count >= 12 {
+    let riff = String(bytes[0..<4].map { Character(UnicodeScalar($0)) })
+    let wave = String(bytes[8..<12].map { Character(UnicodeScalar($0)) })
+    if riff == "RIFF" && wave == "WAVE" {
+      return .audio
+    }
+  }
+  if bytes.count >= 3
+    && ((bytes[0] == 0x49 && bytes[1] == 0x44 && bytes[2] == 0x33)
+      || (bytes[0] == 0xFF && (bytes[1] & 0xE0) == 0xE0))
+  {
+    return .audio
+  }
   if name.hasSuffix(".m4a") || name.hasSuffix(".aac") || name.hasSuffix(".mp3")
-    || name.hasSuffix(".wav")
+    || name.hasSuffix(".wav") || name.hasSuffix(".flac") || name.hasSuffix(".ogg")
   {
     return .audio
   }
@@ -382,24 +450,18 @@ private func parsePngText(_ data: Data) -> [PngTextChunkMessage] {
 
 private func motionPhotoOffset(_ data: Data) -> Int? {
   guard let xmp = extractXmp(data) else { return nil }
-  if let match = xmp.range(
-    of: #"GCamera:MicroVideoOffset\s*=\s*"(\d+)""#, options: .regularExpression)
-  {
-    let raw = String(xmp[match])
-    if let digits = raw.split(whereSeparator: { !$0.isNumber }).last,
-      let fromEnd = Int(digits)
-    {
-      let start = data.count - fromEnd
-      if start > 0 && start < data.count { return start }
-    }
-  }
-  if let match = xmp.range(of: #"MicroVideoOffset>\s*(\d+)"#, options: .regularExpression) {
-    let raw = String(xmp[match])
-    if let digits = raw.split(whereSeparator: { !$0.isNumber }).last,
-      let fromEnd = Int(digits)
-    {
-      let start = data.count - fromEnd
-      if start > 0 && start < data.count { return start }
+  let patterns = [
+    #"GCamera:MicroVideoOffset\s*=\s*"(\d+)""#,
+    #"MicroVideoOffset>\s*(\d+)"#,
+    #"GCamera:MotionPhotoOffset\s*=\s*"(\d+)""#,
+    #"MotionPhotoOffset\s*=\s*"(\d+)""#,
+    #"MotionPhotoOffset>\s*(\d+)"#,
+  ]
+  for pattern in patterns {
+    if let match = xmp.range(of: pattern, options: .regularExpression) {
+      if let start = offsetFromEnd(dataCount: data.count, matched: String(xmp[match])) {
+        return start
+      }
     }
   }
   let isMotion = xmp.contains("MotionPhoto") || xmp.contains("MicroVideo")
@@ -409,20 +471,116 @@ private func motionPhotoOffset(_ data: Data) -> Int? {
     // Use the last Item:Length — typically the embedded MP4.
     var last = match
     var search = match.upperBound..<xmp.endIndex
-    while let next = xmp.range(of: #"Item:Length(?:="|>)\s*(\d+)"#, options: .regularExpression, range: search)
+    while let next = xmp.range(
+      of: #"Item:Length(?:="|>)\s*(\d+)"#, options: .regularExpression, range: search)
     {
       last = next
       search = next.upperBound..<xmp.endIndex
     }
-    let raw = String(xmp[last])
-    if let digits = raw.split(whereSeparator: { !$0.isNumber }).last,
-      let fromEnd = Int(digits)
-    {
-      let start = data.count - fromEnd
-      if start > 0 && start < data.count { return start }
+    if let start = offsetFromEnd(dataCount: data.count, matched: String(xmp[last])) {
+      return start
     }
   }
   return nil
+}
+
+private func offsetFromEnd(dataCount: Int, matched: String) -> Int? {
+  guard let digits = matched.split(whereSeparator: { !$0.isNumber }).last,
+    let fromEnd = Int(digits)
+  else {
+    return nil
+  }
+  let start = dataCount - fromEnd
+  if start > 0 && start < dataCount { return start }
+  return nil
+}
+
+private func mapIOError(_ error: Error, path: String) -> PigeonError {
+  let ns = error as NSError
+  if ns.domain == NSCocoaErrorDomain
+    && (ns.code == NSFileNoSuchFileError || ns.code == NSFileReadNoSuchFileError)
+  {
+    return fail("notFound", "File not found: \(path)")
+  }
+  if ns.domain == NSPOSIXErrorDomain && ns.code == Int(ENOENT) {
+    return fail("notFound", "File not found: \(path)")
+  }
+  if !FileManager.default.fileExists(atPath: path) {
+    return fail("notFound", "File not found: \(path)")
+  }
+  return fail("io", ns.localizedDescription)
+}
+
+private func tempSuffix(for data: Data) -> String {
+  let bytes = [UInt8](data.prefix(16))
+  if bytes.count >= 12 {
+    let riff = String(bytes[0..<4].map { Character(UnicodeScalar($0)) })
+    let wave = String(bytes[8..<12].map { Character(UnicodeScalar($0)) })
+    if riff == "RIFF" && wave == "WAVE" { return ".wav" }
+  }
+  if bytes.count >= 12 {
+    let type = String(bytes[4..<8].map { Character(UnicodeScalar($0)) })
+    if type == "ftyp" { return ".mp4" }
+  }
+  if bytes.count >= 3 && bytes[0] == 0x49 && bytes[1] == 0x44 && bytes[2] == 0x33 {
+    return ".mp3"
+  }
+  if bytes.count >= 4 && bytes[0] == 0x1A && bytes[1] == 0x45 && bytes[2] == 0xDF && bytes[3] == 0xA3 {
+    return ".mkv"
+  }
+  if bytes.count >= 3 && bytes[0] == 0xFF && bytes[1] == 0xD8 { return ".jpg" }
+  return ".mp4"
+}
+
+private struct WavFormat {
+  let sampleRate: Int64
+  let channelCount: Int64
+  let durationMs: Int64
+}
+
+private func parseWavFormat(_ data: Data) -> WavFormat? {
+  let bytes = [UInt8](data)
+  guard bytes.count >= 44 else { return nil }
+  let riff = String(bytes[0..<4].map { Character(UnicodeScalar($0)) })
+  let wave = String(bytes[8..<12].map { Character(UnicodeScalar($0)) })
+  guard riff == "RIFF", wave == "WAVE" else { return nil }
+  var offset = 12
+  var sampleRate: Int64?
+  var channels: Int64?
+  var byteRate: Int64?
+  var dataSize: Int64?
+  while offset + 8 <= bytes.count {
+    let type = String(bytes[offset..<(offset + 4)].map { Character(UnicodeScalar($0)) })
+    let size =
+      Int(bytes[offset + 4])
+      | (Int(bytes[offset + 5]) << 8)
+      | (Int(bytes[offset + 6]) << 16)
+      | (Int(bytes[offset + 7]) << 24)
+    if size < 0 || offset + 8 + size > bytes.count { break }
+    if type == "fmt ", size >= 16 {
+      channels = Int64(Int(bytes[offset + 10]) | (Int(bytes[offset + 11]) << 8))
+      sampleRate = Int64(
+        Int(bytes[offset + 12])
+          | (Int(bytes[offset + 13]) << 8)
+          | (Int(bytes[offset + 14]) << 16)
+          | (Int(bytes[offset + 15]) << 24))
+      byteRate = Int64(
+        Int(bytes[offset + 16])
+          | (Int(bytes[offset + 17]) << 8)
+          | (Int(bytes[offset + 18]) << 16)
+          | (Int(bytes[offset + 19]) << 24))
+    } else if type == "data" {
+      dataSize = Int64(size)
+      break
+    }
+    offset += 8 + size
+  }
+  guard let sampleRate, sampleRate > 0, let channels, channels > 0 else { return nil }
+  var durationMs: Int64 = 0
+  if let dataSize, let byteRate, byteRate > 0 {
+    durationMs = dataSize * 1000 / byteRate
+  }
+  return WavFormat(sampleRate: sampleRate, channelCount: channels, durationMs: durationMs)
 }
 
 private func extractXmp(_ data: Data) -> String? {
