@@ -1,3 +1,10 @@
+## 2.1.2
+
+- Windows: bump googletest so CMake ≥ 4 can configure the example; sniff RIFF/WAVE (and ID3/MP3) by magic bytes for `BytesSource`; parse `GCamera:MotionPhotoOffset` for modern Pixel motion photos.
+  Windows：升级 googletest 以便 CMake ≥ 4 能配置示例；按魔数识别 RIFF/WAVE（及 ID3/MP3）以支持无扩展名的 `BytesSource`；解析现代 Pixel 动态照片的 `GCamera:MotionPhotoOffset`。
+- Example: silence Flutter beta-only `package:flutter/material.dart` deprecation info so `flutter analyze` stays clean without breaking stable Flutter.
+  示例：忽略 Flutter beta 上 `package:flutter/material.dart` 的弃用 info，保证 `flutter analyze` 干净且不破坏稳定版 Flutter。
+
 ## 2.1.1
 
 - Fix Linux build after the 2.1.0 monolith collapse: Pigeon C enums are now `XUE_HUA_MEDIA_INFO_*` (not `…_PLATFORM_INTERFACE_*`), and bump googletest so CMake ≥ 4 can configure the example.

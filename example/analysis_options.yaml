@@ -8,6 +8,11 @@
 # The following line activates a set of recommended lints for Flutter apps,
 # packages, and plugins designed to encourage good coding practices.
 analyzer:
+  errors:
+    # Flutter beta deprecates package:flutter/material.dart in favor of a
+    # material_ui package that is not yet the stable default. Keep the stable
+    # import in the example and silence the beta-only info diagnostic.
+    deprecated_member_use: ignore
   exclude:
     - build/**
     - android/**

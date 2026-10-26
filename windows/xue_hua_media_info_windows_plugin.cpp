@@ -157,6 +157,13 @@ std::optional<int64_t> MotionPhotoOffset(const std::vector<uint8_t>& data) {
   if (auto off = OffsetFromXmpLength(xmp, data.size(), "MicroVideoOffset")) {
     return off;
   }
+  // Modern Pixel / Samsung XMP uses MotionPhotoOffset (bytes from end).
+  if (auto off = OffsetFromXmpLength(xmp, data.size(), "GCamera:MotionPhotoOffset")) {
+    return off;
+  }
+  if (auto off = OffsetFromXmpLength(xmp, data.size(), "MotionPhotoOffset")) {
+    return off;
+  }
   const bool is_motion =
       xmp.find("MotionPhoto") != std::string::npos ||
       xmp.find("MicroVideo") != std::string::npos;
@@ -455,8 +462,19 @@ MediaKindMessage Sniff(const std::vector<uint8_t>& prefix, const std::string* ur
       prefix[2] == 0xDF && prefix[3] == 0xA3) {
     return MediaKindMessage::kVideo;
   }
+  // Magic-byte audio detection (BytesSource has no file extension).
+  if (prefix.size() >= 12 && memcmp(prefix.data(), "RIFF", 4) == 0 &&
+      memcmp(prefix.data() + 8, "WAVE", 4) == 0) {
+    return MediaKindMessage::kAudio;
+  }
+  if (prefix.size() >= 3 &&
+      ((prefix[0] == 'I' && prefix[1] == 'D' && prefix[2] == '3') ||
+       (prefix[0] == 0xFF && (prefix[1] & 0xE0) == 0xE0))) {
+    return MediaKindMessage::kAudio;
+  }
   if (EndsWith(lower, ".m4a") || EndsWith(lower, ".aac") ||
-      EndsWith(lower, ".mp3") || EndsWith(lower, ".wav")) {
+      EndsWith(lower, ".mp3") || EndsWith(lower, ".wav") ||
+      EndsWith(lower, ".flac") || EndsWith(lower, ".ogg")) {
     return MediaKindMessage::kAudio;
   }
   Fail("unsupportedFormat", "Unrecognized media header.");
