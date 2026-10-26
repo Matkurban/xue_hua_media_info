@@ -33,16 +33,21 @@
 using Microsoft::WRL::ComPtr;
 
 namespace xue_hua_media_info_windows {
+using ::flutter::EncodableValue;
 namespace {
 
 class MediaException : public std::runtime_error {
  public:
   MediaException(std::string code, std::string message)
-      : std::runtime_error(std::move(message)), code_(std::move(code)) {}
+      : std::runtime_error(message),
+        code_(std::move(code)),
+        message_(std::move(message)) {}
   const std::string& code() const { return code_; }
+  const std::string& message() const { return message_; }
 
  private:
   std::string code_;
+  std::string message_;
 };
 
 [[noreturn]] void Fail(const char* code, const std::string& message) {
@@ -1011,11 +1016,15 @@ template <typename T>
 void Reply(const std::function<void(ErrorOr<T> reply)>& result,
            std::function<T()> body) {
   try {
-    result(body());
+    result(ErrorOr<T>(body()));
   } catch (const MediaException& error) {
-    result(FlutterError(error.code(), error.what()));
+    // Explicit null details; avoid depending on std::exception::what() under
+    // Flutter's default _HAS_EXCEPTIONS=0 toolchain.
+    result(ErrorOr<T>(FlutterError(error.code(), error.message(),
+                                    EncodableValue())));
   } catch (const std::exception& error) {
-    result(FlutterError("malformed", error.what()));
+    result(ErrorOr<T>(
+        FlutterError("malformed", std::string(error.what()), EncodableValue())));
   }
 }
 

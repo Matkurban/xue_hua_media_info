@@ -51,6 +51,10 @@ target_include_directories(${PLUGIN_NAME} INTERFACE
 target_link_libraries(${PLUGIN_NAME} PRIVATE flutter flutter_wrapper_plugin
   windowscodecs mfplat mfreadwrite mfuuid ole32 shlwapi)
 target_compile_options(${PLUGIN_NAME} PRIVATE /utf-8)
+# Flutter apply_standard_settings defines _HAS_EXCEPTIONS=0. This plugin uses
+# C++ exceptions (MediaException) to build Pigeon FlutterError replies; with
+# exceptions disabled those replies become corrupt and Dart throws FormatException.
+target_compile_definitions(${PLUGIN_NAME} PRIVATE _HAS_EXCEPTIONS=1)
 
 # List of absolute paths to libraries that should be bundled with the plugin.
 # This list could contain prebuilt libraries, or libraries created by an
@@ -98,6 +102,7 @@ target_link_libraries(${TEST_RUNNER} PRIVATE gtest_main gmock)
 target_link_libraries(${TEST_RUNNER} PRIVATE windowscodecs mfplat mfreadwrite mfuuid ole32 shlwapi)
 target_compile_definitions(${TEST_RUNNER} PRIVATE NOMINMAX)
 target_compile_options(${TEST_RUNNER} PRIVATE /utf-8)
+target_compile_definitions(${TEST_RUNNER} PRIVATE _HAS_EXCEPTIONS=1)
 # flutter_wrapper_plugin has link dependencies on the Flutter DLL.
 add_custom_command(TARGET ${TEST_RUNNER} POST_BUILD
   COMMAND ${CMAKE_COMMAND} -E copy_if_different
