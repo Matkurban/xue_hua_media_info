@@ -329,6 +329,38 @@ void ParseJpegExif(const std::vector<uint8_t>& data, ImageFields* out) {
         out->model = EntryAscii(tiff, tiff_size, ifd0, 0x0110, little);
         out->software = EntryAscii(tiff, tiff_size, ifd0, 0x0131, little);
         out->date_modified = EntryAscii(tiff, tiff_size, ifd0, 0x0132, little);
+        // Prefer SOF dimensions; fall back to IFD0 ImageWidth/Length for
+        // Exif-only stubs (e.g. synthetic Motion Photo stills without SOF).
+        auto read_dim = [&](const std::map<uint16_t, TiffEntry>& entries,
+                            uint16_t tag) -> std::optional<int64_t> {
+          const auto it = entries.find(tag);
+          if (it == entries.end()) {
+            return std::nullopt;
+          }
+          size_t n = 0;
+          const uint8_t* p =
+              EntryPayload(tiff, tiff_size, it->second, little, &n);
+          if (!p) {
+            return std::nullopt;
+          }
+          if (it->second.type == 3 && n >= 2) {
+            return U16(p, little);
+          }
+          if (it->second.type == 4 && n >= 4) {
+            return U32(p, little);
+          }
+          return std::nullopt;
+        };
+        if (!out->width) {
+          if (auto w = read_dim(ifd0, 0x0100)) {
+            out->width = *w;
+          }
+        }
+        if (!out->height) {
+          if (auto h = read_dim(ifd0, 0x0101)) {
+            out->height = *h;
+          }
+        }
         const auto ori = ifd0.find(0x0112);
         if (ori != ifd0.end()) {
           size_t n = 0;
@@ -352,6 +384,16 @@ void ParseJpegExif(const std::vector<uint8_t>& data, ImageFields* out) {
         read_sub(0x8769, &exif);
         out->date_original = EntryAscii(tiff, tiff_size, exif, 0x9003, little);
         out->date_digitized = EntryAscii(tiff, tiff_size, exif, 0x9004, little);
+        if (!out->width) {
+          if (auto w = read_dim(exif, 0xA002)) {
+            out->width = *w;
+          }
+        }
+        if (!out->height) {
+          if (auto h = read_dim(exif, 0xA003)) {
+            out->height = *h;
+          }
+        }
         std::map<uint16_t, TiffEntry> gps;
         read_sub(0x8825, &gps);
         auto rational3 = [&](uint16_t tag) -> std::optional<double> {
@@ -626,8 +668,16 @@ ImageMetadataMessage ReadImageInternal(const std::vector<uint8_t>& data) {
             }
           }
         }
-      } else if (!fields.width) {
-        Fail("unsupportedFormat", "WIC could not decode this image.");
+      } else {
+        // Motion Photo / Exif-only JPEG stubs often have no SOF and WIC
+        // refuses them. Match Linux: keep metadata from ParseJpegExif/PNG.
+        const bool jpeg =
+            data.size() >= 2 && data[0] == 0xFF && data[1] == 0xD8;
+        const bool png =
+            data.size() >= 8 && data[0] == 0x89 && data[1] == 0x50;
+        if (!jpeg && !png && !fields.width) {
+          Fail("unsupportedFormat", "WIC could not decode this image.");
+        }
       }
     }
   }

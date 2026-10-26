@@ -1,7 +1,9 @@
 ## 2.1.3
 
-- Windows: re-enable C++ exceptions for the plugin (`_HAS_EXCEPTIONS=1`) and return explicit `FlutterError` details so Pigeon error replies decode as `MediaInfoError` instead of `FormatException`. Keeps the 2.1.2 sniff/motion-photo fixes.
-  Windows：为插件重新启用 C++ 异常（`_HAS_EXCEPTIONS=1`），并显式返回 `FlutterError`，使 Pigeon 错误回复解码为 `MediaInfoError` 而非 `FormatException`。保留 2.1.2 的嗅探/动态照片修复。
+- Windows: re-enable C++ exceptions for the plugin (`_HAS_EXCEPTIONS=1`) and return explicit `FlutterError` details so Pigeon error replies decode as `MediaInfoError` instead of `FormatException`.
+  Windows：为插件重新启用 C++ 异常（`_HAS_EXCEPTIONS=1`），并显式返回 `FlutterError`，使 Pigeon 错误回复解码为 `MediaInfoError` 而非 `FormatException`。
+- Windows: do not fail `readImage` when WIC cannot decode Exif-only / Motion Photo JPEG stubs; fall back to IFD0 ImageWidth/Length and Exif PixelX/YDimension for size (parity with Linux metadata-only path).
+  Windows：WIC 无法解码仅含 Exif / 动态照片 JPEG 桩文件时不再让 `readImage` 失败；尺寸回退到 IFD0 ImageWidth/Length 与 Exif PixelX/YDimension（与 Linux 仅元数据路径对齐）。
 
 ## 2.1.2
 
