@@ -1,3 +1,8 @@
+## 2.1.5
+
+- Android: sniff RIFF/WAVE and ID3/MP3 by magic for `BytesSource`; parse `GCamera:MotionPhotoOffset` for modern Pixel motion photos; parse WAVE `fmt`/`data` for duration/sampleRate/channelCount when MediaMetadataRetriever omits them (parity with Linux/Windows/Darwin/Web).
+  Android：按魔数识别 RIFF/WAVE 与 ID3/MP3 以支持 `BytesSource`；解析现代 Pixel 动态照片的 `GCamera:MotionPhotoOffset`；在 MediaMetadataRetriever 缺字段时解析 WAVE `fmt`/`data` 补齐时长/采样率/声道（与 Linux/Windows/Darwin/Web 对齐）。
+
 ## 2.1.4
 
 - Darwin (iOS/macOS): sniff RIFF/WAVE and ID3/MP3 by magic for `BytesSource`; parse `GCamera:MotionPhotoOffset`; map missing-file `NSError` to `notFound`/`io`; load AVAsset keys and WAVE fmt for duration/sampleRate/channelCount; choose temp-file suffix by content.

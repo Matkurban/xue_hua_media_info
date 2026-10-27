@@ -144,13 +144,35 @@ class XueHuaMediaInfoAndroidPlugin :
         if (kind == MediaKindMessage.IMAGE) {
             throw FlutterError("wrongKind", "Source is an image, not an AV container.", null)
         }
+        // WAVE: MediaMetadataRetriever often omits duration/sampleRate/channels — parse fmt/data.
+        // WAVE：MMR 常缺时长/采样率/声道，直接解析 fmt/data（与 Darwin/Linux/Windows 对齐）。
+        if (kind == MediaKindMessage.AUDIO) {
+            val prefix = loadPrefix(source, HEADER_BYTES)
+            if (prefix.size >= 12 &&
+                prefix.copyOfRange(0, 4).toString(Charsets.US_ASCII) == "RIFF" &&
+                prefix.copyOfRange(8, 12).toString(Charsets.US_ASCII) == "WAVE"
+            ) {
+                parseWaveAudio(loadAll(source))?.let { return it }
+            }
+        }
         val retriever = MediaMetadataRetriever()
         try {
             applyRetrieverSource(retriever, source)
-            return metadataFromRetriever(retriever)
+            val meta = metadataFromRetriever(retriever)
+            if (meta.kind == MediaKindMessage.AUDIO && meta.audio != null) {
+                val audio = meta.audio!!
+                if (audio.durationMs == null || audio.sampleRate == null || audio.channelCount == null) {
+                    parseWaveAudio(loadAll(source))?.let { return it }
+                }
+            }
+            return meta
         } catch (error: FlutterError) {
             throw error
         } catch (error: Exception) {
+            // Last-chance WAVE parse when MMR rejects the container.
+            if (kind == MediaKindMessage.AUDIO) {
+                parseWaveAudio(loadAll(source))?.let { return it }
+            }
             throw FlutterError("unsupportedFormat", error.message ?: "Unable to read container.", null)
         } finally {
             retriever.release()
@@ -158,10 +180,23 @@ class XueHuaMediaInfoAndroidPlugin :
     }
 
     private fun readAvFromBytes(data: ByteArray): MediaMetadataMessage {
+        if (data.size >= 12 &&
+            data.copyOfRange(0, 4).toString(Charsets.US_ASCII) == "RIFF" &&
+            data.copyOfRange(8, 12).toString(Charsets.US_ASCII) == "WAVE"
+        ) {
+            parseWaveAudio(data)?.let { return it }
+        }
         val retriever = MediaMetadataRetriever()
         try {
             retriever.setDataSource(ByteArrayMediaDataSource(data))
-            return metadataFromRetriever(retriever)
+            val meta = metadataFromRetriever(retriever)
+            if (meta.kind == MediaKindMessage.AUDIO && meta.audio != null) {
+                val audio = meta.audio!!
+                if (audio.durationMs == null || audio.sampleRate == null || audio.channelCount == null) {
+                    parseWaveAudio(data)?.let { return it }
+                }
+            }
+            return meta
         } finally {
             retriever.release()
         }
@@ -358,6 +393,84 @@ private class ByteArrayMediaDataSource(
     override fun close() {}
 }
 
+
+/**
+ * Parse RIFF/WAVE fmt + data for duration/sampleRate/channelCount when MMR is incomplete.
+ * 解析 RIFF/WAVE 的 fmt 与 data，补齐 MMR 缺失的时长/采样率/声道。
+ */
+internal fun parseWaveAudio(data: ByteArray): MediaMetadataMessage? {
+    if (data.size < 12 ||
+        data.copyOfRange(0, 4).toString(Charsets.US_ASCII) != "RIFF" ||
+        data.copyOfRange(8, 12).toString(Charsets.US_ASCII) != "WAVE"
+    ) {
+        return null
+    }
+    var offset = 12
+    var channels: Long? = null
+    var sampleRate: Long? = null
+    var byteRate: Long? = null
+    var bitsPerSample: Long? = null
+    var dataSize: Long? = null
+    while (offset + 8 <= data.size) {
+        val id = data.copyOfRange(offset, offset + 4).toString(Charsets.US_ASCII)
+        val size =
+            ByteBuffer.wrap(data, offset + 4, 4).order(ByteOrder.LITTLE_ENDIAN).int.toLong() and 0xffffffffL
+        val payload = offset + 8
+        if (payload > data.size) {
+            break
+        }
+        val end = (payload + size).toInt().coerceAtMost(data.size)
+        when (id) {
+            "fmt " -> {
+                if (end - payload >= 16) {
+                    val buf = ByteBuffer.wrap(data, payload, end - payload).order(ByteOrder.LITTLE_ENDIAN)
+                    buf.short // audioFormat
+                    channels = buf.short.toLong() and 0xffffL
+                    sampleRate = buf.int.toLong() and 0xffffffffL
+                    byteRate = buf.int.toLong() and 0xffffffffL
+                    buf.short // blockAlign
+                    bitsPerSample = buf.short.toLong() and 0xffffL
+                }
+            }
+            "data" -> dataSize = size
+        }
+        val advance = 8 + size
+        offset += ((advance + 1) and 0x7ffffffe).toInt() // word-align
+        if (advance <= 0) {
+            break
+        }
+    }
+    if (channels == null || sampleRate == null || sampleRate == 0L) {
+        return null
+    }
+    val durationMs =
+        when {
+            byteRate != null && byteRate > 0 && dataSize != null -> (dataSize * 1000L) / byteRate
+            bitsPerSample != null && bitsPerSample > 0 && dataSize != null && channels > 0 -> {
+                val bytesPerSec = sampleRate * channels * (bitsPerSample / 8)
+                if (bytesPerSec > 0) (dataSize * 1000L) / bytesPerSec else null
+            }
+            else -> null
+        }
+    val bitrate =
+        when {
+            byteRate != null && byteRate > 0 -> byteRate * 8
+            else -> null
+        }
+    val audio =
+        AudioMetadataMessage(
+            durationMs = durationMs,
+            bitrate = bitrate,
+            sampleRate = sampleRate,
+            channelCount = channels,
+            make = null,
+            model = null,
+            gps = null,
+            extraTags = emptyList(),
+        )
+    return MediaMetadataMessage(kind = MediaKindMessage.AUDIO, audio = audio)
+}
+
 internal fun sniffKind(prefix: ByteArray, source: MediaSourceMessage): MediaKindMessage {
     val name = source.uri?.lowercase() ?: ""
     if (name.endsWith(".raf") || name.endsWith(".cr3") || name.endsWith(".iiq")) {
@@ -413,7 +526,29 @@ internal fun sniffKind(prefix: ByteArray, source: MediaSourceMessage): MediaKind
     ) {
         return MediaKindMessage.VIDEO
     }
-    if (name.endsWith(".m4a") || name.endsWith(".aac") || name.endsWith(".mp3") || name.endsWith(".wav")) {
+    // Magic-byte audio (BytesSource has no extension) — parity with Linux/Windows/Darwin/Web.
+    // 按魔数识别音频（BytesSource 无扩展名）— 与 Linux/Windows/Darwin/Web 对齐。
+    if (prefix.size >= 12 &&
+        prefix.copyOfRange(0, 4).toString(Charsets.US_ASCII) == "RIFF" &&
+        prefix.copyOfRange(8, 12).toString(Charsets.US_ASCII) == "WAVE"
+    ) {
+        return MediaKindMessage.AUDIO
+    }
+    if (prefix.size >= 3 &&
+        (
+            (prefix[0] == 0x49.toByte() && prefix[1] == 0x44.toByte() && prefix[2] == 0x33.toByte()) ||
+                (prefix[0] == 0xFF.toByte() && (prefix[1].toInt() and 0xE0) == 0xE0)
+        )
+    ) {
+        return MediaKindMessage.AUDIO
+    }
+    if (name.endsWith(".m4a") ||
+        name.endsWith(".aac") ||
+        name.endsWith(".mp3") ||
+        name.endsWith(".wav") ||
+        name.endsWith(".flac") ||
+        name.endsWith(".ogg")
+    ) {
         return MediaKindMessage.AUDIO
     }
     throw FlutterError("unsupportedFormat", "Unrecognized media header.", null)
@@ -461,12 +596,21 @@ internal fun parsePngText(data: ByteArray): List<PngTextChunkMessage> {
 
 internal fun motionPhotoOffset(data: ByteArray): Int? {
     val xmp = extractXmp(data) ?: return null
-    val micro = Regex("""GCamera:MicroVideoOffset\s*=\s*"(\d+)"""").find(xmp)
-        ?: Regex("""MicroVideoOffset>\s*(\d+)""").find(xmp)
-    if (micro != null) {
-        val fromEnd = micro.groupValues[1].toIntOrNull() ?: return null
+    val patterns =
+        listOf(
+            Regex("""GCamera:MicroVideoOffset\s*=\s*"(\d+)""""),
+            Regex("""MicroVideoOffset>\s*(\d+)"""),
+            Regex("""GCamera:MotionPhotoOffset\s*=\s*"(\d+)""""),
+            Regex("""MotionPhotoOffset\s*=\s*"(\d+)""""),
+            Regex("""MotionPhotoOffset>\s*(\d+)"""),
+        )
+    for (pattern in patterns) {
+        val match = pattern.find(xmp) ?: continue
+        val fromEnd = match.groupValues[1].toIntOrNull() ?: continue
         val start = data.size - fromEnd
-        return if (start in 1 until data.size) start else null
+        if (start in 1 until data.size) {
+            return start
+        }
     }
     if (!xmp.contains("MotionPhoto") && !xmp.contains("MicroVideo")) {
         return null
