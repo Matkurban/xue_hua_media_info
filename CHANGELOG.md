@@ -1,3 +1,8 @@
+## 2.1.6
+
+- Example: expand iOS `integration_test` source-matrix coverage and add official `flutter drive` `test_driver`; verified on ios17/ios18/ios26/ios27 simulators with `flutter analyze` 0 issues and zero Xcode/native compile warnings.
+  示例：扩充 iOS `integration_test` 源矩阵覆盖并补齐官方 `flutter drive` 的 `test_driver`；在 ios17/ios18/ios26/ios27 模拟器验收通过，`flutter analyze` 0 issue，Xcode/原生零编译警告。
+
 ## 2.1.5
 
 - Android: sniff RIFF/WAVE and ID3/MP3 by magic for `BytesSource`; parse `GCamera:MotionPhotoOffset` for modern Pixel motion photos; parse WAVE `fmt`/`data` for duration/sampleRate/channelCount when MediaMetadataRetriever omits them (parity with Linux/Windows/Darwin/Web).
