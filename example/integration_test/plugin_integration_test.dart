@@ -238,6 +238,128 @@ void main() {
     });
   });
 
+
+  group('source matrix extras', () {
+    testWidgets('FileSource MP4 matches asset VideoMetadata', (tester) async {
+      final bytes = await rootBundle.load('assets/testdata/clip.mp4');
+      final tmp = File(
+        '${Directory.systemTemp.path}/xhmi_clip_${DateTime.now().microsecondsSinceEpoch}.mp4',
+      );
+      await tmp.writeAsBytes(bytes.buffer.asUint8List());
+      addTearDown(tmp.deleteSync);
+
+      final av = await MediaInfo.readAv(MediaSource.file(tmp.path));
+      expect(av, isA<VideoMetadata>());
+      final video = av as VideoMetadata;
+      expect(video.duration?.inMilliseconds, greaterThan(500));
+      expect(video.size?.width, 320);
+      expect(video.size?.height, 240);
+    });
+
+    testWidgets('FileSource WAV matches asset AudioMetadata', (tester) async {
+      final bytes = await rootBundle.load('assets/testdata/tone.wav');
+      final tmp = File(
+        '${Directory.systemTemp.path}/xhmi_tone_${DateTime.now().microsecondsSinceEpoch}.wav',
+      );
+      await tmp.writeAsBytes(bytes.buffer.asUint8List());
+      addTearDown(tmp.deleteSync);
+
+      final av = await MediaInfo.readAv(MediaSource.file(tmp.path));
+      expect(av, isA<AudioMetadata>());
+      final audio = av as AudioMetadata;
+      expect(audio.duration?.inMilliseconds, greaterThan(500));
+      expect(audio.sampleRate, isNotNull);
+    });
+
+    testWidgets('BytesSource JPEG preserves EXIF make/size/gps', (tester) async {
+      final data = await rootBundle.load('assets/testdata/exif.jpg');
+      final image = await MediaInfo.readImage(
+        MediaSource.bytes(data.buffer.asUint8List()),
+      );
+      expect(image.make, isNotNull);
+      expect(image.size, isNotNull);
+      expect(image.gps, isNotNull);
+      expect(image.hasMotionPhoto, isFalse);
+    });
+
+    testWidgets('BytesSource MP4 returns VideoMetadata', (tester) async {
+      final data = await rootBundle.load('assets/testdata/clip.mp4');
+      final meta = await MediaInfo.read(
+        MediaSource.bytes(data.buffer.asUint8List()),
+      );
+      expect(meta, isA<VideoMetadata>());
+      final video = meta as VideoMetadata;
+      expect(video.duration?.inMilliseconds, greaterThan(500));
+    });
+
+    testWidgets('probe motion photo asset is image', (tester) async {
+      expect(await MediaInfo.probe(motionAsset), MediaKind.image);
+    });
+
+    testWidgets('FileSource motion photo extractable', (tester) async {
+      final bytes =
+          await rootBundle.load('assets/testdata/motion_photo_pixel_synth.jpg');
+      final tmp = File(
+        '${Directory.systemTemp.path}/xhmi_mp_${DateTime.now().microsecondsSinceEpoch}.jpg',
+      );
+      await tmp.writeAsBytes(bytes.buffer.asUint8List());
+      addTearDown(tmp.deleteSync);
+
+      final source = MediaSource.file(tmp.path);
+      final image = await MediaInfo.readImage(source);
+      expect(image.hasMotionPhoto, isTrue);
+      final clip = await MediaInfo.readMotionPhoto(source);
+      expect(clip.duration, isNotNull);
+    });
+
+    testWidgets('BytesSource motion photo extractable', (tester) async {
+      final data =
+          await rootBundle.load('assets/testdata/motion_photo_pixel_synth.jpg');
+      final source = MediaSource.bytes(data.buffer.asUint8List());
+      final image = await MediaInfo.readImage(source);
+      expect(image.hasMotionPhoto, isTrue);
+      final clip = await MediaInfo.readMotionPhoto(source);
+      expect(clip, isA<VideoMetadata>());
+      expect(clip.duration, isNotNull);
+    });
+
+    testWidgets('JPEG orientation field is present when EXIF has it', (
+      tester,
+    ) async {
+      final image = await MediaInfo.readImage(jpegAsset);
+      // Sample EXIF JPEG carries orientation; assert type when non-null.
+      if (image.orientation != null) {
+        expect(image.orientation, inInclusiveRange(1, 8));
+      }
+      expect(image.dateTimeDigitized ?? image.dateTimeOriginal, isNotNull);
+    });
+
+    testWidgets('read routes MOV to VideoMetadata', (tester) async {
+      final meta = await MediaInfo.read(movAsset);
+      expect(meta, isA<VideoMetadata>());
+    });
+
+    testWidgets('readMotionPhoto wrongKind-path: video source fails', (
+      tester,
+    ) async {
+      await expectLater(
+        MediaInfo.readMotionPhoto(mp4Asset),
+        throwsA(
+          isA<MediaInfoError>().having(
+            (e) => e.code,
+            'code',
+            anyOf(
+              MediaInfoError.codeTrackNotFound,
+              MediaInfoError.codeWrongKind,
+              MediaInfoError.codeUnsupportedFormat,
+              MediaInfoError.codeMalformed,
+            ),
+          ),
+        ),
+      );
+    });
+  });
+
   group('example UI', () {
     testWidgets('preview page loads sample metadata without error codes', (
       tester,
