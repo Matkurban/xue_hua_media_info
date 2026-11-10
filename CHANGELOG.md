@@ -1,3 +1,8 @@
+## 2.1.7
+
+- update pigeon to `29.2.0`
+- update android gradle plugin to `9.1.1`
+
 ## 2.1.6
 
 - Example: expand iOS `integration_test` source-matrix coverage and add official `flutter drive` `test_driver`; verified on ios17/ios18/ios26/ios27 simulators with `flutter analyze` 0 issues and zero Xcode/native compile warnings.
