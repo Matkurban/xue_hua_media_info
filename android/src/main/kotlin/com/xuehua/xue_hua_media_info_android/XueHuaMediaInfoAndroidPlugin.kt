@@ -33,11 +33,11 @@ class XueHuaMediaInfoAndroidPlugin :
     override fun onAttachedToEngine(binding: FlutterPlugin.FlutterPluginBinding) {
         context = binding.applicationContext
         flutterAssets = binding.flutterAssets
-        MediaInfoHostApi.setUp(binding.binaryMessenger, this)
+        MediaInfoHostApiRegistrar().register(this, binding)
     }
 
     override fun onDetachedFromEngine(binding: FlutterPlugin.FlutterPluginBinding) {
-        MediaInfoHostApi.setUp(binding.binaryMessenger, null)
+        MediaInfoHostApiRegistrar().unregister(this, binding)
     }
 
     override suspend fun read(source: MediaSourceMessage): MediaMetadataMessage {
@@ -159,9 +159,9 @@ class XueHuaMediaInfoAndroidPlugin :
         try {
             applyRetrieverSource(retriever, source)
             val meta = metadataFromRetriever(retriever)
-            if (meta.kind == MediaKindMessage.AUDIO && meta.audio != null) {
-                val audio = meta.audio!!
-                if (audio.durationMs == null || audio.sampleRate == null || audio.channelCount == null) {
+            if (meta.kind == MediaKindMessage.AUDIO) {
+                val audio = meta.audio
+                if (audio != null && (audio.durationMs == null || audio.sampleRate == null || audio.channelCount == null)) {
                     parseWaveAudio(loadAll(source))?.let { return it }
                 }
             }
@@ -190,9 +190,9 @@ class XueHuaMediaInfoAndroidPlugin :
         try {
             retriever.setDataSource(ByteArrayMediaDataSource(data))
             val meta = metadataFromRetriever(retriever)
-            if (meta.kind == MediaKindMessage.AUDIO && meta.audio != null) {
-                val audio = meta.audio!!
-                if (audio.durationMs == null || audio.sampleRate == null || audio.channelCount == null) {
+            if (meta.kind == MediaKindMessage.AUDIO) {
+                val audio = meta.audio
+                if (audio != null && (audio.durationMs == null || audio.sampleRate == null || audio.channelCount == null)) {
                     parseWaveAudio(data)?.let { return it }
                 }
             }

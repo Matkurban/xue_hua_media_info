@@ -99,7 +99,7 @@ internal class XueHuaMediaInfoAndroidPluginTest {
             0x01, 0x00, // PCM
             0x01, 0x00, // 1 channel
             0x40, 0x1F, 0x00, 0x00, // 8000
-            0x80, 0x3E, 0x00, 0x00, // byteRate 16000
+            0x80.toByte(), 0x3E, 0x00, 0x00, // byteRate 16000
             0x02, 0x00, // blockAlign
             0x10, 0x00, // 16-bit
         )
@@ -115,10 +115,12 @@ internal class XueHuaMediaInfoAndroidPluginTest {
         )
         val meta = parseWaveAudio(wav)
         assertNotNull(meta)
-        assertEquals(MediaKindMessage.AUDIO, meta!!.kind)
-        assertEquals(1000L, meta.audio!!.durationMs)
-        assertEquals(8000L, meta.audio!!.sampleRate)
-        assertEquals(1L, meta.audio!!.channelCount)
+        assertEquals(MediaKindMessage.AUDIO, meta.kind)
+        val audio = meta.audio
+        assertNotNull(audio)
+        assertEquals(1000L, audio.durationMs)
+        assertEquals(8000L, audio.sampleRate)
+        assertEquals(1L, audio.channelCount)
     }
 
 }

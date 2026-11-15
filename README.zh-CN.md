@@ -4,7 +4,7 @@
 
 跨平台**原生** Flutter 插件，用于读取**图片 EXIF** 与**视频/音频元数据**。应用只依赖
 `xue_hua_media_info`。各平台原生代码都在这个包里，通过
-[Pigeon](https://pub.dev/packages/pigeon) 通信。无需 Rust 工具链、无需 FFI、无需全局 `initialize()`。
+[Pigeon](https://pub.dev/packages/pigeon) 通信（iOS/macOS 使用 Swift FFI，Android 使用 Kotlin JNI，Windows/Linux 使用 MethodChannel）。无需 Rust 工具链，无需全局 `initialize()`。
 
 | 平台 | 静态图片 | 音视频 |
 | --- | --- | --- |
@@ -20,7 +20,7 @@
 
 ```yaml
 dependencies:
-  xue_hua_media_info: ^2.1.0
+  xue_hua_media_info: ^2.2.0
 ```
 
 需要 **Flutter 3.44+**（Dart 3.12）。无需任何初始化调用。
@@ -95,7 +95,8 @@ switch (meta) {
 xue_hua_media_info
 ├── lib/          Dart API、平台接口、method channel、Web
 ├── android/      Kotlin  · ExifInterface + MediaMetadataRetriever
-├── darwin/       Swift   · ImageIO + AVFoundation（iOS 与 macOS）
+├── ios/          Swift   · ImageIO + AVFoundation（iOS，Pigeon Swift FFI）
+├── macos/        Swift   · ImageIO + AVFoundation（macOS，Pigeon Swift FFI）
 ├── windows/      C++     · WIC + Media Foundation
 └── linux/        C++     · JPEG/PNG + GStreamer
 ```
@@ -103,7 +104,7 @@ xue_hua_media_info
 ```text
 应用  →  MediaInfo（门面）
      →  XueHuaMediaInfoPlatform
-     →  MethodChannelXueHuaMediaInfo  →  Pigeon MediaInfoHostApi  →  原生
+     →  MethodChannelXueHuaMediaInfo  →  Pigeon MediaInfoHostApi（FFI / JNI / Channel）  →  原生
      →  Web（纯 Dart，替换 instance，不走 channel）
 ```
 
@@ -112,7 +113,7 @@ xue_hua_media_info
 ```bash
 flutter analyze
 flutter test
-dart run pigeon --input pigeons/messages.dart
+dart run tool/generate_pigeon.dart
 ```
 
 ## 许可证

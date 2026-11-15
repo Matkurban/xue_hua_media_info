@@ -5,11 +5,9 @@
 package com.xuehua.xue_hua_media_info_android
 
 import android.util.Log
-import io.flutter.plugin.common.BasicMessageChannel
-import io.flutter.plugin.common.BinaryMessenger
-import io.flutter.plugin.common.EventChannel
-import io.flutter.plugin.common.MessageCodec
-import io.flutter.plugin.common.StandardMethodCodec
+import androidx.annotation.Keep
+import io.flutter.embedding.engine.FlutterEngine
+import io.flutter.embedding.engine.plugins.FlutterPlugin
 import io.flutter.plugin.common.StandardMessageCodec
 import java.io.ByteArrayOutputStream
 import java.nio.ByteBuffer
@@ -192,13 +190,86 @@ private object MessagesPigeonUtils {
  * @property message The error message.
  * @property details The error details. Must be a datatype supported by the api codec.
  */
+@Keep
 class FlutterError (
   val code: String,
   override val message: String? = null,
   val details: Any? = null
 ) : RuntimeException()
+private const val defaultInstanceName = "PigeonDefaultClassName32uh4ui3lh445uh4h3l2l455g4y34u"
+
+/** Computes keys that identify the Flutter engine a registration belongs to. */
+private object MessagesPigeonEngineKeys {
+  /** Sentinel meaning that no engine key is known. */
+  const val NO_KEY: Long = Long.MIN_VALUE
+
+  /** `FlutterPluginBinding.getEngineId`, which is missing on older Flutter versions. */
+  private val getEngineIdMethod: java.lang.reflect.Method? by lazy {
+    try {
+      FlutterPlugin.FlutterPluginBinding::class.java.getMethod("getEngineId")
+    } catch (e: Exception) {
+      null
+    }
+  }
+
+  /** Keys for engine messengers, used when an exact engine id is unavailable. */
+  private val messengerKeys = java.util.WeakHashMap<Any, Long>()
+
+  /**
+   * Keys already computed for each binding, so `register` and `unregister` with
+   * the same binding always agree even if [keyOf] for its engine later records
+   * an exact key for the messenger.
+   */
+  private val bindingKeys = java.util.WeakHashMap<FlutterPlugin.FlutterPluginBinding, Long>()
+
+  private var nextSyntheticKey: Long = -1L
+
+  /** Returns the key for the engine that [binding] belongs to. */
+  @Synchronized
+  fun keyOf(binding: FlutterPlugin.FlutterPluginBinding): Long {
+    return bindingKeys.getOrPut(binding) { computeKey(binding) }
+  }
+
+  private fun computeKey(binding: FlutterPlugin.FlutterPluginBinding): Long {
+    val method = getEngineIdMethod
+    if (method != null) {
+      try {
+        // Real engine ids are never 0, but an engine without one, or a test
+        // double, reports 0, which must not be shared between engines.
+        val engineId = method.invoke(binding) as Long
+        if (engineId != 0L) {
+          return engineId
+        }
+      } catch (e: Exception) {
+        // Fall back to a messenger-based key.
+      }
+    }
+    return keyOfMessenger(binding.binaryMessenger)
+  }
+
+  /** Returns the key for [engine]. */
+  @Synchronized
+  fun keyOf(engine: FlutterEngine): Long {
+    val key = engine.engineId
+    if (key == 0L) {
+      // Real engine ids are never 0, but an engine without one, or a test
+      // double, reports 0, which must not be shared between engines.
+      return keyOfMessenger(engine.dartExecutor)
+    }
+    // Record the exact key so later lookups through a binding for this engine
+    // agree with it even when the binding cannot report the engine id.
+    messengerKeys[engine.dartExecutor] = key
+    return key
+  }
+
+  @Synchronized
+  private fun keyOfMessenger(messenger: Any): Long {
+    return messengerKeys.getOrPut(messenger) { nextSyntheticKey-- }
+  }
+}
 
 /** Kind of a [MediaSourceMessage]. / [MediaSourceMessage] 的种类。 */
+@Keep
 enum class SourceKindMessage(val raw: Int) {
   /** Local filesystem path. / 本地文件路径。 */
   FILE(0),
@@ -207,6 +278,7 @@ enum class SourceKindMessage(val raw: Int) {
   /** Flutter asset key (already resolved). / 已解析的 Flutter Asset 键。 */
   ASSET(2);
 
+  @Keep
   companion object {
     private val pigeonValues = values()
 
@@ -217,6 +289,7 @@ enum class SourceKindMessage(val raw: Int) {
 }
 
 /** Detected media kind. / 检测到的媒体种类。 */
+@Keep
 enum class MediaKindMessage(val raw: Int) {
   /** Still image. / 静态图片。 */
   IMAGE(0),
@@ -225,6 +298,7 @@ enum class MediaKindMessage(val raw: Int) {
   /** Audio-only container. / 纯音频容器。 */
   AUDIO(2);
 
+  @Keep
   companion object {
     private val pigeonValues = values()
 
@@ -239,6 +313,7 @@ enum class MediaKindMessage(val raw: Int) {
  *
  * Generated class from Pigeon that represents data sent in messages.
  */
+@Keep
 data class MediaSourceMessage (
   /** Discriminator. / 种类。 */
   val kind: SourceKindMessage,
@@ -291,6 +366,7 @@ data class MediaSourceMessage (
  *
  * Generated class from Pigeon that represents data sent in messages.
  */
+@Keep
 data class PixelSizeMessage (
   val width: Long,
   val height: Long
@@ -336,6 +412,7 @@ data class PixelSizeMessage (
  *
  * Generated class from Pigeon that represents data sent in messages.
  */
+@Keep
 data class GpsLocationMessage (
   val latitude: Double,
   val longitude: Double,
@@ -385,6 +462,7 @@ data class GpsLocationMessage (
  *
  * Generated class from Pigeon that represents data sent in messages.
  */
+@Keep
 data class MetadataTagMessage (
   val name: String,
   val displayValue: String,
@@ -442,6 +520,7 @@ data class MetadataTagMessage (
  *
  * Generated class from Pigeon that represents data sent in messages.
  */
+@Keep
 data class PngTextChunkMessage (
   val key: String,
   val value: String
@@ -488,6 +567,7 @@ data class PngTextChunkMessage (
  *
  * Generated class from Pigeon that represents data sent in messages.
  */
+@Keep
 data class ImageMetadataMessage (
   val make: String? = null,
   val model: String? = null,
@@ -573,6 +653,7 @@ data class ImageMetadataMessage (
  *
  * Generated class from Pigeon that represents data sent in messages.
  */
+@Keep
 data class VideoMetadataMessage (
   val durationMs: Long? = null,
   val size: PixelSizeMessage? = null,
@@ -642,6 +723,7 @@ data class VideoMetadataMessage (
  *
  * Generated class from Pigeon that represents data sent in messages.
  */
+@Keep
 data class AudioMetadataMessage (
   val durationMs: Long? = null,
   val bitrate: Long? = null,
@@ -711,6 +793,7 @@ data class AudioMetadataMessage (
  *
  * Generated class from Pigeon that represents data sent in messages.
  */
+@Keep
 data class MediaMetadataMessage (
   val kind: MediaKindMessage,
   val image: ImageMetadataMessage? = null,
@@ -870,13 +953,34 @@ private open class MessagesPigeonCodec : StandardMessageCodec() {
   }
 }
 
-
 /**
- * Host API implemented natively for media metadata reads.
- * 由原生端实现的媒体元数据读取接口。
- *
- * Generated interface from Pigeon that represents a handler of messages from Flutter.
+ * Encodes and decodes the buffers that native interop calls pass to and from
+ * Dart, in the same format as the message codec.
  */
+private object MessagesPigeonInteropCodec : MessagesPigeonCodec() {
+  fun encode(value: Any?): ByteArray {
+    val stream = ByteArrayOutputStream()
+    writeValue(stream, value)
+    return stream.toByteArray()
+  }
+
+  fun encodeOrNull(value: Any?): ByteArray? {
+    return if (value == null) null else encode(value)
+  }
+
+  fun decode(bytes: ByteArray): Any? {
+    return decodeMessage(ByteBuffer.wrap(bytes))
+  }
+
+  fun decodeArguments(bytes: ByteArray): List<Any?> {
+    return decode(bytes) as List<Any?>
+  }
+}
+
+
+
+val MediaInfoHostApiInstances: MutableMap<String, MutableList<MediaInfoHostApiRegistrar>> = mutableMapOf()
+@Keep
 interface MediaInfoHostApi {
   /** Auto-detect and read in one I/O. / 一次 I/O 自动识别并读取。 */
   suspend fun read(source: MediaSourceMessage): MediaMetadataMessage
@@ -888,110 +992,198 @@ interface MediaInfoHostApi {
   suspend fun probe(source: MediaSourceMessage): MediaKindMessage
   /** Extract Motion Photo embedded MP4 metadata. / 提取动态照片内嵌 MP4。 */
   suspend fun readMotionPhoto(source: MediaSourceMessage): VideoMetadataMessage
+}
+@Keep
+class MediaInfoHostApiRegistrar private constructor(private val engineKey: Long) {
+  @Volatile private var api: MediaInfoHostApi? = null
+
+  constructor() : this(MessagesPigeonEngineKeys.NO_KEY)
+
+  /**
+   * Registers [api] under [name] (or the default instance when [name] is
+   * omitted) for the engine of the plugin binding [binding].
+   *
+   * The registration is tied to that engine: unregistering it for this engine
+   * leaves other engines' registrations in place, and Dart code running on an
+   * engine uses the instance registered for that engine when it is known.
+   */
+  @Keep
+  fun register(api: MediaInfoHostApi, binding: FlutterPlugin.FlutterPluginBinding, name: String = defaultInstanceName) {
+    registerWithKey(api, MessagesPigeonEngineKeys.keyOf(binding), name)
+  }
+
+  /**
+   * Registers [api] under [name] (or the default instance when [name] is
+   * omitted) for the engine of [engine].
+   *
+   * The registration is tied to that engine: unregistering it for this engine
+   * leaves other engines' registrations in place, and Dart code running on an
+   * engine uses the instance registered for that engine when it is known.
+   */
+  @Keep
+  fun register(api: MediaInfoHostApi, engine: FlutterEngine, name: String = defaultInstanceName) {
+    registerWithKey(api, MessagesPigeonEngineKeys.keyOf(engine), name)
+  }
+
+  /**
+   * Removes [api] from the registrations under [name] (or the default instance
+   * when [name] is omitted) for the engine of the plugin binding [binding], leaving other
+   * registrations in place.
+   *
+   * Instances are matched by identity. If [api] is not registered for that
+   * engine but is registered for exactly one other engine, that registration is
+   * removed. Does nothing if [api] is not registered, or is only registered for
+   * several other engines.
+   */
+  @Keep
+  fun unregister(api: MediaInfoHostApi, binding: FlutterPlugin.FlutterPluginBinding, name: String = defaultInstanceName) {
+    unregisterWithKey(api, MessagesPigeonEngineKeys.keyOf(binding), name)
+  }
+
+  /**
+   * Removes [api] from the registrations under [name] (or the default instance
+   * when [name] is omitted) for the engine of [engine], leaving other
+   * registrations in place.
+   *
+   * Instances are matched by identity. If [api] is not registered for that
+   * engine but is registered for exactly one other engine, that registration is
+   * removed. Does nothing if [api] is not registered, or is only registered for
+   * several other engines.
+   */
+  @Keep
+  fun unregister(api: MediaInfoHostApi, engine: FlutterEngine, name: String = defaultInstanceName) {
+    unregisterWithKey(api, MessagesPigeonEngineKeys.keyOf(engine), name)
+  }
+
+  private fun registerWithKey(api: MediaInfoHostApi, engineKey: Long, name: String) {
+    kotlin.synchronized(MediaInfoHostApiInstances) {
+      val list = MediaInfoHostApiInstances.getOrPut(name) { mutableListOf() }
+      val index = list.indexOfFirst { it.api === api && it.engineKey == engineKey }
+      if (index >= 0) {
+        list.add(list.removeAt(index))
+      } else {
+        val wrapper = MediaInfoHostApiRegistrar(engineKey)
+        wrapper.api = api
+        list.add(wrapper)
+      }
+    }
+  }
+
+  private fun unregisterWithKey(api: MediaInfoHostApi, engineKey: Long, name: String) {
+    kotlin.synchronized(MediaInfoHostApiInstances) {
+      val list = MediaInfoHostApiInstances[name] ?: return
+      val removeKey =
+        if (list.any { it.api === api && it.engineKey == engineKey }) {
+          engineKey
+        } else {
+          list.filter { it.api === api }.map { it.engineKey }.distinct().singleOrNull() ?: return
+        }
+      val iterator = list.iterator()
+      while (iterator.hasNext()) {
+        val entry = iterator.next()
+        if (entry.api === api && entry.engineKey == removeKey) {
+          entry.api = null
+          iterator.remove()
+        }
+      }
+      if (list.isEmpty()) {
+        MediaInfoHostApiInstances.remove(name)
+      }
+    }
+  }
 
   companion object {
-    /** The codec used by MediaInfoHostApi. */
-    val codec: MessageCodec<Any?> by lazy {
-      MessagesPigeonCodec()
+    /**
+     * Returns the instance registered under [name] for the engine identified by
+     * [engineId].
+     *
+     * Falls back to the most recent instance registered for [affinityKey], then to
+     * the most recent instance overall. Either key may be `Long.MIN_VALUE` when it
+     * is unknown.
+     *
+     * This is called by the generated Dart code and is not intended for direct use.
+     */
+    @JvmStatic
+    @Keep
+    fun pigeonResolveInstance(engineId: Long, affinityKey: Long, name: String = defaultInstanceName): MediaInfoHostApiRegistrar? {
+      return kotlin.synchronized(MediaInfoHostApiInstances) {
+        val list = MediaInfoHostApiInstances[name] ?: return null
+        val exact = if (engineId != MessagesPigeonEngineKeys.NO_KEY) list.lastOrNull { it.engineKey == engineId } else null
+        val affine = if (affinityKey != MessagesPigeonEngineKeys.NO_KEY) list.lastOrNull { it.engineKey == affinityKey } else null
+        exact ?: affine ?: list.lastOrNull()
+      }
     }
-    /** Sets up an instance of `MediaInfoHostApi` to handle messages through the `binaryMessenger`. */
-    @JvmOverloads
-    fun setUp(binaryMessenger: BinaryMessenger, api: MediaInfoHostApi?, messageChannelSuffix: String = "") {
-      val separatedMessageChannelSuffix = if (messageChannelSuffix.isNotEmpty()) ".$messageChannelSuffix" else ""
-      run {
-        val channel = BasicMessageChannel<Any?>(binaryMessenger, "dev.flutter.pigeon.xue_hua_media_info.MediaInfoHostApi.read$separatedMessageChannelSuffix", codec)
-        if (api != null) {
-          channel.setMessageHandler { message, reply ->
-            val args = message as List<Any?>
-            val sourceArg = args[0] as MediaSourceMessage
-            CoroutineScope(Dispatchers.Main).launch {
-              val wrapped: List<Any?> = try {
-                listOf(api.read(sourceArg))
-              } catch (exception: Throwable) {
-                MessagesPigeonUtils.wrapError(exception)
-              }
-              reply.reply(wrapped)
-            }
-          }
-        } else {
-          channel.setMessageHandler(null)
-        }
+
+    /**
+     * Returns the engine key that [instance] was registered with, or
+     * `Long.MIN_VALUE` if it is unknown.
+     *
+     * This is called by the generated Dart code and is not intended for direct use.
+     */
+    @JvmStatic
+    @Keep
+    fun pigeonEngineKeyOf(instance: MediaInfoHostApiRegistrar): Long {
+      return instance.engineKey
+    }
+  }
+
+  suspend fun read(pigeonVar_args: ByteArray): ByteArray? {
+    val pigeonVar_api = this.api ?: throw FlutterError("unregistered-instance", "MediaInfoHostApi has not been registered.")
+    try {
+      val pigeonVar_decodedArgs = MessagesPigeonInteropCodec.decodeArguments(pigeonVar_args)
+      val pigeonVar_arg_source = pigeonVar_decodedArgs[0] as MediaSourceMessage
+      return MessagesPigeonInteropCodec.encodeOrNull(pigeonVar_api.read(pigeonVar_arg_source))
+    } catch (e: FlutterError) {
+      throw FlutterError(e.code, e.message, MessagesPigeonInteropCodec.encodeOrNull(e.details)).apply {
+        stackTrace = e.stackTrace
       }
-      run {
-        val channel = BasicMessageChannel<Any?>(binaryMessenger, "dev.flutter.pigeon.xue_hua_media_info.MediaInfoHostApi.readImage$separatedMessageChannelSuffix", codec)
-        if (api != null) {
-          channel.setMessageHandler { message, reply ->
-            val args = message as List<Any?>
-            val sourceArg = args[0] as MediaSourceMessage
-            CoroutineScope(Dispatchers.Main).launch {
-              val wrapped: List<Any?> = try {
-                listOf(api.readImage(sourceArg))
-              } catch (exception: Throwable) {
-                MessagesPigeonUtils.wrapError(exception)
-              }
-              reply.reply(wrapped)
-            }
-          }
-        } else {
-          channel.setMessageHandler(null)
-        }
+    }
+  }
+  suspend fun readImage(pigeonVar_args: ByteArray): ByteArray? {
+    val pigeonVar_api = this.api ?: throw FlutterError("unregistered-instance", "MediaInfoHostApi has not been registered.")
+    try {
+      val pigeonVar_decodedArgs = MessagesPigeonInteropCodec.decodeArguments(pigeonVar_args)
+      val pigeonVar_arg_source = pigeonVar_decodedArgs[0] as MediaSourceMessage
+      return MessagesPigeonInteropCodec.encodeOrNull(pigeonVar_api.readImage(pigeonVar_arg_source))
+    } catch (e: FlutterError) {
+      throw FlutterError(e.code, e.message, MessagesPigeonInteropCodec.encodeOrNull(e.details)).apply {
+        stackTrace = e.stackTrace
       }
-      run {
-        val channel = BasicMessageChannel<Any?>(binaryMessenger, "dev.flutter.pigeon.xue_hua_media_info.MediaInfoHostApi.readAv$separatedMessageChannelSuffix", codec)
-        if (api != null) {
-          channel.setMessageHandler { message, reply ->
-            val args = message as List<Any?>
-            val sourceArg = args[0] as MediaSourceMessage
-            CoroutineScope(Dispatchers.Main).launch {
-              val wrapped: List<Any?> = try {
-                listOf(api.readAv(sourceArg))
-              } catch (exception: Throwable) {
-                MessagesPigeonUtils.wrapError(exception)
-              }
-              reply.reply(wrapped)
-            }
-          }
-        } else {
-          channel.setMessageHandler(null)
-        }
+    }
+  }
+  suspend fun readAv(pigeonVar_args: ByteArray): ByteArray? {
+    val pigeonVar_api = this.api ?: throw FlutterError("unregistered-instance", "MediaInfoHostApi has not been registered.")
+    try {
+      val pigeonVar_decodedArgs = MessagesPigeonInteropCodec.decodeArguments(pigeonVar_args)
+      val pigeonVar_arg_source = pigeonVar_decodedArgs[0] as MediaSourceMessage
+      return MessagesPigeonInteropCodec.encodeOrNull(pigeonVar_api.readAv(pigeonVar_arg_source))
+    } catch (e: FlutterError) {
+      throw FlutterError(e.code, e.message, MessagesPigeonInteropCodec.encodeOrNull(e.details)).apply {
+        stackTrace = e.stackTrace
       }
-      run {
-        val channel = BasicMessageChannel<Any?>(binaryMessenger, "dev.flutter.pigeon.xue_hua_media_info.MediaInfoHostApi.probe$separatedMessageChannelSuffix", codec)
-        if (api != null) {
-          channel.setMessageHandler { message, reply ->
-            val args = message as List<Any?>
-            val sourceArg = args[0] as MediaSourceMessage
-            CoroutineScope(Dispatchers.Main).launch {
-              val wrapped: List<Any?> = try {
-                listOf(api.probe(sourceArg))
-              } catch (exception: Throwable) {
-                MessagesPigeonUtils.wrapError(exception)
-              }
-              reply.reply(wrapped)
-            }
-          }
-        } else {
-          channel.setMessageHandler(null)
-        }
+    }
+  }
+  suspend fun probe(pigeonVar_args: ByteArray): Long {
+    val pigeonVar_api = this.api ?: throw FlutterError("unregistered-instance", "MediaInfoHostApi has not been registered.")
+    try {
+      val pigeonVar_decodedArgs = MessagesPigeonInteropCodec.decodeArguments(pigeonVar_args)
+      val pigeonVar_arg_source = pigeonVar_decodedArgs[0] as MediaSourceMessage
+      return pigeonVar_api.probe(pigeonVar_arg_source).raw.toLong()
+    } catch (e: FlutterError) {
+      throw FlutterError(e.code, e.message, MessagesPigeonInteropCodec.encodeOrNull(e.details)).apply {
+        stackTrace = e.stackTrace
       }
-      run {
-        val channel = BasicMessageChannel<Any?>(binaryMessenger, "dev.flutter.pigeon.xue_hua_media_info.MediaInfoHostApi.readMotionPhoto$separatedMessageChannelSuffix", codec)
-        if (api != null) {
-          channel.setMessageHandler { message, reply ->
-            val args = message as List<Any?>
-            val sourceArg = args[0] as MediaSourceMessage
-            CoroutineScope(Dispatchers.Main).launch {
-              val wrapped: List<Any?> = try {
-                listOf(api.readMotionPhoto(sourceArg))
-              } catch (exception: Throwable) {
-                MessagesPigeonUtils.wrapError(exception)
-              }
-              reply.reply(wrapped)
-            }
-          }
-        } else {
-          channel.setMessageHandler(null)
-        }
+    }
+  }
+  suspend fun readMotionPhoto(pigeonVar_args: ByteArray): ByteArray? {
+    val pigeonVar_api = this.api ?: throw FlutterError("unregistered-instance", "MediaInfoHostApi has not been registered.")
+    try {
+      val pigeonVar_decodedArgs = MessagesPigeonInteropCodec.decodeArguments(pigeonVar_args)
+      val pigeonVar_arg_source = pigeonVar_decodedArgs[0] as MediaSourceMessage
+      return MessagesPigeonInteropCodec.encodeOrNull(pigeonVar_api.readMotionPhoto(pigeonVar_arg_source))
+    } catch (e: FlutterError) {
+      throw FlutterError(e.code, e.message, MessagesPigeonInteropCodec.encodeOrNull(e.details)).apply {
+        stackTrace = e.stackTrace
       }
     }
   }

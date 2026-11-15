@@ -1,5 +1,3 @@
-import 'package:plugin_platform_interface/plugin_platform_interface.dart';
-
 import 'src/types/media_kind.dart';
 import 'src/types/media_metadata.dart';
 import 'src/types/media_source.dart';
@@ -16,32 +14,22 @@ import 'xue_hua_media_info_method_channel.dart';
 ///
 /// 平台实现应当**继承**（extends）本类而不是 implements，这样接口新增方法
 /// （默认抛 `UnimplementedError`）时不会破坏现有实现。
-abstract class XueHuaMediaInfoPlatform extends PlatformInterface {
+abstract class XueHuaMediaInfoPlatform {
   /// Constructs a [XueHuaMediaInfoPlatform]. / 构造 [XueHuaMediaInfoPlatform]。
-  XueHuaMediaInfoPlatform() : super(token: _token);
-
-  static final Object _token = Object();
-
-  static XueHuaMediaInfoPlatform _instance = MethodChannelXueHuaMediaInfo();
+  XueHuaMediaInfoPlatform();
 
   /// The default instance of [XueHuaMediaInfoPlatform] to use.
   ///
-  /// Defaults to [MethodChannelXueHuaMediaInfo], which talks to the native
-  /// implementations (Android/iOS/macOS/Windows/Linux). The Web
-  /// implementation replaces it during plugin registration.
+  /// Defaults to [MethodChannelXueHuaMediaInfo], which uses Pigeon Native
+  /// Interop (FFI/JNI) on Apple/Android and MethodChannel on Windows/Linux.
+  /// The Web implementation replaces it during plugin registration.
   ///
   /// 当前使用的 [XueHuaMediaInfoPlatform] 默认实例。
   ///
-  /// 默认为 [MethodChannelXueHuaMediaInfo]，负责与各原生实现通信；
+  /// 默认为 [MethodChannelXueHuaMediaInfo]，在 Apple/Android 端使用 Pigeon
+  /// Native Interop（FFI/JNI），在 Windows/Linux 端使用 MethodChannel；
   /// Web 实现会在插件注册时替换它。
-  static XueHuaMediaInfoPlatform get instance => _instance;
-
-  /// Sets the platform instance, verifying the inheritance token.
-  /// 设置平台实例（校验继承令牌）。
-  static set instance(XueHuaMediaInfoPlatform instance) {
-    PlatformInterface.verifyToken(instance, _token);
-    _instance = instance;
-  }
+  static XueHuaMediaInfoPlatform instance = MethodChannelXueHuaMediaInfo();
 
   /// Auto-detects the kind and reads metadata in one I/O.
   /// 自动识别种类并在一次 I/O 中读取元数据。

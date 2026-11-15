@@ -1,10 +1,8 @@
-import 'package:plugin_platform_interface/plugin_platform_interface.dart';
 import 'package:xue_hua_media_info/xue_hua_media_info.dart';
 
 /// In-memory [XueHuaMediaInfoPlatform] test double.
 /// 内存版 [XueHuaMediaInfoPlatform] 测试替身。
-class FakeMediaInfoPlatform extends XueHuaMediaInfoPlatform
-    with MockPlatformInterfaceMixin {
+class FakeMediaInfoPlatform extends XueHuaMediaInfoPlatform {
   /// Recorded method names. / 记录的方法名。
   final List<String> calls = [];
 

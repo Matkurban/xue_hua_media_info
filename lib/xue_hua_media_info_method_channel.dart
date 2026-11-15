@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 
 import 'src/messages.g.dart';
@@ -11,26 +12,41 @@ import 'src/types/pixel_size.dart';
 import 'src/types/png_text_chunk.dart';
 import 'xue_hua_media_info_platform_interface.dart';
 
-/// The default [XueHuaMediaInfoPlatform] implementation backed by a Pigeon
-/// method channel.
+/// The default [XueHuaMediaInfoPlatform] implementation backed by Pigeon.
 ///
-/// Shared by Android, iOS, macOS, Windows and Linux. Web replaces the
-/// platform instance instead of using this class.
+/// Uses Pigeon Native Interop (`MediaInfoHostApi.createWithNativeInteropApi`)
+/// via Swift FFI on iOS/macOS and Kotlin JNI on Android, and falls back to
+/// Pigeon MethodChannel (`MediaInfoHostApi()`) on Windows/Linux. Web replaces
+/// the platform instance during plugin registration.
 ///
-/// 基于 Pigeon MethodChannel 的默认 [XueHuaMediaInfoPlatform] 实现。
+/// 基于 Pigeon 的默认 [XueHuaMediaInfoPlatform] 实现。
 ///
-/// 被 Android / iOS / macOS / Windows / Linux 共用；Web 端直接替换平台实例。
+/// 在 iOS/macOS 上通过 Swift FFI、Android 上通过 Kotlin JNI 使用 Pigeon
+/// Native Interop，在 Windows/Linux 上回退为 MethodChannel；
+/// Web 端会在插件注册时替换平台实例。
 class MethodChannelXueHuaMediaInfo extends XueHuaMediaInfoPlatform {
-  /// Creates the method-channel implementation.
+  /// Creates the Pigeon platform implementation.
   ///
-  /// [api]: test double for the generated Pigeon client; production uses the
-  /// default.
+  /// [api]: test double for the generated Pigeon client; production lazily
+  /// resolves [MediaInfoHostApi.createWithNativeInteropApi] or
+  /// [MediaInfoHostApi] on first use.
   ///
-  /// 创建 MethodChannel 实现。[api] 用于测试注入。
-  MethodChannelXueHuaMediaInfo({MediaInfoHostApi? api})
-    : _api = api ?? MediaInfoHostApi();
+  /// 创建 Pigeon 平台实现。[api] 用于测试注入；生产环境在首次调用时惰性初始化。
+  MethodChannelXueHuaMediaInfo({MediaInfoHostApi? api}) : _apiOverride = api;
 
-  final MediaInfoHostApi _api;
+  final MediaInfoHostApi? _apiOverride;
+
+  late final MediaInfoHostApi _api = _apiOverride ?? _createHostApi();
+
+  static MediaInfoHostApi _createHostApi() {
+    if (!kIsWeb &&
+        (defaultTargetPlatform == TargetPlatform.android ||
+            defaultTargetPlatform == TargetPlatform.iOS ||
+            defaultTargetPlatform == TargetPlatform.macOS)) {
+      return MediaInfoHostApi.createWithNativeInteropApi();
+    }
+    return MediaInfoHostApi();
+  }
 
   @override
   Future<MediaMetadata> read(MediaSource source) {

@@ -89,7 +89,7 @@ ${_avFields(container)}
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('xue_hua_media_info 2.1')),
+      appBar: AppBar(title: const Text('xue_hua_media_info 2.2')),
       body: Padding(
         padding: const EdgeInsets.all(16),
         child: SingleChildScrollView(

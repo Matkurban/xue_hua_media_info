@@ -1,26 +1,17 @@
 import AVFoundation
 import CoreGraphics
 import CoreMedia
+import FlutterMacOS
 import Foundation
 import ImageIO
 
-#if os(iOS)
-  import Flutter
-#elseif os(macOS)
-  import FlutterMacOS
-#endif
-
-/// iOS / macOS implementation: ImageIO for still images, AVFoundation for AV.
-/// iOS / macOS 实现：图片走 ImageIO，音视频走 AVFoundation。
-public class XueHuaMediaInfoDarwinPlugin: NSObject, FlutterPlugin, MediaInfoHostApi {
+/// macOS implementation: ImageIO for still images, AVFoundation for AV, backed by Pigeon Swift FFI.
+/// macOS 实现：图片走 ImageIO，音视频走 AVFoundation，通过 Pigeon Swift FFI 通信。
+public final class XueHuaMediaInfoMacosPlugin: NSObject, FlutterPlugin, MediaInfoHostApi {
   public static func register(with registrar: FlutterPluginRegistrar) {
-    #if os(iOS)
-      let messenger = registrar.messenger()
-    #else
-      let messenger = registrar.messenger
-    #endif
-    let plugin = XueHuaMediaInfoDarwinPlugin(registrar: registrar)
-    MediaInfoHostApiSetup.setUp(binaryMessenger: messenger, api: plugin)
+    let plugin = XueHuaMediaInfoMacosPlugin(registrar: registrar)
+    MediaInfoHostApiSetup.register(api: plugin, registrar: registrar)
+    registrar.publish(plugin)
   }
 
   private let registrar: FlutterPluginRegistrar
@@ -82,7 +73,7 @@ public class XueHuaMediaInfoDarwinPlugin: NSObject, FlutterPlugin, MediaInfoHost
       }
       let embedded = data.subdata(in: offset..<data.count)
       let result = try self.readAv(
-        source: MediaSourceMessage(kind: .bytes, uri: nil, bytes: FlutterStandardTypedData(bytes: embedded)),
+        source: MediaSourceMessage(kind: .bytes, uri: nil, bytes: [UInt8](embedded)),
         data: embedded)
       guard let video = result.video else {
         throw fail("trackNotFound", "Embedded trailer is not a video.")
@@ -91,8 +82,8 @@ public class XueHuaMediaInfoDarwinPlugin: NSObject, FlutterPlugin, MediaInfoHost
     }
   }
 
-  /// Runs synchronous media reads off the main actor. Pigeon awaits these methods on `@MainActor`.
-  /// 把同步媒体读取放到主线程之外。Pigeon 在 `@MainActor` 上等待这些方法。
+  /// Runs synchronous media reads off the calling thread/main actor.
+  /// 把同步媒体读取放到调用线程与主线程之外的并发队列执行。
   private func readOffMain<T>(_ body: @escaping () throws -> T) async throws -> T {
     try await withCheckedThrowingContinuation { continuation in
       DispatchQueue.global(qos: .userInitiated).async {
@@ -292,7 +283,7 @@ public class XueHuaMediaInfoDarwinPlugin: NSObject, FlutterPlugin, MediaInfoHost
       }
     case .bytes:
       guard let bytes = source.bytes else { throw fail("notFound", "Missing byte payload.") }
-      return bytes.data
+      return Data(bytes)
     case .asset:
       return try Data(contentsOf: resolveAsset(source))
     }
@@ -311,7 +302,7 @@ public class XueHuaMediaInfoDarwinPlugin: NSObject, FlutterPlugin, MediaInfoHost
       }
     case .bytes:
       guard let bytes = source.bytes else { throw fail("notFound", "Missing byte payload.") }
-      let data = bytes.data
+      let data = Data(bytes)
       return data.count <= count ? data : Data(data.prefix(count))
     case .asset:
       return try readPrefix(from: resolveAsset(source), count: count)

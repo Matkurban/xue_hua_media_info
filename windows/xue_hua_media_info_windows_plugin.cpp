@@ -23,12 +23,20 @@
 #include <string>
 #include <vector>
 
+#ifdef _MSC_VER
 #pragma comment(lib, "windowscodecs.lib")
 #pragma comment(lib, "mfplat.lib")
 #pragma comment(lib, "mfreadwrite.lib")
 #pragma comment(lib, "mfuuid.lib")
 #pragma comment(lib, "ole32.lib")
 #pragma comment(lib, "shlwapi.lib")
+#endif
+
+#if defined(__MINGW32__) && !defined(_MSC_VER)
+// mingw-w64 omits MFCreateMFByteStreamOnStream from <mfapi.h>.
+extern "C" HRESULT WINAPI MFCreateMFByteStreamOnStream(
+    IStream* pStream, IMFByteStream** ppByteStream);
+#endif
 
 using Microsoft::WRL::ComPtr;
 
@@ -541,7 +549,7 @@ std::wstring AssetFullPath(const std::wstring& assets_dir, const std::string& ur
 }
 
 std::vector<uint8_t> ReadFileBytes(const std::wstring& path) {
-  std::ifstream in(path, std::ios::binary);
+  std::ifstream in(path.c_str(), std::ios::binary);
   if (!in) {
     Fail("notFound", "File not found.");
   }
@@ -550,7 +558,7 @@ std::vector<uint8_t> ReadFileBytes(const std::wstring& path) {
 }
 
 std::vector<uint8_t> ReadFilePrefix(const std::wstring& path, size_t count) {
-  std::ifstream in(path, std::ios::binary);
+  std::ifstream in(path.c_str(), std::ios::binary);
   if (!in) {
     Fail("notFound", "File not found.");
   }
@@ -884,7 +892,7 @@ AvExtras ParseMp4Extras(const uint8_t* data, size_t size) {
 }
 
 AvExtras ParseMp4ExtrasFromPath(const std::wstring& path) {
-  std::ifstream in(path, std::ios::binary);
+  std::ifstream in(path.c_str(), std::ios::binary);
   if (!in) {
     return {};
   }

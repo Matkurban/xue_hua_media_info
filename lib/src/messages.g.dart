@@ -6,8 +6,13 @@
 import 'dart:async';
 import 'dart:typed_data' show Float64List, Int32List, Int64List;
 
+import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/services.dart';
-import 'package:meta/meta.dart' show immutable, protected, visibleForTesting;
+import 'package:meta/meta.dart'
+    show immutable, internal, protected, visibleForTesting;
+import './messages.g.dart'
+    if (dart.library.ffi) './messages.native_interop.g.dart'
+    as pigeon_native;
 
 Object? _extractReplyValueOrThrow(
   List<Object?>? replyList,
@@ -817,6 +822,39 @@ class _PigeonCodec extends StandardMessageCodec {
   }
 }
 
+@internal
+const StandardMessageCodec pigeon_MessagesmessageCodec = _PigeonCodec();
+const String defaultInstanceName =
+    'PigeonDefaultClassName32uh4ui3lh445uh4h3l2l455g4y34u';
+
+@internal
+MediaInfoHostApiForNativeInterop? pigeon_getInstance_MediaInfoHostApi({
+  String channelName = defaultInstanceName,
+}) {
+  throw UnsupportedError(
+    'Native Interop is not supported on this platform. Use MediaInfoHostApi instead.',
+  );
+}
+
+abstract class MediaInfoHostApiForNativeInterop {
+  /// Returns instance of MediaInfoHostApiForNativeInterop with specified [channelName] if one has been registered.
+  static MediaInfoHostApiForNativeInterop? getInstance({
+    String channelName = defaultInstanceName,
+  }) => pigeon_native.pigeon_getInstance_MediaInfoHostApi(
+    channelName: channelName,
+  );
+
+  Future<MediaMetadataMessage> read(MediaSourceMessage source);
+
+  Future<ImageMetadataMessage> readImage(MediaSourceMessage source);
+
+  Future<MediaMetadataMessage> readAv(MediaSourceMessage source);
+
+  Future<MediaKindMessage> probe(MediaSourceMessage source);
+
+  Future<VideoMetadataMessage> readMotionPhoto(MediaSourceMessage source);
+}
+
 /// Host API implemented natively for media metadata reads.
 /// 由原生端实现的媒体元数据读取接口。
 class MediaInfoHostApi {
@@ -826,18 +864,57 @@ class MediaInfoHostApi {
   MediaInfoHostApi({
     BinaryMessenger? binaryMessenger,
     String messageChannelSuffix = '',
+    MediaInfoHostApiForNativeInterop? nativeInteropApi,
   }) : pigeonVar_binaryMessenger = binaryMessenger,
        pigeonVar_messageChannelSuffix = messageChannelSuffix.isNotEmpty
            ? '.$messageChannelSuffix'
-           : '';
+           : '',
+       _nativeInteropApi = nativeInteropApi;
+
+  /// Creates an instance of [MediaInfoHostApi] that requests an instance of
+  /// [MediaInfoHostApiForNativeInterop] from the host platform with a matching instance name
+  /// to [messageChannelSuffix] or the default instance.
+  ///
+  /// Throws [ArgumentError] if no matching instance can be found.
+  factory MediaInfoHostApi.createWithNativeInteropApi({
+    BinaryMessenger? binaryMessenger,
+    String messageChannelSuffix = '',
+  }) {
+    if (kIsWeb) {
+      throw UnsupportedError(
+        'Native Interop is not supported on this platform. Use the default constructor of MediaInfoHostApi instead.',
+      );
+    }
+    final MediaInfoHostApiForNativeInterop? nativeInteropApi =
+        MediaInfoHostApiForNativeInterop.getInstance(
+          channelName: messageChannelSuffix.isEmpty
+              ? defaultInstanceName
+              : messageChannelSuffix,
+        );
+    if (nativeInteropApi == null) {
+      throw ArgumentError(
+        'No MediaInfoHostApi instance with ${messageChannelSuffix.isEmpty ? 'no ' : ''}instance name ${messageChannelSuffix.isNotEmpty ? '"$messageChannelSuffix" ' : ''}found.',
+      );
+    }
+    return MediaInfoHostApi(
+      binaryMessenger: binaryMessenger,
+      messageChannelSuffix: messageChannelSuffix,
+      nativeInteropApi: nativeInteropApi,
+    );
+  }
 
   final BinaryMessenger? pigeonVar_binaryMessenger;
   static const MessageCodec<Object?> pigeonChannelCodec = _PigeonCodec();
 
   final String pigeonVar_messageChannelSuffix;
 
+  final MediaInfoHostApiForNativeInterop? _nativeInteropApi;
+
   /// Auto-detect and read in one I/O. / 一次 I/O 自动识别并读取。
   Future<MediaMetadataMessage> read(MediaSourceMessage source) async {
+    if (_nativeInteropApi != null) {
+      return _nativeInteropApi.read(source);
+    }
     final pigeonVar_channelName =
         'dev.flutter.pigeon.xue_hua_media_info.MediaInfoHostApi.read$pigeonVar_messageChannelSuffix';
     final pigeonVar_channel = BasicMessageChannel<Object?>(
@@ -859,6 +936,9 @@ class MediaInfoHostApi {
 
   /// Read still-image metadata. / 读取静态图片元数据。
   Future<ImageMetadataMessage> readImage(MediaSourceMessage source) async {
+    if (_nativeInteropApi != null) {
+      return _nativeInteropApi.readImage(source);
+    }
     final pigeonVar_channelName =
         'dev.flutter.pigeon.xue_hua_media_info.MediaInfoHostApi.readImage$pigeonVar_messageChannelSuffix';
     final pigeonVar_channel = BasicMessageChannel<Object?>(
@@ -880,6 +960,9 @@ class MediaInfoHostApi {
 
   /// Read a video or audio-only container. / 读取视频或纯音频容器。
   Future<MediaMetadataMessage> readAv(MediaSourceMessage source) async {
+    if (_nativeInteropApi != null) {
+      return _nativeInteropApi.readAv(source);
+    }
     final pigeonVar_channelName =
         'dev.flutter.pigeon.xue_hua_media_info.MediaInfoHostApi.readAv$pigeonVar_messageChannelSuffix';
     final pigeonVar_channel = BasicMessageChannel<Object?>(
@@ -901,6 +984,9 @@ class MediaInfoHostApi {
 
   /// Header-only kind detection. / 仅检查文件头。
   Future<MediaKindMessage> probe(MediaSourceMessage source) async {
+    if (_nativeInteropApi != null) {
+      return _nativeInteropApi.probe(source);
+    }
     final pigeonVar_channelName =
         'dev.flutter.pigeon.xue_hua_media_info.MediaInfoHostApi.probe$pigeonVar_messageChannelSuffix';
     final pigeonVar_channel = BasicMessageChannel<Object?>(
@@ -924,6 +1010,9 @@ class MediaInfoHostApi {
   Future<VideoMetadataMessage> readMotionPhoto(
     MediaSourceMessage source,
   ) async {
+    if (_nativeInteropApi != null) {
+      return _nativeInteropApi.readMotionPhoto(source);
+    }
     final pigeonVar_channelName =
         'dev.flutter.pigeon.xue_hua_media_info.MediaInfoHostApi.readMotionPhoto$pigeonVar_messageChannelSuffix';
     final pigeonVar_channel = BasicMessageChannel<Object?>(

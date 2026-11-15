@@ -5,8 +5,8 @@
 Cross-platform **native** Flutter plugin for reading **image EXIF** and
 **video/audio metadata**. Apps depend on `xue_hua_media_info`. Each
 platform's native code lives in this package and is wired through
-[Pigeon](https://pub.dev/packages/pigeon). No Rust toolchain, no FFI, no
-global `initialize()`.
+[Pigeon](https://pub.dev/packages/pigeon) (Swift FFI on iOS/macOS, Kotlin JNI on Android,
+MethodChannel on Windows/Linux). No Rust toolchain, no global `initialize()`.
 
 | Platform | Still images | Audio / video |
 | --- | --- | --- |
@@ -22,7 +22,7 @@ global `initialize()`.
 
 ```yaml
 dependencies:
-  xue_hua_media_info: ^2.1.0
+  xue_hua_media_info: ^2.2.0
 ```
 
 Requires **Flutter 3.44+** (Dart 3.12). There is no initialization call.
@@ -108,7 +108,8 @@ native code lives in this package:
 xue_hua_media_info
 ├── lib/          Dart API, platform interface, method channel, Web
 ├── android/      Kotlin  · ExifInterface + MediaMetadataRetriever
-├── darwin/       Swift   · ImageIO + AVFoundation (iOS and macOS)
+├── ios/          Swift   · ImageIO + AVFoundation (iOS, Pigeon Swift FFI)
+├── macos/        Swift   · ImageIO + AVFoundation (macOS, Pigeon Swift FFI)
 ├── windows/      C++     · WIC + Media Foundation
 └── linux/        C++     · JPEG/PNG + GStreamer
 ```
@@ -116,7 +117,7 @@ xue_hua_media_info
 ```text
 App  →  MediaInfo (façade)
      →  XueHuaMediaInfoPlatform
-     →  MethodChannelXueHuaMediaInfo  →  Pigeon MediaInfoHostApi  →  native
+     →  MethodChannelXueHuaMediaInfo  →  Pigeon MediaInfoHostApi (FFI / JNI / Channel)  →  native
      →  Web (pure Dart, replaces instance, no channel)
 ```
 
@@ -125,7 +126,7 @@ From the package root:
 ```bash
 flutter analyze
 flutter test
-dart run pigeon --input pigeons/messages.dart
+dart run tool/generate_pigeon.dart
 ```
 
 ## License

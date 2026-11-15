@@ -14,9 +14,17 @@ import 'package:pigeon/pigeon.dart';
         'android/src/main/kotlin/com/xuehua/xue_hua_media_info_android/Messages.g.kt',
     kotlinOptions: KotlinOptions(
       package: 'com.xuehua.xue_hua_media_info_android',
+      useJni: true,
+      appDirectory: 'example',
     ),
-    swiftOut:
-        'darwin/xue_hua_media_info/Sources/xue_hua_media_info/Messages.g.swift',
+    swiftOut: <String>[
+      'ios/xue_hua_media_info/Sources/xue_hua_media_info/Messages.g.swift',
+      'macos/xue_hua_media_info/Sources/xue_hua_media_info/Messages.g.swift',
+    ],
+    swiftOptions: SwiftOptions(
+      useFfi: true,
+      ffiModuleName: 'xue_hua_media_info',
+    ),
     cppHeaderOut: 'windows/messages.g.h',
     cppSourceOut: 'windows/messages.g.cpp',
     cppOptions: CppOptions(namespace: 'xue_hua_media_info_windows'),

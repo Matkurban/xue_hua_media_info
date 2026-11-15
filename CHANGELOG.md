@@ -1,3 +1,13 @@
+## 2.2.0
+
+- Migrate Pigeon to `30.0.2` and enable Pigeon Native Interop:
+  - Swift FFI on iOS and macOS (`SwiftOptions(useFfi: true, ffiModuleName: 'xue_hua_media_info')`)
+  - Kotlin JNI on Android (`KotlinOptions(useJni: true, appDirectory: 'example')`) with `consumer-rules.pro` ProGuard/R8 rules
+  - Retain Pigeon `BasicMessageChannel` path on Windows and Linux, and pure Dart on Web
+- Remove `plugin_platform_interface` dependency; `XueHuaMediaInfoPlatform` is now a plain abstract interface
+- Split `darwin/` into separate `ios/` (`XueHuaMediaInfoIosPlugin`) and `macos/` (`XueHuaMediaInfoMacosPlugin`) implementations with CocoaPods and SwiftPM support
+- Add `tool/generate_pigeon.dart` to regenerate Pigeon bindings and sync Objective-C FFI glue for both `ios/` and `macos/`
+
 ## 2.1.7
 
 - update pigeon to `29.2.0`
