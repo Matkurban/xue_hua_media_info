@@ -100,7 +100,6 @@ void main() {
     expect(motionPhotoOffset(data), data.length - 8);
   });
 
-
   test('motionPhotoOffset reads MotionPhotoOffset from XMP', () {
     const xmp = '<x:xmpmeta>GCamera:MotionPhotoOffset="8"</x:xmpmeta>';
     final data = Uint8List.fromList([

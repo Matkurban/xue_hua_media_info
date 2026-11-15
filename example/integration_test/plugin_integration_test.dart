@@ -15,8 +15,9 @@ void main() {
   const movAsset = MediaSource.asset('assets/testdata/meta.mov');
   const mp4Asset = MediaSource.asset('assets/testdata/clip.mp4');
   const wavAsset = MediaSource.asset('assets/testdata/tone.wav');
-  const motionAsset =
-      MediaSource.asset('assets/testdata/motion_photo_pixel_synth.jpg');
+  const motionAsset = MediaSource.asset(
+    'assets/testdata/motion_photo_pixel_synth.jpg',
+  );
 
   group('probe', () {
     testWidgets('JPEG asset is image', (tester) async {
@@ -238,7 +239,6 @@ void main() {
     });
   });
 
-
   group('source matrix extras', () {
     testWidgets('FileSource MP4 matches asset VideoMetadata', (tester) async {
       final bytes = await rootBundle.load('assets/testdata/clip.mp4');
@@ -271,7 +271,9 @@ void main() {
       expect(audio.sampleRate, isNotNull);
     });
 
-    testWidgets('BytesSource JPEG preserves EXIF make/size/gps', (tester) async {
+    testWidgets('BytesSource JPEG preserves EXIF make/size/gps', (
+      tester,
+    ) async {
       final data = await rootBundle.load('assets/testdata/exif.jpg');
       final image = await MediaInfo.readImage(
         MediaSource.bytes(data.buffer.asUint8List()),
@@ -297,8 +299,9 @@ void main() {
     });
 
     testWidgets('FileSource motion photo extractable', (tester) async {
-      final bytes =
-          await rootBundle.load('assets/testdata/motion_photo_pixel_synth.jpg');
+      final bytes = await rootBundle.load(
+        'assets/testdata/motion_photo_pixel_synth.jpg',
+      );
       final tmp = File(
         '${Directory.systemTemp.path}/xhmi_mp_${DateTime.now().microsecondsSinceEpoch}.jpg',
       );
@@ -313,8 +316,9 @@ void main() {
     });
 
     testWidgets('BytesSource motion photo extractable', (tester) async {
-      final data =
-          await rootBundle.load('assets/testdata/motion_photo_pixel_synth.jpg');
+      final data = await rootBundle.load(
+        'assets/testdata/motion_photo_pixel_synth.jpg',
+      );
       final source = MediaSource.bytes(data.buffer.asUint8List());
       final image = await MediaInfo.readImage(source);
       expect(image.hasMotionPhoto, isTrue);
