@@ -22,7 +22,7 @@ MethodChannel on Windows/Linux). No Rust toolchain, no global `initialize()`.
 
 ```yaml
 dependencies:
-  xue_hua_media_info: ^2.2.0
+  xue_hua_media_info: ^2.2.1
 ```
 
 Requires **Flutter 3.44+** (Dart 3.12). There is no initialization call.

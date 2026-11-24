@@ -2,6 +2,7 @@
 // See also: https://pub.dev/packages/pigeon
 // ignore_for_file: unused_import, unused_shown_name
 // ignore_for_file: type=lint
+// ignore_for_file: unused_element
 
 import 'dart:async';
 import 'dart:ffi';

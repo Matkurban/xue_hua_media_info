@@ -20,7 +20,7 @@
 
 ```yaml
 dependencies:
-  xue_hua_media_info: ^2.2.0
+  xue_hua_media_info: ^2.2.1
 ```
 
 需要 **Flutter 3.44+**（Dart 3.12）。无需任何初始化调用。

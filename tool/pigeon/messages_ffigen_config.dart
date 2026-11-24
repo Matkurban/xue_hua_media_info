@@ -84,6 +84,7 @@ Future<void> main(List<String> args) async {
       objectiveCFile: Uri.file(
         'ios/xue_hua_media_info/Sources/xue_hua_media_info_objc_gen/Messages.g.m',
       ),
+      assetId: 'package:xue_hua_media_info/xue_hua_media_info_objc_gen.dylib',
       preamble: '''
 
   // ignore_for_file: always_specify_types, camel_case_types, non_constant_identifier_names, unnecessary_non_null_assertion, unused_element, unused_field

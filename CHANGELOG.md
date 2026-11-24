@@ -1,3 +1,12 @@
+## 2.2.1
+
+- Fix iOS TestFlight / Xcode Archive (and macOS Release) Pigeon Swift FFI runtime failures (`dlsym(RTLD_DEFAULT, ...): symbol not found`) where Xcode's default `STRIP_STYLE = all` stripped statically linked `*_objc_gen/*.m` C trampoline symbols from `Runner`.
+  修复 iOS TestFlight / Xcode Archive（及 macOS Release）中因 Xcode 默认 `STRIP_STYLE = all` 剥离静态链接进 `Runner` 的 `*_objc_gen/*.m` C trampoline 符号导致的 Pigeon Swift FFI 运行时崩溃（`dlsym(RTLD_DEFAULT, ...): symbol not found`）。
+- Package `*_objc_gen/*.m` as a dedicated `DynamicLoadingBundled` Dart Native Code Asset (`hook/build.dart`) bound via `@ffi.DefaultAsset('package:xue_hua_media_info/xue_hua_media_info_objc_gen.dylib')`, and remove duplicate static compilation from `Package.swift` and `*.podspec` (zero host-app Xcode configuration required).
+  通过 `hook/build.dart` 将 `*_objc_gen/*.m` 编译为独立的 `DynamicLoadingBundled` 原生代码资产并绑定 `@ffi.DefaultAsset`，同时从 `Package.swift` 与 `*.podspec` 移除重复静态编译（宿主 App 零配置）。
+- Fix analyzer warnings in generated JNI/native-interop bindings and keep `tool/generate_pigeon.dart` preserving `@ffi.DefaultAsset` and ignore directives across regenerations.
+  修复生成的 JNI/原生互操作绑定中的 analyzer 警告，并更新 `tool/generate_pigeon.dart` 以在重新生成时自动保留 `@ffi.DefaultAsset` 与忽略指令。
+
 ## 2.2.0
 
 - Migrate Pigeon to `30.0.2` and enable Pigeon Native Interop:
